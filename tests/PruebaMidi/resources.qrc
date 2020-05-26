@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/midi">
+        <file>fur_elise.csv</file>
+        <file>moonlight_sonata.csv</file>
+    </qresource>
+</RCC>
