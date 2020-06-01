@@ -22,7 +22,7 @@ win32 {
   QMAKE_LFLAGS += -static -static-libgcc
 }
 
-linux {
+unix {
   DEFINES += __LINUX_ALSA__
   LIBS += -lasound \
           -lpthread
