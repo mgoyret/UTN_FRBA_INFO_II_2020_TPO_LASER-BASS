@@ -26,6 +26,7 @@ unix {
   DEFINES += __LINUX_ALSA__
   LIBS += -lasound \
           -lpthread
+  message("Solo sale en linux")
 }
 
 RESOURCES += \
