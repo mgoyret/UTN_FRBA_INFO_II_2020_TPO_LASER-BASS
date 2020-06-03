@@ -9,6 +9,8 @@ https://nb48.github.io/chart-hero/
 ==================================================================================
 Mapa de instrumentos y variaciones de "Roland GS", el estandar de instrumentos que
 usa Windows. El synth que trae incorporado Windows soporta los sonidos del SC-88.
+En esta pagina el patch number es el mismo numero que aparece en la pagina de 
+wikipedia en ingles sobre el estwandar General MIDI level1
 
 https://www.voidaudio.net/gsinstrument.html
 ==================================================================================

@@ -88,9 +88,9 @@ int main( void )
         message[1] = param.at(4).trimmed().toInt();
         message[2] = param.at(5).trimmed().toInt();
     } else if (param.at(2).trimmed() == "Note_on_c" || param.at(2).trimmed() == "Note_off_c") {
-        aux.tempo = param.at(1).trimmed().toInt();
-        aux.canal = param.at(3).trimmed().toUShort();
-        aux.nota = param.at(4).trimmed().toUShort();
+        aux.tempo = param.at(1).trimmed().toInt();    //convierto a numero
+        aux.canal = param.at(3).trimmed().toUShort(); //convierto a numero, como va de 0 a 15 no tiene sentido usar un int. Podria usarse un char pero no se entiende
+        aux.nota = param.at(4).trimmed().toUShort();  //convierto a numero, como va de 0 a 127 no tiene sentido usar un int. Podria usarse un char pero no se entiende
         aux.vel = (param.at(2).trimmed() == "Note_off_c") ? 0 : param.at(5).trimmed().toUShort();
         cancion.push_back(aux);
     } else if (param.at(2).trimmed() == "End_track") {
@@ -116,7 +116,7 @@ int main( void )
   //F0H 41H, 10H, 42H, 12H, 40H, 00H, 7FH, 00H, 41H, F7H
   message.push_back(0xF0);
   message.push_back(0x41);
-  message.push_back(0x00);
+  message.push_back(0x10);
   message.push_back(0x42);
   message.push_back(0x12);
   message.push_back(0x40);
@@ -135,35 +135,41 @@ int main( void )
   message[1] = 60;
   midiout->sendMessage( &message );
 
-  // Control Change: 176, 7, 100 (volume)
-  message[0] = 176;
+  // Control Change: 0xB0, 7, 100 (volume)
+  message[0] = 0xB0;
   message[1] = 7;
   message[2] = 100;
   midiout->sendMessage( &message );
 
-  message[0] = 0xB0;
-  message[1] = 0x00;
-  message[2] = 24;
+  //Control Change
+  message[0] = 0xB0; //1er byte (Status)
+  message[1] = 0x00; //2do byte (1ero de datos)
+  message[2] = 0;   //3er byte (2do de datos)
   midiout->sendMessage(&message);
+  //Ese fue el Most Significant Byte
   message[0] = 0xB0;
   message[1] = 0x20;
   message[2] = 0;
   midiout->sendMessage(&message);
+  //Ese fue el Least Significant Byte
+  //Termina control change
+  //Program change
   message[0] = 0xC0;
-  message[1] = 4;
+  message[1] = 100;
   message[2] = 0;
   midiout->sendMessage(&message);
+  //Termina program change
 
   message[0] = 0xB1;
   message[1] = 0x00;
-  message[2] = 24;
+  message[2] = 0;
   midiout->sendMessage(&message);
   message[0] = 0xB1;
   message[1] = 0x20;
   message[2] = 0;
   midiout->sendMessage(&message);
   message[0] = 0xC1;
-  message[1] = 4;
+  message[1] = 9;
   message[2] = 0;
   midiout->sendMessage(&message);
 
@@ -183,11 +189,13 @@ int main( void )
   }
   message.resize(3);*/
   tick = cancion[0].tempo;
+
+
   for (unsigned int i=0; i<cancion.size(); i++) {
       message[0] = (uint8_t) 0x90 + cancion[i].canal;
       message[1] = (uint8_t) cancion[i].nota;
       message[2] = (uint8_t) cancion[i].vel;
-      midiout->sendMessage(&message);
+      midiout->sendMessage( &message );
       if (cancion[i].tempo - tick) {
           SLEEP((cancion[i].tempo - tick)/3);
       }
