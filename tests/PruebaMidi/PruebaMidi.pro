@@ -19,10 +19,14 @@ win32 {
              _WIN32 \
              WIN32
   LIBS += -lwinmm
+  QMAKE_LFLAGS += -static -static-libgcc
 }
 
-win32 {
-  QMAKE_LFLAGS += -static -static-libgcc
+unix {
+  DEFINES += __LINUX_ALSA__
+  LIBS += -lasound \
+          -lpthread
+  message("Solo sale en linux")
 }
 
 RESOURCES += \
