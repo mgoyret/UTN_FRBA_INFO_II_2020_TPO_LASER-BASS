@@ -1,3 +1,4 @@
+#define __RTMIDI_DEBUG__
 //*****************************************//
 //  midiout.cpp
 //  by Gary Scavone, 2003-2004.
@@ -154,12 +155,13 @@ int main( void )
   //Ese fue el Least Significant Byte
   //Termina control change
   //Program change
+  message.resize(2);
   message[0] = 0xC0;
   message[1] = 100;
   message[2] = 0;
   midiout->sendMessage(&message);
   //Termina program change
-
+    message.resize(3);
   message[0] = 0xB1;
   message[1] = 0x00;
   message[2] = 0;
@@ -168,11 +170,12 @@ int main( void )
   message[1] = 0x20;
   message[2] = 0;
   midiout->sendMessage(&message);
+  message.resize(2);
   message[0] = 0xC1;
   message[1] = 9;
   message[2] = 0;
   midiout->sendMessage(&message);
-
+  message.resize(3);
   //notes
   //message.resize(2);
   /*for (unsigned int i=0; i < notes.length(); i++) {

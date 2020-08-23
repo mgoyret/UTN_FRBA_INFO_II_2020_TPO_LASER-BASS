@@ -1,3 +1,4 @@
+
 /**********************************************************************/
 /*! \class RtMidi
     \brief An abstract base class for realtime MIDI input/output.
