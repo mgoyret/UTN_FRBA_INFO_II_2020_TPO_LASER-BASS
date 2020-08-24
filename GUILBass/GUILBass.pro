@@ -19,12 +19,14 @@ SOURCES += \
     main.cpp \
     src/mainwindow.cpp \
     src/menujugar.cpp \
-    src/tocar.cpp
+    src/tocar.cpp \
+    lib/RtMidi/RtMidi.cpp
 
 HEADERS += \
     inc/mainwindow.h \
     inc/menujugar.h \
-    inc/tocar.h
+    inc/tocar.h \
+    lib/RtMidi/RtMidi.h
 
 FORMS += \
     forms/mainwindow.ui \
@@ -39,4 +41,21 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     GUIResources.qrc
 
-DISTFILES +=
+# Reglas para compilacion de librerías
+win32 {
+  DEFINES += __WINDOWS_MM__ \
+             _WIN32 \
+             WIN32
+  LIBS += -lwinmm
+  QMAKE_LFLAGS += -static -static-libgcc
+}
+
+unix {
+  DEFINES += __LINUX_ALSA__
+  LIBS += -lasound \
+          -lpthread
+  #message("Solo sale en linux")
+}
+
+# Includepath para rtmidi
+INCLUDEPATH += lib/RtMidi/
