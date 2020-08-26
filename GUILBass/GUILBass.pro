@@ -21,19 +21,22 @@ SOURCES += \
     src/mainwindow.cpp \
     src/menujugar.cpp \
     src/tocar.cpp \
-    lib/RtMidi/RtMidi.cpp
+    lib/RtMidi/RtMidi.cpp \
+    src/windowpuntajes.cpp
 
 HEADERS += \
     inc/clasemidi.h \
     inc/mainwindow.h \
     inc/menujugar.h \
     inc/tocar.h \
-    lib/RtMidi/RtMidi.h
+    lib/RtMidi/RtMidi.h \
+    inc/windowpuntajes.h
 
 FORMS += \
     forms/mainwindow.ui \
     forms/menujugar.ui \
-    forms/tocar.ui
+    forms/tocar.ui \
+    forms/windowpuntajes.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
