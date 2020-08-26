@@ -17,14 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    src/ClaseMIDI.cpp \
+    src/clasemidi.cpp \
     src/mainwindow.cpp \
     src/menujugar.cpp \
     src/tocar.cpp \
     lib/RtMidi/RtMidi.cpp
 
 HEADERS += \
-    inc/ClaseMIDI.h \
+    inc/clasemidi.h \
     inc/mainwindow.h \
     inc/menujugar.h \
     inc/tocar.h \
