@@ -28,13 +28,13 @@ HEADERS += \
     inc/menujugar.h \
     inc/tocar.h \
     lib/RtMidi/RtMidi.h \
-    src/grabar.h
+    inc/grabar.h
 
 FORMS += \
     forms/mainwindow.ui \
     forms/menujugar.ui \
     forms/tocar.ui \
-    src/grabar.ui
+    forms/grabar.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
