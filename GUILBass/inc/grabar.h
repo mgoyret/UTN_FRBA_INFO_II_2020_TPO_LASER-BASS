@@ -4,19 +4,24 @@
 #include <QDialog>
 
 namespace Ui {
-class grabar;
+class Grabar;
 }
 
-class grabar : public QDialog
+class Grabar : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit grabar(QWidget *parent = nullptr);
-    ~grabar();
+    explicit Grabar(QWidget *parent = nullptr);
+    ~Grabar();
+
+private slots:
+    void on_PBrec_clicked();
+
+    void on_PBfinRec_clicked();
 
 private:
-    Ui::grabar *ui;
+    Ui::Grabar *ui;
 };
 
 #endif // GRABAR_H
