@@ -1,5 +1,6 @@
 #include "inc/menujugar.h"
 #include "ui_menujugar.h"
+#include "inc/grabar.h"
 
 MenuJugar::MenuJugar(QWidget *parent) :
     QDialog(parent),
@@ -21,4 +22,8 @@ void MenuJugar::on_PBpreGrabada_clicked()
 void MenuJugar::on_PBgrabarNueva_clicked()
 {
     // VENTANA MARCOS
+    Grabar a(this);
+    a.setWindowTitle("jugar o grabar");
+    hide();
+    a.exec();
 }

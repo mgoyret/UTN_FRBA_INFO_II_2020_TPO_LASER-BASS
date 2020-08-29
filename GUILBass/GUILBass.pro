@@ -27,8 +27,8 @@ HEADERS += \
     inc/mainwindow.h \
     inc/menujugar.h \
     inc/tocar.h \
-    lib/RtMidi/RtMidi.h \
     inc/grabar.h
+    lib/RtMidi/RtMidi.h \
 
 FORMS += \
     forms/mainwindow.ui \
