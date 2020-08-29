@@ -12,3 +12,13 @@ MenuJugar::~MenuJugar()
 {
     delete ui;
 }
+
+void MenuJugar::on_PBpreGrabada_clicked()
+{
+    // CAMI ACA INICIA TU VENTANA
+}
+
+void MenuJugar::on_PBgrabarNueva_clicked()
+{
+    // VENTANA MARCOS
+}

@@ -17,6 +17,11 @@ public:
     explicit MenuJugar(QWidget *parent = nullptr);
     ~MenuJugar();
 
+private slots:
+    void on_PBpreGrabada_clicked();
+
+    void on_PBgrabarNueva_clicked();
+
 private:
     Ui::MenuJugar *ui;
     QSerialPort puerto;
