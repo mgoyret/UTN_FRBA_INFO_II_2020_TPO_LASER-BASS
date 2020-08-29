@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    src/grabar.cpp \
     src/mainwindow.cpp \
     src/menujugar.cpp \
     src/tocar.cpp \
@@ -26,12 +27,14 @@ HEADERS += \
     inc/mainwindow.h \
     inc/menujugar.h \
     inc/tocar.h \
-    lib/RtMidi/RtMidi.h
+    lib/RtMidi/RtMidi.h \
+    src/grabar.h
 
 FORMS += \
     forms/mainwindow.ui \
     forms/menujugar.ui \
-    forms/tocar.ui
+    forms/tocar.ui \
+    src/grabar.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
