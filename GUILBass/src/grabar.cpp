@@ -15,15 +15,15 @@ Grabar::~Grabar()
 
 void Grabar::on_PBrec_clicked()
 {
-    ui->PBrec->serEnabled(false);
-    ui->PBfinRec->serEnabled(true);
+    ui->PBrec->setEnabled(false);
+    ui->PBfinRec->setEnabled(true);
     // ACA EMPIEZA EL MECANISMO DE GRABACION
 }
 
 void Grabar::on_PBfinRec_clicked()
 {
-    ui->PBfinRec->serEnabled(false);
+    ui->PBfinRec->setEnabled(false);
     //abria que ver aca si al terminar de grabar se puede descartar y
     //arrancar devuelta o q.
-    ui->PBrec->serEnabled(true);
+    ui->PBrec->setEnabled(true);
 }
