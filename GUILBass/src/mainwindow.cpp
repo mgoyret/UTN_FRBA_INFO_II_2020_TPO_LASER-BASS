@@ -42,6 +42,7 @@ void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
     hide();
+    wtocar.setPuerto(puerto.portName());
     wtocar.exec();
     close();
 
