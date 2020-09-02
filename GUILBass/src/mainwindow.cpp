@@ -11,8 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     enumerarPuertos();
     //para probar si no tienen puerto serie virtual para conectarse
     //comenten las 2 dos lineas siguientes
-    ui->PBJugar->setDisabled(true);
-    ui->PBTocar->setDisabled(true);
+    //ui->PBJugar->setDisabled(true);
+    //ui->PBTocar->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
