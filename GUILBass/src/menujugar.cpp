@@ -1,6 +1,7 @@
 #include "inc/menujugar.h"
 #include "ui_menujugar.h"
 #include "inc/grabar.h"
+#include "jugar.h"
 
 MenuJugar::MenuJugar(QWidget *parent) :
     QDialog(parent),
@@ -16,14 +17,18 @@ MenuJugar::~MenuJugar()
 
 void MenuJugar::on_PBpreGrabada_clicked()
 {
-    // CAMI ACA INICIA TU VENTANA
+    // VENTANA CAMI
+    Jugar c(this);
+    c.setWindowTitle("Jugar");
+    hide();
+    c.exec();
 }
 
 void MenuJugar::on_PBgrabarNueva_clicked()
 {
     // VENTANA MARCOS
     Grabar a(this);
-    a.setWindowTitle("jugar o grabar");
+    a.setWindowTitle("Jugar o Grabar");
     hide();
     a.exec();
 }

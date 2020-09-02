@@ -33,7 +33,7 @@ void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wmenuJugar(this);
     hide();
-    wmenuJugar.setWindowTitle("maneras de jugar");
+    wmenuJugar.setWindowTitle("Maneras de jugar");
     wmenuJugar.exec();
     close();
 }
