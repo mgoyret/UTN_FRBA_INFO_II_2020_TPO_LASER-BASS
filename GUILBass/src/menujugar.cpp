@@ -28,7 +28,7 @@ void MenuJugar::on_PBgrabarNueva_clicked()
 {
     // VENTANA MARCOS
     Grabar a(this);
-    a.setWindowTitle("Jugar o Grabar");
+    a.setWindowTitle("Grabar");
     hide();
     a.exec();
 }
