@@ -32,19 +32,19 @@ void MainWindow::enumerarPuertos()
 void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wmenuJugar(this);
-    hide();
     wmenuJugar.setWindowTitle("Maneras de jugar");
+    hide();
     wmenuJugar.exec();
-    close();
+    show();
 }
 
 void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
-    hide();
     wtocar.setPuerto(puerto.portName());
+    hide();
     wtocar.exec();
-    close();
+    show();
 
 }
 

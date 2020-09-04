@@ -20,7 +20,7 @@ void MenuJugar::on_PBpreGrabada_clicked()
     // VENTANA CAMI
     Jugar c(this);
     c.setWindowTitle("Jugar");
-    hide();
+    //hide();
     c.exec();
 }
 
@@ -29,6 +29,6 @@ void MenuJugar::on_PBgrabarNueva_clicked()
     // VENTANA MARCOS
     Grabar a(this);
     a.setWindowTitle("Grabar");
-    hide();
+    //hide();
     a.exec();
 }
