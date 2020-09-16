@@ -20,12 +20,16 @@ SOURCES += \
     main.cpp \
     src/grabar.cpp \
     src/mainwindow.cpp \
+    src/mde_grabacion/AP_FuncionesMdeE.c \
+    src/mde_grabacion/AP_MdeE.c \
     src/menujugar.cpp \
     src/tocar.cpp \
     lib/RtMidi/RtMidi.cpp
 
 HEADERS += \
     inc/mainwindow.h \
+    inc/mde_grabacion/AP_FuncionesMdeE.h \
+    inc/mde_grabacion/AP_MdeE.h \
     inc/menujugar.h \
     inc/tocar.h \
     inc/grabar.h \

@@ -9,9 +9,8 @@
 /*********************************************************************************************************************************
  *** INCLUDES
 **********************************************************************************************************************************/
-#include "AP_MdeE.h" 
-#include "AP_FuncionesMdeE.h" 
-#include "AP_Depuracion.h" 
+#include "../../inc/mde_grabacion/AP_MdeE.h"
+#include "../../inc/mde_grabacion/AP_FuncionesMdeE.h"
 
 /* La variable flag es para que al estar dentro del intervalo de 250ms, se tome
 	la primera nota tocada en caso de que se toquen dos sin que se termine el intervalo */
@@ -28,7 +27,7 @@ extern int grabacion;
 *	\author marcosgoyret
 *	\date 15-09-2020 17:00:19
 */
-void maquina_grabador()
+void maquina_grabador(FILE* fp)
 {
 	static int estado = LEYENDO;
 	switch(estado)
@@ -52,7 +51,7 @@ void maquina_grabador()
 				#ifdef DEPURAR
 					Log( 0 , 0 , 0 );
 				#endif
-				guardarNota( );
+                guardarNota(fp);
 				//contador++; en la mde esta aca, pero lo meti dentro de guardarNota()
 				//Reseteo estas variables para la siguiente vuelta
 				notaTocada = FALSE;
@@ -82,7 +81,9 @@ void maquina_grabador()
 	}
 }
 
-void maquina_principal(void)
+
+/*
+void maquina_principal(FILE* fp)
 {
 	static int estado = ESPERANDO;
 	switch (estado)
@@ -102,7 +103,7 @@ void maquina_principal(void)
 			estado = ESPERANDO;
 		}else // aca convenia hacer un else, asi si justo precionaron el boton detener, no se mete en la mde_grabar
 		{
-			maquina_grabador(); //maquina compuesta
+            maquina_grabador(fp); //maquina compuesta
 		}
 
 		break;
@@ -112,3 +113,4 @@ void maquina_principal(void)
 	}
 
 }
+*/

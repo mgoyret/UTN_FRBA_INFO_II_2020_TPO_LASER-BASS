@@ -9,8 +9,13 @@
 #ifndef INC_MDEE_H_
 #define INC_MDEE_H_
 
+#include <stdio.h>
+
 #define	TRUE    1
 #define	FALSE   0
+
+#define ON      1
+#define OFF     0
 
 //!< Definicion de Estados
 #define	LEYENDO     0
@@ -20,8 +25,8 @@
 #define GRABANDO    1
 
 //!< Declaracion de la Maquina de Estados
-void maquina_grabador(void);
-void maquina_principal(void);
+void maquina_grabador(FILE*);
+void maquina_principal(FILE*);
 
 
 #endif /* INC_MDEE_H_ */

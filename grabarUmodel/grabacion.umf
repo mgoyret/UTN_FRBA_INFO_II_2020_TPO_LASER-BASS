@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <proyecto>
     <general>
         <nombre>grabacion</nombre>
         <autores>marcosgoyret</autores>
         <creacion>15-09-2020 16:41:52</creacion>
-        <modificacion>15-09-2020 17:58:21</modificacion>
-        <carpeta>C:/Users/marco/OneDrive/Escritorio</carpeta>
+        <modificacion>15-09-2020 18:18:22</modificacion>
+        <carpeta>C:/Users/marco/OneDrive/Documentos/Facultad/git/LASER-BASS-TPO-INFO-II-2020/grabarUmodel</carpeta>
     </general>
     <configuracion>
         <hardware/>
@@ -17,7 +17,7 @@
     </recursos>
     <maquinas>
         <maquina0>
-            <nombre>principal</nombre>
+            <nombre>grabador</nombre>
             <estadoInicial>
                 <pos_x>-830</pos_x>
                 <pos_y>-694.5</pos_y>
@@ -72,6 +72,55 @@
                 </transiciones>
             </estado1>
         </maquina0>
+        <maquina1>
+            <nombre>principal</nombre>
+            <estadoInicial>
+                <pos_x>-1046</pos_x>
+                <pos_y>-625.5</pos_y>
+                <idAcciones></idAcciones>
+                <idProxEstado>estado0</idProxEstado>
+                <midPos>-1019.4,-605.2</midPos>
+                <textPos>0,-28</textPos>
+            </estadoInicial>
+            <estado0>
+                <diagrama>
+                    <nombre>esperando</nombre>
+                    <color>#e0ffff</color>
+                    <pos_x>-951</pos_x>
+                    <pos_y>-553</pos_y>
+                    <ancho>110</ancho>
+                    <alto>65</alto>
+                </diagrama>
+                <transiciones>
+                    <tr0>
+                        <idEvento>grabacion == TRUE</idEvento>
+                        <idAcciones></idAcciones>
+                        <idProxEstado>estado1</idProxEstado>
+                        <midPos>-852,-430</midPos>
+                        <textPos>0,-28</textPos>
+                    </tr0>
+                </transiciones>
+            </estado0>
+            <estado1>
+                <diagrama>
+                    <nombre>grabando</nombre>
+                    <color>#e0ffff</color>
+                    <pos_x>-923</pos_x>
+                    <pos_y>-294</pos_y>
+                    <ancho>110</ancho>
+                    <alto>65</alto>
+                </diagrama>
+                <transiciones>
+                    <tr0>
+                        <idEvento>grabacion == FALSE</idEvento>
+                        <idAcciones></idAcciones>
+                        <idProxEstado>estado0</idProxEstado>
+                        <midPos>-1015,-423</midPos>
+                        <textPos>-215,0</textPos>
+                    </tr0>
+                </transiciones>
+            </estado1>
+        </maquina1>
     </maquinas>
     <eventos>
         <ev0>timer_0_25</ev0>
@@ -85,6 +134,7 @@
         <var0>notaTocada</var0>
         <var1>flag</var1>
         <var2>contador</var2>
+        <var3>grabacion</var3>
     </variables>
     <constantes>
         <cons0>TRUE</cons0>

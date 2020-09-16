@@ -2,6 +2,8 @@
 #define GRABAR_H
 
 #include <QDialog>
+#include "../inc/mde_grabacion/AP_MdeE.h"
+#include "../inc/mde_grabacion/AP_FuncionesMdeE.h"
 
 namespace Ui {
 class Grabar;
@@ -23,5 +25,9 @@ private slots:
 private:
     Ui::Grabar *ui;
 };
+
+
+void crearArchivo(FILE*);
+
 
 #endif // GRABAR_H

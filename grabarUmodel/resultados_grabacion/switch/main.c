@@ -12,7 +12,8 @@
 int notaTocada;
 int flag;
 int timer_0_25;
-int contador
+int contador;
+int grabacion;
 
 void main(void)
 {
