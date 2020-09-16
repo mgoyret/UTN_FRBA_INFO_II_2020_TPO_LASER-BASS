@@ -19,18 +19,22 @@ SOURCES += \
     jugar.cpp \
     main.cpp \
     src/grabar.cpp \
+    src/clasemidi.cpp \
     src/mainwindow.cpp \
     src/menujugar.cpp \
     src/tocar.cpp \
-    lib/RtMidi/RtMidi.cpp
+    lib/RtMidi/RtMidi.cpp \
+	src/qguitarview.cpp
 
 HEADERS += \
+    inc/clasemidi.h \
     inc/mainwindow.h \
     inc/menujugar.h \
     inc/tocar.h \
     inc/grabar.h \
     jugar.h
     lib/RtMidi/RtMidi.h \
+	inc/qguitarview.h
 
 FORMS += \
     forms/mainwindow.ui \
@@ -64,4 +68,5 @@ unix {
 }
 
 # Includepath para rtmidi
-INCLUDEPATH += lib/RtMidi/
+INCLUDEPATH += lib/RtMidi/ \
+               inc/
