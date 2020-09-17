@@ -35,4 +35,4 @@
 *.app
 
 # Qt Build Folders
-*build-*
+**/build-*/
