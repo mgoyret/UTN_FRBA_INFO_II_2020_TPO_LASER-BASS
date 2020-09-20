@@ -15,7 +15,7 @@
 #define L_CUAD_CAJA     128
 #define L_RECT_MANGO    256
 #define A_RECT_MANGO    64
-#define R_BOTONES       5
+#define R_BOTONES       4
 #define R_CIRC_CAJA     32
 #define A_CUERDAS       2
 #define A_OUTLINE       2
@@ -47,18 +47,12 @@ private:
     QColor stringColorOff;
     QList<QGraphicsEllipseItem *> noteArr;
     QList<QGraphicsLineItem *> stringArr;
+    bool isShown;
 
 protected:
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
-
-signals:
-    void finishedPainting();
-    void resizedWidget();
-
-public slots:
-    void onFinishedPainting();
-    void onResizedWidget();
 
 };
 
