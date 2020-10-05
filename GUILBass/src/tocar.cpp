@@ -35,9 +35,9 @@ void Tocar::on_datosRecibidos(){
     //transforma el dato o la nota en el array para setColor
     //29 xq son 28 lugares que hay que cpnfigurar + 1 por el retun 0
     char status[29]="0011010101010111111111111110";
-    setColor(status);
+//    setColor(status);
 }
-void Tocar :: setColor(const char* estado){
+/*void Tocar :: setColor(const char* estado){
     QColor red(255,0,0);
     QColor white(255,255,255);
     QColor green(0,255,0);
@@ -62,3 +62,4 @@ void Tocar :: setColor(const char* estado){
     //pase esa nota al array ,seria otra opcion
 
 }
+*/
