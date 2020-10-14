@@ -15,6 +15,20 @@ MenuJugar::~MenuJugar()
     delete ui;
 }
 
+
+
+void MenuJugar::setPuerto(QString name){
+    puerto.portName() = name;
+    puerto.setBaudRate(QSerialPort::Baud9600);
+    puerto.setDataBits(QSerialPort::Data8);
+    puerto.setParity(QSerialPort::NoParity);
+    puerto.setStopBits(QSerialPort::OneStop);
+    puerto.setFlowControl(QSerialPort::NoFlowControl);
+    connect(&puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
+}
+
+
+
 void MenuJugar::on_PBpreGrabada_clicked()
 {
     // VENTANA CAMI
@@ -28,7 +42,8 @@ void MenuJugar::on_PBgrabarNueva_clicked()
 {
     // VENTANA MARCOS
     Grabar a(this);
-    a.setWindowTitle("Grabar");
     hide();
+    a.setWindowTitle("Grabar");
+    a.setPuerto(puerto.portName());
     a.exec();
 }

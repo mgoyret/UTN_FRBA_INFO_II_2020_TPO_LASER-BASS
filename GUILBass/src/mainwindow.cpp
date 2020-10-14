@@ -33,6 +33,7 @@ void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wmenuJugar(this);
     hide();
+    wmenuJugar.setPuerto(puerto.portName());
     wmenuJugar.setWindowTitle("Maneras de jugar");
     wmenuJugar.exec();
     close();

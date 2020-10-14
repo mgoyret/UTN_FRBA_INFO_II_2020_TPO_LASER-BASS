@@ -1,14 +1,19 @@
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 #include <QMessageBox>
-
 #include <stdio.h>
+
+#include <QTimer>
+#include <QDebug>
 
 Grabar::Grabar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Grabar)
 {
     ui->setupUi(this);
+    //timer = new QTimer(this);
+    //connect(timer, SIGNAL(timeout()), this, SLOT(timer_250ms_handler));
+
 }
 
 Grabar::~Grabar()
@@ -18,6 +23,24 @@ Grabar::~Grabar()
 
 
 /////////////////////////     PUBLIC     //////////////////////////////////////////////////////
+
+/**
+*	\fn void setPuerto( QString )
+*	\brief Setea puerto serie
+*	\details Detalles
+*	\author Tomada de Alejo Fernandez Bados
+*	\date 2020
+*/
+void Grabar::setPuerto(QString name){
+    puerto.portName() = name;
+    puerto.setBaudRate(QSerialPort::Baud9600);
+    puerto.setDataBits(QSerialPort::Data8);
+    puerto.setParity(QSerialPort::NoParity);
+    puerto.setStopBits(QSerialPort::OneStop);
+    puerto.setFlowControl(QSerialPort::NoFlowControl);
+    connect(&puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
+}
+
 
 /**
 *	\fn void inicializarMdE(void)
@@ -42,6 +65,9 @@ void Grabar::inicializar(void)
 void Grabar::iniciarTimer_250ms()
 {
     /* armar funcion y configurarla con su itmerHandler */
+    //timer->start(1000);
+    QTimer::singleShot(500, this, SLOT(timer_250ms_handler()));
+    qDebug() << "inicie timer";
 }
 
 
@@ -56,7 +82,8 @@ void Grabar::timer_250ms_handler( void )
 {
     /* Seteo variable a SIN_NOTA asi cuando se presione detener y la variable grabacion
         se modifique, esta ultima vuelta no hace nada y no se vuelve a reiniciar el timer */
-    uint8_t notaTocada = SIN_NOTA;
+    uint32_t notaTocada = SIN_NOTA;
+    qDebug() << "timer expiro";
     if(grabacion == ON)
     {
         //notaRecibida devuelve la nota que haya encolada en el puerto serie, o SIN_NOTA (0) si no hay nota
@@ -64,7 +91,8 @@ void Grabar::timer_250ms_handler( void )
         /* aca tendria que limpiar la cola por si toco mas de 1 nota en 250ms, solo quedarme con la primera
             limpiarCola(); o podria hacerlo dentro de la fnc notaRecibida() */
         guardarNota(notaTocada);
-        iniciarTimer_250ms();
+        //iniciarTimer_250ms();
+        QTimer::singleShot(500, this, SLOT(timer_250ms_handler()));
     }
 }
 
@@ -72,31 +100,25 @@ void Grabar::timer_250ms_handler( void )
 /**
 *	\fn int notaRecibida(void)
 *	\brief Devuelve false si no hay ninguna nota tocada, y en caso contrario devuelve la nota
-*	\details Detalles
+*	\details Si hay algo para leer del puerto, va a ser la nota tocada, la asigno a res
 *	\author marcosgoyret
 *	\date 15-09-2020 17:00:19
 */
-uint8_t Grabar::notaRecibida( void )
+uint32_t Grabar::notaRecibida( void )
 {
-    int res = FALSE;
+    uint32_t res = SIN_NOTA;
+    QByteArray datos;
+    uint8_t cant = (int)puerto.bytesAvailable();
 
-    //!< Codigo propio de la funcion
-    /* Si hay algo para leer del puerto, va a ser la nota tocada,
-        la asigno a res */
+    qDebug() << "Datos: " << cant;
+    datos.resize(cant);
+    puerto.read(datos.data(), cant);
+    /* No se si esta sentencia esta bien...Quisiera obtener el contenido del QByteArray pero
+        el un uint8_t que guarde el numero propio de la info contenida. Si es '00100111' que guarde ese numero */
+    res = datos.toUInt();
 
-/*  EJEMPLO PARA RECIBIR POR PUERTO SERIE
-    void ComClass::on_datosRecibidos()
-    {
-        QByteArray datos;
-        int cant = (int)puerto.bytesAvailable();
-
-        datos.resize(cant);
-        puerto.read(datos.data(), cant);
-
-        //ahora trabajo sobre datos recibidos
-        ui->rcvText->append(QString(datos));
-    }
-*/
+    if( !(res >= NOTA1) || !(res <= NOTA28) )
+        res = SIN_NOTA;
 
     return res;
 }
@@ -108,7 +130,7 @@ uint8_t Grabar::notaRecibida( void )
 *	\author marcosgoyret
 *	\date 15-09-2020 17:00:19
 */
-void Grabar::guardarNota( uint8_t notaTocada )
+void Grabar::guardarNota( uint32_t notaTocada )
 {
     uint32_t i=0;
     noteBuffer *aux = new noteBuffer[recBuf.total_cntr + 1];

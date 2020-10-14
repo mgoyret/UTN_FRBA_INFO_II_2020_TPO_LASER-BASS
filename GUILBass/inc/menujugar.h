@@ -17,6 +17,8 @@ public:
     explicit MenuJugar(QWidget *parent = nullptr);
     ~MenuJugar();
 
+    void setPuerto(QString name);
+
 private slots:
     void on_PBpreGrabada_clicked();
 
