@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/parserpuntaje.cpp \
     src/jugar.cpp \
     main.cpp \
     src/grabar.cpp \
@@ -24,7 +25,8 @@ SOURCES += \
     src/menujugar.cpp \
     src/tocar.cpp \
     lib/RtMidi/RtMidi.cpp \
-    src/qguitarview.cpp
+    src/qguitarview.cpp \
+    src/tablapuntajes.cpp
 
 HEADERS += \
     inc/clasemidi.h \
@@ -34,14 +36,17 @@ HEADERS += \
     inc/grabar.h \
     inc/jugar.h \
     lib/RtMidi/RtMidi.h \
-    inc/qguitarview.h
+    inc/qguitarview.h \
+    inc/parserpuntaje.h \
+    inc/tablapuntajes.h
 
 FORMS += \
     forms/mainwindow.ui \
     forms/menujugar.ui \
     forms/tocar.ui \
     forms/grabar.ui \
-    forms/jugar.ui
+    forms/jugar.ui \
+    forms/tablapuntajes.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
