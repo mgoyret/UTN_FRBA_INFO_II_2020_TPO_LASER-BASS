@@ -61,7 +61,7 @@ uint8_t ClaseMIDI::abrirPuerto(unsigned int port) {
     return 1;
 }
 
-uint8_t ClaseMIDI::inicializarGS(unsigned int port) {
+uint8_t ClaseMIDI::inicializarGS() {
     //Reinicio el synth en modo GS
     //0xF0, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7
     //Estos bytes vienen del PDF de Roland de la especificacion GS
@@ -78,7 +78,7 @@ uint8_t ClaseMIDI::inicializarGS(unsigned int port) {
     arr.push_back(static_cast<uint8_t>(0x00));
     arr.push_back(0x41);
     arr.push_back(0xF7);
-   return enviarMensaje(arr);
+    return enviarMensaje(arr);
 }
 
 uint8_t ClaseMIDI::enviarNoteOn(uint8_t ch, uint8_t note, uint8_t vel) {
@@ -124,7 +124,7 @@ uint8_t ClaseMIDI::enviarControlChange(uint8_t ch, uint8_t byte_1, uint8_t byte_
     return 0;
 }
 
-uint8_t ClaseMIDI::enviarMensaje(QByteArray msg) {
+uint8_t ClaseMIDI::enviarMensaje(QByteArray & msg) {
     if (out->isPortOpen()) {
         out->sendMessage(reinterpret_cast<const uint8_t *>(msg.constData()), msg.length());
         return 0;
