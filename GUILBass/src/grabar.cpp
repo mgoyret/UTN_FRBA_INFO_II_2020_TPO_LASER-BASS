@@ -17,7 +17,7 @@ Grabar::~Grabar()
 }
 
 
-/////////////////////////     PUBLIC    //////////////////////////////////////////////////////
+/////////////////////////     PUBLIC     //////////////////////////////////////////////////////
 
 /**
 *	\fn void inicializarMdE(void)
@@ -83,6 +83,21 @@ uint8_t Grabar::notaRecibida( void )
     //!< Codigo propio de la funcion
     /* Si hay algo para leer del puerto, va a ser la nota tocada,
         la asigno a res */
+
+/*  EJEMPLO PARA RECIBIR POR PUERTO SERIE
+    void ComClass::on_datosRecibidos()
+    {
+        QByteArray datos;
+        int cant = (int)puerto.bytesAvailable();
+
+        datos.resize(cant);
+        puerto.read(datos.data(), cant);
+
+        //ahora trabajo sobre datos recibidos
+        ui->rcvText->append(QString(datos));
+    }
+*/
+
     return res;
 }
 

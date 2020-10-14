@@ -6,8 +6,6 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "bibliotecaInfo2/bibliotecaInfoII.h"
-
 
 #define	TRUE    1
 #define	FALSE   0
@@ -44,18 +42,18 @@ public:
     explicit Grabar(QWidget *parent = nullptr);
     ~Grabar();
 
-    static void guardarNota( uint8_t );
-    static uint8_t notaRecibida( void );
+    void guardarNota( uint8_t );
+    uint8_t notaRecibida( void );
 
 
     //Prototipos de Inicializacion
-    static void inicializar(void);
+    void inicializar(void);
 
     //Prototipos de Timers
-    static void iniciarTimer_250ms();
-    static void timer_250ms_handler();
+    void iniciarTimer_250ms();
+    void timer_250ms_handler();
 
-    static uint8_t guardarCancion();
+    uint8_t guardarCancion();
 
 private slots:
     void on_PBrec_clicked();
@@ -64,9 +62,9 @@ private slots:
 
 private:
     Ui::Grabar *ui;
-    static int grabacion;          //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
-    static QFile songFile;
-    static songBuffer recBuf;
+    int grabacion;          //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
+    QFile songFile;
+    songBuffer recBuf;
 
 };
 
