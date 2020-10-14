@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#define ON 1
+#define OFF 0
 namespace Ui {
 class Tocar;
 }
@@ -16,13 +18,15 @@ class Tocar : public QDialog
 public:
     explicit Tocar(QWidget *parent = nullptr);
     ~Tocar();
+    void setPuerto(QString name);
 
 private slots:
-    void on_pushButton_3_clicked();
+    void on_datosRecibidos();
 
 private:
     Ui::Tocar *ui;
     QSerialPort puerto;
+    void setColor(const char * estado);
 };
 
 #endif // TOCAR_H

@@ -3853,27 +3853,6 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>230</y>
-     <width>121</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Calibri</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Nota Tocada</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="Cuerda3">
    <property name="geometry">
     <rect>
@@ -5268,19 +5247,6 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="LBnotaTocada">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>230</y>
-     <width>211</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>aca se actualizaria cada nota tocada</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="PBrec">
    <property name="geometry">
     <rect>
@@ -5323,6 +5289,40 @@
    </property>
    <property name="text">
     <string>Detener grabación</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>230</y>
+     <width>121</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Nota Tocada</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="Nota">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>260</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
