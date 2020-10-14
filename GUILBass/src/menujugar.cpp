@@ -3,6 +3,8 @@
 #include "inc/grabar.h"
 #include "jugar.h"
 
+#include <QDebug>
+
 MenuJugar::MenuJugar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MenuJugar)
@@ -16,15 +18,10 @@ MenuJugar::~MenuJugar()
 }
 
 
-
-void MenuJugar::setPuerto(QString name){
-    puerto.portName() = name;
-    puerto.setBaudRate(QSerialPort::Baud9600);
-    puerto.setDataBits(QSerialPort::Data8);
-    puerto.setParity(QSerialPort::NoParity);
-    puerto.setStopBits(QSerialPort::OneStop);
-    puerto.setFlowControl(QSerialPort::NoFlowControl);
-    connect(&puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
+/* Funcion para pasar el nombre del puerto de ventana en ventana */
+void MenuJugar::set_nPuerto(QString name)
+{
+    nPuerto = name;
 }
 
 
@@ -34,8 +31,9 @@ void MenuJugar::on_PBpreGrabada_clicked()
     // VENTANA CAMI
     Jugar c(this);
     c.setWindowTitle("Jugar");
-    //hide();
+    hide();
     c.exec();
+    close();
 }
 
 void MenuJugar::on_PBgrabarNueva_clicked()
@@ -44,7 +42,8 @@ void MenuJugar::on_PBgrabarNueva_clicked()
     Grabar a(this);
     hide();
     a.setWindowTitle("Grabar");
-    a.setPuerto(puerto.portName());
-    a.setWindowTitle("Grabar");
+    a.setPuerto(nPuerto);
     a.exec();
+    a.desconectarPuerto();
+    close();
 }

@@ -43,39 +43,32 @@ class Grabar : public QDialog
     Q_OBJECT
 
 public:
-    explicit Grabar(QWidget *parent = nullptr);
-    ~Grabar();
+    explicit Grabar( QWidget *parent = nullptr );
 
-    void setPuerto(QString name);
+    ~Grabar( void );
 
-    void guardarNota( uint32_t );
-    uint32_t notaRecibida( void );
-
-
-    //Prototipos de Inicializacion
-    void inicializar(void);
-
-    //Prototipos de Timers
-    void iniciarTimer_250ms();
-    //void timer_250ms_handler();
-
-    uint8_t guardarCancion();
+    void setPuerto( QString name );
+    void inicializar( void );
+    void guardarNota( void );
+    void iniciarTimer_250ms( void );
+    uint8_t guardarCancion( void );
+    uint8_t prosesarNota( QByteArray );
+    void desconectarPuerto();
 
 private slots:
-    void on_PBrec_clicked();
-
-    void on_PBfinRec_clicked();
-
-    void timer_250ms_handler();
+    void on_PBrec_clicked( void );
+    void on_PBfinRec_clicked( void );
+    void timer_250ms_handler( void );
+    void puertoSerieRcv_handler( void );
 
 
 private:
     Ui::Grabar *ui;
-    int grabacion;          //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
-    QFile songFile;
-    songBuffer recBuf;
+    uint8_t     grabacion; //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
+    uint8_t     notaTocada;
+    QFile       songFile;
     QSerialPort puerto;
-    //QTimer *timer;
+    songBuffer  recBuf;
 };
 
 #endif // GRABAR_H

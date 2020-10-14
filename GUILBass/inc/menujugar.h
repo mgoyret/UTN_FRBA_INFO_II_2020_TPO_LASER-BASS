@@ -17,16 +17,17 @@ public:
     explicit MenuJugar(QWidget *parent = nullptr);
     ~MenuJugar();
 
-    void setPuerto(QString name);
+    void set_nPuerto(QString name);
 
 private slots:
     void on_PBpreGrabada_clicked();
 
     void on_PBgrabarNueva_clicked();
 
+
 private:
     Ui::MenuJugar *ui;
-    QSerialPort puerto;
+    QString nPuerto;
 };
 
 #endif // MENUJUGAR_H

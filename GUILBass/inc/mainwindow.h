@@ -16,6 +16,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    void cerrarPuerto();
 private slots:
     void on_PBJugar_clicked();
 
