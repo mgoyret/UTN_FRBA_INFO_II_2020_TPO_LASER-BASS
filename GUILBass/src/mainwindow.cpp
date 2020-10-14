@@ -32,8 +32,9 @@ void MainWindow::enumerarPuertos()
 void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wmenuJugar(this);
-    wmenuJugar.setWindowTitle("Maneras de jugar");
     hide();
+    wmenuJugar.setPuerto(puerto.portName());
+    wmenuJugar.setWindowTitle("Maneras de jugar");
     wmenuJugar.exec();
     show();
 }
