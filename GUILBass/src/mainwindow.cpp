@@ -11,13 +11,21 @@ MainWindow::MainWindow(QWidget *parent)
     enumerarPuertos();
     //para probar si no tienen puerto serie virtual para conectarse
     //comenten las 2 dos lineas siguientes
-    //ui->PBJugar->setDisabled(true);
-    //ui->PBTocar->setDisabled(true);
+    ui->PBJugar->setDisabled(true);
+    ui->PBTocar->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::cerrarPuerto()
+{
+    puerto.close();
+    ui->PBConectar->setText("CONECTAR");
+    ui->PBTocar->setEnabled(false);
+    ui->PBJugar->setEnabled(false);
 }
 
 void MainWindow::enumerarPuertos()
@@ -32,9 +40,10 @@ void MainWindow::enumerarPuertos()
 void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wmenuJugar(this);
-    hide();
-    wmenuJugar.setPuerto(puerto.portName());
+    wmenuJugar.set_nPuerto(puerto.portName());
     wmenuJugar.setWindowTitle("Maneras de jugar");
+    cerrarPuerto(); //cerramos el puerto para poder volver a abrirlo en la ventana que se nesecite
+    hide();
     wmenuJugar.exec();
     show();
 }
@@ -43,6 +52,7 @@ void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
     wtocar.setPuerto(puerto.portName());
+    cerrarPuerto(); //cerramos el puerto para poder volver a abrirlo en la ventana que se nesecite
     hide();
     wtocar.exec();
     show();
@@ -74,9 +84,6 @@ void MainWindow::on_PBConectar_clicked()
                                   "No se puedo abrir el puerto "+portName);
         }
     } else {
-        puerto.close();
-        ui->PBConectar->setText("CONECTAR");
-        ui->PBTocar->setEnabled(false);
-        ui->PBJugar->setEnabled(false);
+    cerrarPuerto(); //cerramos el puerto para poder volver a abrirlo en la ventana que se nesecite
     }
 }
