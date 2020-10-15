@@ -84,6 +84,6 @@ void MainWindow::on_PBConectar_clicked()
                                   "No se puedo abrir el puerto "+portName);
         }
     } else {
-    cerrarPuerto(); //cerramos el puerto para poder volver a abrirlo en la ventana que se nesecite
+        cerrarPuerto(); //cerramos el puerto para poder volver a abrirlo en la ventana que se nesecite
     }
 }

@@ -18,7 +18,8 @@ MenuJugar::~MenuJugar()
 }
 
 
-/* Funcion para pasar el nombre del puerto de ventana en ventana */
+/* Funcion para pasar el nombre del puerto de ventana en ventana. Como en esta
+    ventana no uso el puerto, solo recibe el nombre y se lo pasa a las ventanas Jugar y Grabar */
 void MenuJugar::set_nPuerto(QString name)
 {
     nPuerto = name;
@@ -44,6 +45,6 @@ void MenuJugar::on_PBgrabarNueva_clicked()
     a.setWindowTitle("Grabar");
     a.setPuerto(nPuerto);
     a.exec();
-    a.desconectarPuerto();
+    a.desconectarPuerto(); //cerramos el puerto antes de volver a la mainwindow, ya que la ventana esta configurada como desconectada
     close();
 }

@@ -27,11 +27,10 @@ Grabar::~Grabar()
 /////////////////////////     PUBLIC     //////////////////////////////////////////////////////
 
 /**
-*	\fn void setPuerto( QString )
-*	\brief Setea puerto serie
-*	\details Detalles
-*	\author Tomada de Alejo Fernandez Bados
-*	\date 2020
+*	\fn         void setPuerto( QString )
+*	\brief      Setea puerto serie
+*	\details    Configura y abre un puerto especificado
+*	\author     Marcos Goyret
 */
 void Grabar::setPuerto(QString name){
     puerto.setPortName(name);
@@ -62,8 +61,7 @@ void Grabar::setPuerto(QString name){
 *	\fn void inicializarMdE(void)
 *	\brief Inicializa variables que haya que inicializar
 *	\details Detalles
-*	\author marcosgoyret
-*	\date 15-09-2020 17:00:19
+*	\author Marcos Goyret
 */
 void Grabar::inicializar(void)
 {
@@ -73,11 +71,10 @@ void Grabar::inicializar(void)
 }
 
 /**
-*	\fn void iniciarTimer_250ms(void)
-*	\brief inicializa un timer de 250ms
-*	\details Inicia un timer que ejecuta el timer handler al terminar
-*	\author marcosgoyret
-*	\date 15-09-2020 17:00:19
+*	\fn         void iniciarTimer_250ms(void)
+*	\brief      inicializa un timer de 250ms
+*	\details    Inicia un timer que ejecuta el timer handler al terminar
+*	\author     Marcos Goyret
 */
 void Grabar::iniciarTimer_250ms()
 {
@@ -86,11 +83,10 @@ void Grabar::iniciarTimer_250ms()
 
 
 /**
-*	\fn void timer_250ms_handler(void)
-*	\brief handler del timer inicializado de 250ms
-*	\details ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
-*	\author marcosgoyret
-*	\date 15-09-2020 17:00:19
+*	\fn         void timer_250ms_handler(void)
+*	\brief      handler del timer inicializado de 250ms
+*	\details    ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
+*	\author     Marcos Goyret
 */
 void Grabar::timer_250ms_handler( void )
 {
@@ -105,11 +101,10 @@ void Grabar::timer_250ms_handler( void )
 }
 
 /**
-*	\fn void guardarNota(void)
-*	\brief guarda la nota tocada en el archivo
-*	\details Guarda la nota actual almacenada en el array secuencial de estructuras notas y tiempos
-*	\author marcosgoyret
-*	\date 15-09-2020 17:00:19
+*	\fn         void guardarNota(void)
+*	\brief      guarda la nota tocada en el archivo
+*	\details    Guarda la nota actual almacenada en el array secuencial de estructuras notas y tiempos
+*	\author     Marcos Goyret
 */
 void Grabar::guardarNota( void )
 {
@@ -134,8 +129,7 @@ void Grabar::guardarNota( void )
 
 uint8_t Grabar::guardarCancion( void )
 {
-    uint8_t i;
-
+    uint8_t i, res = ERROR;
     #ifdef DEBUG
     qDebug()<<"total notas: " << recBuf.total_cntr;
     for(i=0; i<recBuf.total_cntr; i++)
@@ -153,6 +147,7 @@ uint8_t Grabar::guardarCancion( void )
             out << recBuf.note_st[i].cntr << "," << recBuf.note_st[i].note << "\n";
         }
         songFile.close();
+        res = EXITO;
     }
     return (uint8_t)1;
 }
@@ -190,7 +185,6 @@ void Grabar::on_PBrec_clicked()
 //boton finalizar grabacion
 void Grabar::on_PBfinRec_clicked()
 {
-    uint8_t i;
     QMessageBox::StandardButton opcion;
     ui->PBfinRec->setEnabled(false);
     grabacion = OFF;
@@ -200,8 +194,8 @@ void Grabar::on_PBfinRec_clicked()
 
     if( opcion == QMessageBox::StandardButton::Yes )
     {
-        //se guarda la grabacion. El mensaje "guardada exitosamente" lo agregaria luego de haber implementado el guardado
-        guardarCancion();
+        if(guardarCancion())
+            QMessageBox::information(this, "Bien hecho", "Cancion guarada exitosamente");
     }else if ( (opcion == QMessageBox::StandardButton::No) || (opcion == QMessageBox::StandardButton::Escape) )
     {
         //se descarta la grabacion
@@ -212,6 +206,12 @@ void Grabar::on_PBfinRec_clicked()
     ui->PBrec->setEnabled(true);
 }
 
+/**
+*	\fn         void puertoSerieRcv_handler()
+*	\brief      Slot de la interrupcion cada vez que se emite la senal ReadyRead()
+*	\details    Guarda la informacion disponible en el puerto en una variable, y llama a setColor()
+*	\author     Marcos Goyret
+*/
 void Grabar::puertoSerieRcv_handler()
 {
     #ifdef DEBUG
@@ -224,4 +224,5 @@ void Grabar::puertoSerieRcv_handler()
     /* prosesar data recibida y transformarla a un char o uint8_t
      * pros.nota devuelve el numero de nota 1-28 */
     notaTocada = prosesarNota(datos);
+    //setColor(notaTocada);
 }

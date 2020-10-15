@@ -13,6 +13,9 @@
 #define	TRUE    1
 #define	FALSE   0
 
+#define EXITO   1
+#define ERROR   0
+
 #define ON      1
 #define OFF     0
 
