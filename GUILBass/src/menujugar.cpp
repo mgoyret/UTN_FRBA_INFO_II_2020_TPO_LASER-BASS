@@ -17,34 +17,27 @@ MenuJugar::~MenuJugar()
     delete ui;
 }
 
-
-/* Funcion para pasar el nombre del puerto de ventana en ventana. Como en esta
-    ventana no uso el puerto, solo recibe el nombre y se lo pasa a las ventanas Jugar y Grabar */
-void MenuJugar::set_nPuerto(QString name)
-{
-    nPuerto = name;
-}
-
-
-
 void MenuJugar::on_PBpreGrabada_clicked()
 {
     // VENTANA CAMI
-    Jugar c(this);
-    c.setWindowTitle("Jugar");
+    Jugar wJugar(this);
+    wJugar.setWindowTitle("Jugar");
     hide();
-    c.exec();
+    wJugar.exec();
     close();
 }
 
 void MenuJugar::on_PBgrabarNueva_clicked()
 {
     // VENTANA MARCOS
-    Grabar a(this);
+    Grabar wGrabar(this);
     hide();
-    a.setWindowTitle("Grabar");
-    a.setPuerto(nPuerto);
-    a.exec();
-    a.desconectarPuerto(); //cerramos el puerto antes de volver a la mainwindow, ya que la ventana esta configurada como desconectada
-    close();
+    wGrabar.setWindowTitle("Grabar");
+    wGrabar.set_puerto(puerto);
+    wGrabar.exec();
+}
+
+void MenuJugar::set_puerto(QSerialPort *puertoExt)
+{
+    puerto = puertoExt;
 }

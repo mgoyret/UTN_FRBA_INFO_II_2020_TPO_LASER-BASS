@@ -1,3 +1,8 @@
+/*
+    PROBAR QSERIALPORT DE MAINWINDOW COMO PUNTERO
+*/
+
+
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 
@@ -20,42 +25,13 @@ Grabar::Grabar(QWidget *parent) :
 
 Grabar::~Grabar()
 {
+    /* Desconecta el vinculo signal slot del puerto serie que cree en set_puerto()   */
+    disconnect(conection);
     delete ui;
 }
 
 
 /////////////////////////     PUBLIC     //////////////////////////////////////////////////////
-
-/**
-*	\fn         void setPuerto( QString )
-*	\brief      Setea puerto serie
-*	\details    Configura y abre un puerto especificado
-*	\author     Marcos Goyret
-*/
-void Grabar::setPuerto(QString name){
-    puerto.setPortName(name);
-    puerto.setBaudRate(QSerialPort::Baud9600);
-    puerto.setDataBits(QSerialPort::Data8);
-    puerto.setParity(QSerialPort::NoParity);
-    puerto.setStopBits(QSerialPort::OneStop);
-    puerto.setFlowControl(QSerialPort::NoFlowControl);
-
-    /* El puerto lo abrieron en mw asiq lo cierro para conectarme yo */
-    if(puerto.isOpen())
-        puerto.close();
-
-    if (puerto.open(QIODevice::ReadWrite) == true) //deberia ser ReadOnly...
-    {
-        #ifdef DEBUG
-        qDebug()<< "Grabar::setPuerto(): puerto conectado ["+puerto.portName()+"]";
-        #endif
-
-        connect(&puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
-    }else{
-        QMessageBox::critical(this, "Error", "No se puedo abrir el puerto");
-    }
-}
-
 
 /**
 *	\fn void inicializarMdE(void)
@@ -76,9 +52,9 @@ void Grabar::inicializar(void)
 *	\details    Inicia un timer que ejecuta el timer handler al terminar
 *	\author     Marcos Goyret
 */
-void Grabar::iniciarTimer_250ms()
+void Grabar::iniciarTimer()
 {
-    QTimer::singleShot(500, this, SLOT(timer_250ms_handler()));
+    QTimer::singleShot(TIMER_TIME, this, SLOT(timer_handler()));
 }
 
 
@@ -88,15 +64,21 @@ void Grabar::iniciarTimer_250ms()
 *	\details    ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
 *	\author     Marcos Goyret
 */
-void Grabar::timer_250ms_handler( void )
+void Grabar::timer_handler( void )
 {
     if(grabacion == ON)
     {
         /* aca tendria que limpiar la cola por si toco mas de 1 nota en 250ms, solo quedarme con la primera
             limpiarCola(); o podria hacerlo dentro de la fnc notaRecibida() */
         guardarNota();
+
+        if(notaTocada != SIN_NOTA)
+        //setColor(notaTocada);
+        //enviar midi on o off
+        //estos dos rencglones irian en timer handler
+
         notaTocada = SIN_NOTA;
-        iniciarTimer_250ms();
+        iniciarTimer();
     }
 }
 
@@ -130,6 +112,7 @@ void Grabar::guardarNota( void )
 uint8_t Grabar::guardarCancion( void )
 {
     uint8_t i, res = ERROR;
+
     #ifdef DEBUG
     qDebug()<<"total notas: " << recBuf.total_cntr;
     for(i=0; i<recBuf.total_cntr; i++)
@@ -138,6 +121,7 @@ uint8_t Grabar::guardarCancion( void )
     }
     #endif
 
+    //Pedir nombre y verificar que no exista
     songFile.setFileName(SONG_FILE_NAME);
     if(songFile.open(QFile::WriteOnly |QFile::Truncate))
     {
@@ -149,7 +133,7 @@ uint8_t Grabar::guardarCancion( void )
         songFile.close();
         res = EXITO;
     }
-    return (uint8_t)1;
+    return res;
 }
 
 
@@ -164,11 +148,11 @@ uint8_t Grabar::prosesarNota( QByteArray datos)
     return res;
 }
 
-void Grabar::desconectarPuerto()
+void Grabar::set_puerto(QSerialPort *puertoExt)
 {
-    puerto.close();
+    puerto = puertoExt;
+    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
 }
-
 /////////////////////////     PRIVATE SLOTS    //////////////////////////////////////////////////////
 
 //boton iniciar grabacion
@@ -179,7 +163,7 @@ void Grabar::on_PBrec_clicked()
 
     grabacion = ON;
     inicializar();
-    iniciarTimer_250ms();
+    iniciarTimer();
 }
 
 //boton finalizar grabacion
@@ -191,6 +175,7 @@ void Grabar::on_PBfinRec_clicked()
 
     //Pregunto si descartar grabacion o guardar
     opcion = QMessageBox::question(this, "Fin de la grabacion", "guardar?");
+    //si no se quiere guardar liberar memoria
 
     if( opcion == QMessageBox::StandardButton::Yes )
     {
@@ -217,12 +202,12 @@ void Grabar::puertoSerieRcv_handler()
     #ifdef DEBUG
     qDebug() << "Datos recibidos ";
     #endif
+
     QByteArray datos;
-    uint8_t cant = (int)puerto.bytesAvailable();
+    uint8_t cant = (int)puerto->bytesAvailable();
     datos.resize(cant);
-    puerto.read(datos.data(), cant);
+    puerto->read(datos.data(), cant);
     /* prosesar data recibida y transformarla a un char o uint8_t
      * pros.nota devuelve el numero de nota 1-28 */
     notaTocada = prosesarNota(datos);
-    //setColor(notaTocada);
 }
