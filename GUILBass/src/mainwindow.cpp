@@ -13,19 +13,12 @@ MainWindow::MainWindow(QWidget *parent)
     //comenten las 2 dos lineas siguientes
     ui->PBJugar->setDisabled(true);
     ui->PBTocar->setDisabled(true);
+    puerto = new QSerialPort;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::cerrarPuerto()
-{
-    puerto.close();
-    ui->PBConectar->setText("CONECTAR");
-    ui->PBTocar->setEnabled(false);
-    ui->PBJugar->setEnabled(false);
 }
 
 void MainWindow::enumerarPuertos()
@@ -39,20 +32,18 @@ void MainWindow::enumerarPuertos()
 }
 void MainWindow::on_PBJugar_clicked()
 {
-    MenuJugar wmenuJugar(this);
-    wmenuJugar.set_nPuerto(puerto.portName());
-    wmenuJugar.setWindowTitle("Maneras de jugar");
-    cerrarPuerto(); //cerramos el puerto para poder volver a abrirlo en la ventana que se nesecite
+    MenuJugar wMenuJugar(this);
+    wMenuJugar.set_puerto(puerto);
+    wMenuJugar.setWindowTitle("Maneras de jugar");
     hide();
-    wmenuJugar.exec();
+    wMenuJugar.exec();
     show();
 }
 
 void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
-    wtocar.setPuerto(puerto.portName());
-    cerrarPuerto(); //cerramos el puerto para poder volver a abrirlo en la ventana que se nesecite
+    wtocar.setPuerto(puerto->portName());
     hide();
     wtocar.exec();
     show();
@@ -66,24 +57,38 @@ void MainWindow::on_PBActualizar_clicked()
 
 void MainWindow::on_PBConectar_clicked()
 {
-    if (!puerto.isOpen()) {
-        QString portName = ui->CBPuertos->currentText();
-        puerto.setPortName(portName);
-        puerto.setBaudRate(QSerialPort::Baud9600);
-        puerto.setDataBits(QSerialPort::Data8);
-        puerto.setParity(QSerialPort::NoParity);
-        puerto.setStopBits(QSerialPort::OneStop);
-        puerto.setFlowControl(QSerialPort::NoFlowControl);
+    QString portName = ui->CBPuertos->currentText();
 
-        if (puerto.open(QIODevice::ReadWrite) == true) {
-            ui->PBConectar->setText("DESCONECTAR");
-            ui->PBTocar->setEnabled(true);
-            ui->PBJugar->setEnabled(true);
+    if( ui->PBConectar->text() == "CONECTAR" )
+    {
+        if (!puerto->isOpen()) {
+            puerto->setPortName(portName);
+            puerto->setBaudRate(QSerialPort::Baud9600);
+            puerto->setDataBits(QSerialPort::Data8);
+            puerto->setParity(QSerialPort::NoParity);
+            puerto->setStopBits(QSerialPort::OneStop);
+            puerto->setFlowControl(QSerialPort::NoFlowControl);
+
+            if (puerto->open(QIODevice::ReadWrite) == true) {
+                ui->PBConectar->setText("DESCONECTAR");
+                ui->CBPuertos->setDisabled(true);
+                ui->PBTocar->setEnabled(true);
+                ui->PBJugar->setEnabled(true);
+            } else {
+                QMessageBox::critical(this, "Error",
+                                        "No se puedo abrir el puerto "+portName);
+            }
         } else {
-            QMessageBox::critical(this, "Error",
-                                  "No se puedo abrir el puerto "+portName);
+                QMessageBox::critical(this, "Error",
+                                        "Puerto ["+portName+"] en uso");
         }
-    } else {
-        cerrarPuerto(); //cerramos el puerto para poder volver a abrirlo en la ventana que se nesecite
+    }
+    else //si ya se esta conectado y se desea desconectar
+    {
+        puerto->close();
+        ui->PBConectar->setText("CONECTAR");
+        ui->CBPuertos->setEnabled(true);
+        ui->PBTocar->setDisabled(true);
+        ui->PBJugar->setDisabled(true);
     }
 }

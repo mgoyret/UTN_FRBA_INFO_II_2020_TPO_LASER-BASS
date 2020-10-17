@@ -29,7 +29,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QSerialPort *puerto;
     void enumerarPuertos();
-    QSerialPort puerto;
 };
 #endif // MAINWINDOW_H

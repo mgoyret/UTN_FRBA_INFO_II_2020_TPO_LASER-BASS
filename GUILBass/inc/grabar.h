@@ -27,6 +27,8 @@
 
 #define SONG_FILE_NAME "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
+#define TIMER_TIME 500
+
 typedef struct noteBuffer{
     uint32_t cntr;
     uint8_t note;
@@ -50,18 +52,18 @@ public:
 
     ~Grabar( void );
 
-    void setPuerto( QString name );
     void inicializar( void );
     void guardarNota( void );
-    void iniciarTimer_250ms( void );
+    void iniciarTimer( void );
     uint8_t guardarCancion( void );
     uint8_t prosesarNota( QByteArray );
     void desconectarPuerto();
+    void set_puerto(QSerialPort*);
 
 private slots:
     void on_PBrec_clicked( void );
     void on_PBfinRec_clicked( void );
-    void timer_250ms_handler( void );
+    void timer_handler( void );
     void puertoSerieRcv_handler( void );
 
 
@@ -70,8 +72,9 @@ private:
     uint8_t     grabacion; //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
     uint8_t     notaTocada;
     QFile       songFile;
-    QSerialPort puerto;
     songBuffer  recBuf;
+    QSerialPort *puerto;
+    QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
 };
 
 #endif // GRABAR_H
