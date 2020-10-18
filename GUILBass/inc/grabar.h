@@ -36,11 +36,18 @@
 #define INICIO_TRAMA_OK ( ( (dataRcv[0])&PRIMER_MITAD ) == INICIO_TRAMA )
 #define FIN_TRAMA_OK    ( ( (dataRcv[1])%ULTIMA_MITAD ) ==  FIN_TRAMA )
 
+
+/* Estructura que almacena una nota. Esta compuesta por la posicion cronologica de la nota (ctr) y la nota
+    en si, que va desde 0 a 28 para los noteOnn y desde 29 a 52 para los noteOff */
 typedef struct noteBuffer{
     uint32_t cntr;
     uint8_t note;
 }noteBuffer;
 
+
+/* Estructura que almacena una cancion. Esta compuesta por la suma total de posiciones de la cancion
+    y un array de notas del tipo "noteBuffer".  La estructura noteBuffer la declaro arriba para que
+    al hacer esta estructura detecte el tipo de dato, sino no funca. */
 typedef struct songBuffer{
     uint32_t total_cntr;
     noteBuffer *note_st;
