@@ -14,6 +14,8 @@
 #include <QTimer>
 #include <QDebug>
 
+#include <QBitArray>
+
 #define DEBUG
 
 Grabar::Grabar(QWidget *parent) :
@@ -66,20 +68,27 @@ void Grabar::iniciarTimer()
 */
 void Grabar::timer_handler( void )
 {
+    monitoreo(); // Ver documentacion de la funcion
     if(grabacion == ON)
     {
         /* aca tendria que limpiar la cola por si toco mas de 1 nota en 250ms, solo quedarme con la primera
             limpiarCola(); o podria hacerlo dentro de la fnc notaRecibida() */
         guardarNota();
-
-        if(notaTocada != SIN_NOTA)
-        //setColor(notaTocada);
-        //enviar midi on o off
-        //estos dos rencglones irian en timer handler
-
         notaTocada = SIN_NOTA;
         iniciarTimer();
     }
+}
+
+/**
+*	\fn         void monitoreo(void)
+*	\brief      Envia senales midi y colores al qGuitarView
+*	\details    Para que el usuario al estar grabando tambien escuche y vea lo que esta tocando
+*	\author     Marcos Goyret
+*/
+void Grabar::monitoreo()
+{
+    //enviar midi signal
+    //setColor()
 }
 
 /**
@@ -109,6 +118,12 @@ void Grabar::guardarNota( void )
     recBuf.total_cntr++;
 }
 
+/**
+*	\fn         void guardarCancion(void)
+*	\brief      Guarda la cancion grabada, en un archivo
+*	\details    Imprime la informacion contenida en la estructura del tipo songBuffer, en un archivo
+*	\author     Marcos Goyret
+*/
 uint8_t Grabar::guardarCancion( void )
 {
     uint8_t i, res = ERROR;
@@ -137,17 +152,81 @@ uint8_t Grabar::guardarCancion( void )
 }
 
 
-uint8_t Grabar::prosesarNota( QByteArray datos)
+/**
+*	\fn         void prosesarNota(QByteArray datos)
+*	\brief      Transforma informacion del puerto serie en una representacion util
+*	\details    La trama que recibo por puerto serie, la decodifico y la represento con una letra o numero, segun la nota que sea
+*	\author     Marcos Goyret
+*/
+uint8_t Grabar::prosesarNota( QByteArray datos )
 {
-    uint8_t res = SIN_NOTA;
+    uint8_t res = SIN_NOTA, nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
 
-    //Deberia prosesar la nota almacenada y transformarla a un numero entre 1-28, pero para probar hago esto
+    if(tramaOk(datos))
+    {
+        nota = tramaInfo(datos); //relleno "nota" con lo dicho en su declaracion (comentario)
+
+        /*
+            notaTocada podra tomat valores del 0 al 52. Entre 0 y 28 corresponde a los note on
+            y entre el 29 y 52 corresponde a los noteoff de las notas que no son "al aire".
+            ( las notas al aire no tienen noteoff, duran un tiempo por defecto )
+        */
+
+        switch(nota)
+        {
+            case 1: notaTocada = 1;  // terminar este switch para lo que se recibiria en cada case y a que igualar notaTocada
+            break;
+            case 2: notaTocada = 2;
+            break;
+            //etc. Para poder continuar, nesecito saber como es la trama exacta que se recibe.
+
+            default: notaTocada = SIN_NOTA;
+        }
+    }
+
+    //Esto es temporal para experimentar
     srand(time(nullptr));
-    res = (rand() % 28) + 1; //random entre 1 y 28
+    res = rand() % 53; //random entre 0 y 53
+    notaTocada = res;
 
     return res;
 }
 
+/**
+*	\fn         void tramaOk(QByteArray dataRcv)
+*	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
+*	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
+*	\author     Marcos Goyret
+*/
+uint8_t Grabar::tramaOk(QByteArray dataRcv)
+{
+    uint8_t res = ERROR;
+    if( (INICIO_TRAMA_OK) && (FIN_TRAMA_OK) )
+        res = EXITO;
+    return res;
+}
+
+/**
+*	\fn         void tramaInfo(QByteArray datos)
+*	\brief      Obtiene la informacion de la nota tocada
+*	\details    En el mensaje recibido por puerto serie, la info. de la nota esta en los ultimos 4 bits del primer
+*               byte, y en los primeros 4 bits del segundo byte
+*	\author     Marcos Goyret
+*/
+uint8_t Grabar::tramaInfo(QByteArray datos)
+{
+    uint8_t res;
+
+    res = ( (datos[0])&ULTIMA_MITAD ) + ( (datos[1])&PRIMER_MITAD );
+    return res;
+}
+
+/**
+*	\fn         void set_ouerto(void)
+*	\brief      Apunta mi puntero de QSerialPort, a la direccion del puerto que tenemos conectado, y conecta el slot
+*	\details    La conecion del slot, sera desconectada en el destructor, para dejar la senal readyRead() libre para otras ventanas
+*	\author     Marcos Goyret
+*/
 void Grabar::set_puerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
@@ -209,5 +288,5 @@ void Grabar::puertoSerieRcv_handler()
     puerto->read(datos.data(), cant);
     /* prosesar data recibida y transformarla a un char o uint8_t
      * pros.nota devuelve el numero de nota 1-28 */
-    notaTocada = prosesarNota(datos);
+    prosesarNota(datos);
 }

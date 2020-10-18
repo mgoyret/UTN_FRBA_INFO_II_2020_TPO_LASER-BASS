@@ -29,6 +29,13 @@
 
 #define TIMER_TIME 500
 
+#define PRIMER_MITAD    240 // 240 = 11110000
+#define ULTIMA_MITAD    15  // 15 = 00001111
+#define INICIO_TRAMA    10  // 10 == 1010 que es el inicio de trama que esta en el primer byte
+#define FIN_TRAMA       5   // 5 == 0101 que es el fin de trama que esta en el segundo byte
+#define INICIO_TRAMA_OK ( ( (dataRcv[0])&PRIMER_MITAD ) == INICIO_TRAMA )
+#define FIN_TRAMA_OK    ( ( (dataRcv[1])%ULTIMA_MITAD ) ==  FIN_TRAMA )
+
 typedef struct noteBuffer{
     uint32_t cntr;
     uint8_t note;
@@ -59,6 +66,9 @@ public:
     uint8_t prosesarNota( QByteArray );
     void desconectarPuerto();
     void set_puerto(QSerialPort*);
+    void monitoreo();
+    uint8_t tramaOk(QByteArray);
+    uint8_t tramaInfo(QByteArray);
 
 private slots:
     void on_PBrec_clicked( void );
@@ -71,6 +81,7 @@ private:
     Ui::Grabar *ui;
     uint8_t     grabacion; //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
     uint8_t     notaTocada;
+    uint8_t     status;
     QFile       songFile;
     songBuffer  recBuf;
     QSerialPort *puerto;
