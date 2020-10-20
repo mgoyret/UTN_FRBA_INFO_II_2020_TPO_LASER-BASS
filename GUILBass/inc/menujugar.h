@@ -1,10 +1,14 @@
 #ifndef MENUJUGAR_H
 #define MENUJUGAR_H
 
+#include <grabar.h>
+#include <jugar.h>
+
 #include <QDialog>
 #include <QMessageBox>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+
 namespace Ui {
 class MenuJugar;
 }

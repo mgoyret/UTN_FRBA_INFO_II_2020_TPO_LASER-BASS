@@ -1,9 +1,5 @@
-#include "inc/menujugar.h"
 #include "ui_menujugar.h"
-#include "inc/grabar.h"
-#include "jugar.h"
-
-#include <QDebug>
+#include <menujugar.h>
 
 MenuJugar::MenuJugar(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +12,15 @@ MenuJugar::~MenuJugar()
 {
     delete ui;
 }
+
+/////////////////////////     PUBLIC     //////////////////////////////////////////////////////
+
+void MenuJugar::set_puerto( QSerialPort *puertoExt )
+{
+    puerto = puertoExt;
+}
+
+/////////////////////////     PRIVATE SLOTS    //////////////////////////////////////////////////////
 
 void MenuJugar::on_PBpreGrabada_clicked()
 {
@@ -35,9 +40,4 @@ void MenuJugar::on_PBgrabarNueva_clicked()
     wGrabar.setWindowTitle("Grabar");
     wGrabar.set_puerto(puerto);
     wGrabar.exec();
-}
-
-void MenuJugar::set_puerto(QSerialPort *puertoExt)
-{
-    puerto = puertoExt;
 }
