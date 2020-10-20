@@ -2,12 +2,15 @@
 #define GRABAR_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <QDialog>
 #include <QFile>
 #include <QTextStream>
 #include <QSerialPort>
-
+#include <QMessageBox>
 #include <QTimer>
+#include <QDebug>
 
 
 #define	TRUE    1
@@ -24,6 +27,7 @@
 #define SIN_NOTA    0
 #define NOTA1       '1'   //aca va el numero que represente a lo que llega por puerto serie al llegar la nota de valor mas chico
 #define NOTA28      '9'  // "" de valor mas grande  (estoy presuponiendo que cada nota tiene valor consecutivo)
+#define TOTAL_NOTAS 52
 
 #define SONG_FILE_NAME "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
@@ -34,7 +38,7 @@
 #define INICIO_TRAMA    10  // 10 == 1010 que es el inicio de trama que esta en el primer byte
 #define FIN_TRAMA       5   // 5 == 0101 que es el fin de trama que esta en el segundo byte
 #define INICIO_TRAMA_OK ( ( (dataRcv[0])&PRIMER_MITAD ) == INICIO_TRAMA )
-#define FIN_TRAMA_OK    ( ( (dataRcv[1])%ULTIMA_MITAD ) ==  FIN_TRAMA )
+#define FIN_TRAMA_OK    ( ( (dataRcv[1])&ULTIMA_MITAD ) ==  FIN_TRAMA )
 
 
 /* Estructura que almacena una nota. Esta compuesta por la posicion cronologica de la nota (ctr) y la nota
@@ -66,16 +70,15 @@ public:
 
     ~Grabar( void );
 
+    void set_puerto( QSerialPort* );
     void inicializar( void );
-    void guardarNota( void );
     void iniciarTimer( void );
+    void monitoreo( void );
+    void guardarNota( void );
     uint8_t guardarCancion( void );
     uint8_t prosesarNota( QByteArray );
-    void desconectarPuerto();
-    void set_puerto(QSerialPort*);
-    void monitoreo();
-    uint8_t tramaOk(QByteArray);
-    uint8_t tramaInfo(QByteArray);
+    uint8_t tramaOk( QByteArray );
+    uint8_t tramaInfo( QByteArray );
 
 private slots:
     void on_PBrec_clicked( void );

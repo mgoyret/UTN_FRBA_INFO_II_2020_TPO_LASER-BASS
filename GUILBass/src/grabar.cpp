@@ -6,16 +6,6 @@
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-#include <QMessageBox>
-#include <QTimer>
-#include <QDebug>
-
-#include <QBitArray>
-
 #define DEBUG
 
 Grabar::Grabar(QWidget *parent) :
@@ -36,12 +26,24 @@ Grabar::~Grabar()
 /////////////////////////     PUBLIC     //////////////////////////////////////////////////////
 
 /**
-*	\fn void inicializarMdE(void)
+*	\fn         void set_puerto( QSerialPort *puertoExt )
+*	\brief      Apunta mi puntero de QSerialPort, a la direccion del puerto que tenemos conectado, y conecta el slot
+*	\details    La conecion del slot, sera desconectada en el destructor, para dejar la senal readyRead() libre para otras ventanas
+*	\author     Marcos Goyret
+*/
+void Grabar::set_puerto(QSerialPort *puertoExt)
+{
+    puerto = puertoExt;
+    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
+}
+
+/**
+*	\fn void inicializarMdE( void )
 *	\brief Inicializa variables que haya que inicializar
 *	\details Detalles
 *	\author Marcos Goyret
 */
-void Grabar::inicializar(void)
+void Grabar::inicializar( void )
 {
     recBuf.note_st = nullptr;
     recBuf.total_cntr = 0;
@@ -153,35 +155,31 @@ uint8_t Grabar::guardarCancion( void )
 
 
 /**
-*	\fn         void prosesarNota(QByteArray datos)
+*	\fn         void prosesarNota( QByteArray datos )
 *	\brief      Transforma informacion del puerto serie en una representacion util
 *	\details    La trama que recibo por puerto serie, la decodifico y la represento con una letra o numero, segun la nota que sea
 *	\author     Marcos Goyret
 */
 uint8_t Grabar::prosesarNota( QByteArray datos )
 {
-    uint8_t res = SIN_NOTA, nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
+    uint8_t i, res = SIN_NOTA, nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
 
-    if(tramaOk(datos))
+    if( tramaOk(datos) )
     {
         nota = tramaInfo(datos); //relleno "nota" con lo dicho en su declaracion (comentario)
 
         /*
-            notaTocada podra tomat valores del 0 al 52. Entre 0 y 28 corresponde a los note on
+            notaTocada podra tomat valores del 0 al 52. Entre 1 y 28 corresponde a los note on
             y entre el 29 y 52 corresponde a los noteoff de las notas que no son "al aire".
             ( las notas al aire no tienen noteoff, duran un tiempo por defecto )
         */
-
-        switch(nota)
+        /*
+        for(i=1; i<=TOTAL_NOTAS; i++)
         {
-            case 1: notaTocada = 1;  // terminar este switch para lo que se recibiria en cada case y a que igualar notaTocada
-            break;
-            case 2: notaTocada = 2;
-            break;
-            //etc. Para poder continuar, nesecito saber como es la trama exacta que se recibe.
-
-            default: notaTocada = SIN_NOTA;
+            if( nota =  )
+                notaTocada = i;
         }
+        */
     }
 
     //Esto es temporal para experimentar
@@ -221,17 +219,6 @@ uint8_t Grabar::tramaInfo(QByteArray datos)
     return res;
 }
 
-/**
-*	\fn         void set_ouerto(void)
-*	\brief      Apunta mi puntero de QSerialPort, a la direccion del puerto que tenemos conectado, y conecta el slot
-*	\details    La conecion del slot, sera desconectada en el destructor, para dejar la senal readyRead() libre para otras ventanas
-*	\author     Marcos Goyret
-*/
-void Grabar::set_puerto(QSerialPort *puertoExt)
-{
-    puerto = puertoExt;
-    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
-}
 /////////////////////////     PRIVATE SLOTS    //////////////////////////////////////////////////////
 
 //boton iniciar grabacion
@@ -271,12 +258,12 @@ void Grabar::on_PBfinRec_clicked()
 }
 
 /**
-*	\fn         void puertoSerieRcv_handler()
+*	\fn         void puertoSerieRcv_handler( void )
 *	\brief      Slot de la interrupcion cada vez que se emite la senal ReadyRead()
 *	\details    Guarda la informacion disponible en el puerto en una variable, y llama a setColor()
 *	\author     Marcos Goyret
 */
-void Grabar::puertoSerieRcv_handler()
+void Grabar::puertoSerieRcv_handler( void )
 {
     #ifdef DEBUG
     qDebug() << "Datos recibidos ";
