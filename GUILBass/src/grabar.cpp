@@ -6,7 +6,7 @@
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 
-#define DEBUG
+//#define DEBUG
 
 Grabar::Grabar(QWidget *parent) :
     QDialog(parent),
@@ -162,24 +162,16 @@ uint8_t Grabar::guardarCancion( void )
 */
 uint8_t Grabar::prosesarNota( QByteArray datos )
 {
-    uint8_t i, res = SIN_NOTA, nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
+    uint8_t res = SIN_NOTA, nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
 
     if( tramaOk(datos) )
     {
-        nota = tramaInfo(datos); //relleno "nota" con lo dicho en su declaracion (comentario)
+        nota = tramaInfo(datos); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
 
-        /*
-            notaTocada podra tomat valores del 0 al 52. Entre 1 y 28 corresponde a los note on
-            y entre el 29 y 52 corresponde a los noteoff de las notas que no son "al aire".
-            ( las notas al aire no tienen noteoff, duran un tiempo por defecto )
-        */
-        /*
-        for(i=1; i<=TOTAL_NOTAS; i++)
-        {
-            if( nota =  )
-                notaTocada = i;
-        }
-        */
+        /*  notaTocada podra tomar valores del 0 al 52. Entre 1 y 28 corresponde a los note on
+            y entre el 29 y 56 corresponde a los noteoff */
+        if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error
+            notaTocada = SIN_NOTA;
     }
 
     //Esto es temporal para experimentar
@@ -274,6 +266,6 @@ void Grabar::puertoSerieRcv_handler( void )
     datos.resize(cant);
     puerto->read(datos.data(), cant);
     /* prosesar data recibida y transformarla a un char o uint8_t
-     * pros.nota devuelve el numero de nota 1-28 */
+     * pros.nota devuelve el numero de nota 1-28 o 29-56*/
     prosesarNota(datos);
 }
