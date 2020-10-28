@@ -12,6 +12,7 @@
 #include <QTimer>
 #include <QDebug>
 
+#define DEBUG
 
 #define	TRUE    1
 #define	FALSE   0
@@ -32,20 +33,30 @@
 
 #define SONG_FILE_NAME "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
-#define TIMER_TIME 500
+#define TIMER_TIME 100
 
+
+//////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
 #define PRIMER_MITAD    240 // 240 = 11110000
-#define ULTIMA_MITAD    15  // 15 = 00001111
-#define INICIO_TRAMA    10  // 10 == 1010 que es el inicio de trama que esta en el primer byte
-#define FIN_TRAMA       5   // 5 == 0101 que es el fin de trama que esta en el segundo byte
-#define INICIO_TRAMA_OK ( ( (dataRcv[0])&PRIMER_MITAD ) == INICIO_TRAMA )
-#define FIN_TRAMA_OK    ( ( (dataRcv[1])&ULTIMA_MITAD ) ==  FIN_TRAMA )
+#define ULTIMA_MITAD    15  // 15  = 00001111
+#define INICIO_TRAMA    10  // 10  = 1010 que es el inicio de trama que esta en el primer byte
+#define FIN_TRAMA       13  // 13  = 1101 que es fin de trama 101 mas el bit de paridad 1000
+//#define FIN_TRAMA     5   // 5   = 0101 que es el fin de trama que esta en el segundo byte
+#define INICIO_TRAMA_OK ( ( ( ((uint8_t)datos[0]) & PRIMER_MITAD ) >>4) == (uint8_t)INICIO_TRAMA )
+#define FIN_TRAMA_OK    ( ( ((uint8_t)datos[1]) & ULTIMA_MITAD ) == (uint8_t)FIN_TRAMA )
+
+#define BIT1_MITAD1 ( ( ((uint8_t)datos[0]) & PRIMER_MITAD ) >>4)
+#define BIT1_MITAD2 ( ((uint8_t)datos[0]) & ULTIMA_MITAD )
+#define BIT2_MITAD1 ( ( ((uint8_t)datos[1]) & PRIMER_MITAD ) >>4)
+#define BIT2_MITAD2 ( ((uint8_t)datos[1]) & ULITMA_MITAD )
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 /* Estructura que almacena una nota. Esta compuesta por la posicion cronologica de la nota (ctr) y la nota
     en si, que va desde 0 a 28 para los noteOnn y desde 29 a 52 para los noteOff */
 typedef struct noteBuffer{
-    uint32_t cntr;
+    uint64_t cntr;
     uint8_t note;
 }noteBuffer;
 
@@ -54,7 +65,7 @@ typedef struct noteBuffer{
     y un array de notas del tipo "noteBuffer".  La estructura noteBuffer la declaro arriba para que
     al hacer esta estructura detecte el tipo de dato, sino no funca. */
 typedef struct songBuffer{
-    uint32_t total_cntr;
+    uint64_t total_cntr;
     noteBuffer *note_st;
 } songBuffer;
 
