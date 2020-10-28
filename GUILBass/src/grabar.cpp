@@ -1,12 +1,6 @@
-/*
-    PROBAR QSERIALPORT DE MAINWINDOW COMO PUNTERO
-*/
-
-
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 
-//#define DEBUG
 
 Grabar::Grabar(QWidget *parent) :
     QDialog(parent),
@@ -19,6 +13,8 @@ Grabar::~Grabar()
 {
     /* Desconecta el vinculo signal slot del puerto serie que cree en set_puerto()   */
     disconnect(conection);
+    if(puerto->isOpen())
+        puerto->close();
     delete ui;
 }
 
@@ -101,7 +97,7 @@ void Grabar::monitoreo()
 */
 void Grabar::guardarNota( void )
 {
-    uint32_t i=0;
+    uint64_t i=0;
     noteBuffer *aux = new noteBuffer[recBuf.total_cntr + 1];
     for(i=0; i<recBuf.total_cntr; i++)
     {
@@ -128,7 +124,8 @@ void Grabar::guardarNota( void )
 */
 uint8_t Grabar::guardarCancion( void )
 {
-    uint8_t i, res = ERROR;
+    uint64_t i;
+    uint8_t res = ERROR;
 
     #ifdef DEBUG
     qDebug()<<"total notas: " << recBuf.total_cntr;
@@ -163,36 +160,46 @@ uint8_t Grabar::guardarCancion( void )
 uint8_t Grabar::prosesarNota( QByteArray datos )
 {
     uint8_t res = SIN_NOTA, nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-
     if( tramaOk(datos) )
     {
+        #ifdef DEBUG
+        qDebug()<<"Trama correcta";
+        #endif
         nota = tramaInfo(datos); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
 
         /*  notaTocada podra tomar valores del 0 al 52. Entre 1 y 28 corresponde a los note on
             y entre el 29 y 56 corresponde a los noteoff */
-        if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error
+        if( (nota<1) || (nota>NOTA_MAX/**2*/) ) //es porque hubo error
             notaTocada = SIN_NOTA;
+        else
+            notaTocada = nota;
     }
-
+    #ifdef DEBUG
+    else
+        qDebug()<<"trama incorrecta";
+    #endif
+    /*
     //Esto es temporal para experimentar
     srand(time(nullptr));
     res = rand() % 53; //random entre 0 y 53
     notaTocada = res;
-
+*/
     return res;
 }
 
 /**
-*	\fn         void tramaOk(QByteArray dataRcv)
+*	\fn         void tramaOk(QByteArray datos)
 *	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
 *	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::tramaOk(QByteArray dataRcv)
+uint8_t Grabar::tramaOk(QByteArray datos)
 {
     uint8_t res = ERROR;
-    if( (INICIO_TRAMA_OK) && (FIN_TRAMA_OK) )
+
+    if( INICIO_TRAMA_OK && FIN_TRAMA_OK )
         res = EXITO;
+
     return res;
 }
 
@@ -205,9 +212,14 @@ uint8_t Grabar::tramaOk(QByteArray dataRcv)
 */
 uint8_t Grabar::tramaInfo(QByteArray datos)
 {
-    uint8_t res;
+    uint8_t res=0;
 
-    res = ( (datos[0])&ULTIMA_MITAD ) + ( (datos[1])&PRIMER_MITAD );
+    res = ( (((uint8_t)datos[0])&ULTIMA_MITAD)<<4 ) + ( (((uint8_t)datos[1])&PRIMER_MITAD)>>4 );
+
+    #ifdef DEBUG
+    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2<<4) << " + " << BIT2_MITAD1;
+    #endif
+
     return res;
 }
 
@@ -257,14 +269,18 @@ void Grabar::on_PBfinRec_clicked()
 */
 void Grabar::puertoSerieRcv_handler( void )
 {
+    uint8_t cant = 0;
+    QByteArray datos;
+
     #ifdef DEBUG
     qDebug() << "Datos recibidos ";
     #endif
+    cant = (int)puerto->bytesAvailable();
 
-    QByteArray datos;
-    uint8_t cant = (int)puerto->bytesAvailable();
+
     datos.resize(cant);
     puerto->read(datos.data(), cant);
+
     /* prosesar data recibida y transformarla a un char o uint8_t
      * pros.nota devuelve el numero de nota 1-28 o 29-56*/
     prosesarNota(datos);
