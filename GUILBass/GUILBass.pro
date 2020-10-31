@@ -23,6 +23,7 @@ SOURCES += \
     src/clasemidi.cpp \
     src/mainwindow.cpp \
     src/menujugar.cpp \
+    src/qnoteview.cpp \
     src/tocar.cpp \
     lib/RtMidi/RtMidi.cpp \
     src/qguitarview.cpp \
@@ -38,7 +39,8 @@ HEADERS += \
     lib/RtMidi/RtMidi.h \
     inc/qguitarview.h \
     inc/parserpuntaje.h \
-    inc/tablapuntajes.h
+    inc/tablapuntajes.h \
+    inc/qnoteview.h
 
 FORMS += \
     forms/mainwindow.ui \
