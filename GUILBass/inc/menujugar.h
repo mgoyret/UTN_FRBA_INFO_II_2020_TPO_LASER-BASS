@@ -5,6 +5,10 @@
 #include <QMessageBox>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include "grabar.h"
+#include "jugar.h"
+#include "tablapuntajes.h"
+
 namespace Ui {
 class MenuJugar;
 }
@@ -21,6 +25,8 @@ private slots:
     void on_PBpreGrabada_clicked();
 
     void on_PBgrabarNueva_clicked();
+
+    void on_PBpuntajes_clicked();
 
 private:
     Ui::MenuJugar *ui;

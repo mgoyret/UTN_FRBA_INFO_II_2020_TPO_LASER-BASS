@@ -2,7 +2,7 @@
 #define TABLAPUNTAJES_H
 
 #include <parserpuntaje.h>
-#include <QWidget>
+#include <QDialog>
 #include <QFile>
 
 #define NOMBRE_ARCHIVO "asd.txt"
@@ -12,7 +12,7 @@ namespace Ui {
 class TablaPuntajes;
 }
 
-class TablaPuntajes : public QWidget
+class TablaPuntajes : public QDialog
 {
     Q_OBJECT
 
