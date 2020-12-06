@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
-
+#include "dialogjugar.h"
 #define DEBUG
 
 #define	TRUE_    1
@@ -71,6 +71,7 @@ private:
     Ui::Jugar *ui;
     uint8_t notaTocada;
     int posicion = 0;
+    QString nombreCancion;
     QSerialPort *puerto;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //funcion para el line_edit Puntos
