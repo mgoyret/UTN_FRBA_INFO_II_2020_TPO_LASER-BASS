@@ -88,8 +88,8 @@ public:
     void guardarNota( void );
     uint8_t guardarCancion( void );
     void procesarNota( QByteArray );
-    uint8_t tramaOk( unsigned char* );
-    uint8_t tramaInfo( unsigned char* );
+    uint8_t tramaOk( QByteArray );
+    uint8_t tramaInfo( QByteArray );
 
 private slots:
     void on_PBrec_clicked( void );

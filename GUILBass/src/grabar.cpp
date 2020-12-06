@@ -161,23 +161,22 @@ uint8_t Grabar::guardarCancion( void )
 void Grabar::procesarNota( QByteArray datos )
 {
     char nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-    unsigned char data[2];
+//    unsigned char data[2];
 
     /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
 
-    data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
-    data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
+//    data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
+//    data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
 
     ///////////////////////////////////////////////////////////////
-    if( tramaOk(data) )
+    if( tramaOk(datos) )
     {
         #ifdef DEBUG
         qDebug()<<"Trama correcta";
         #endif
-        nota = tramaInfo(data); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
+        nota = tramaInfo(datos); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
 
-        /*  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
-            y entre el 29 y 56 corresponde a los noteoff */
+        /* notaTocada podra tomar valores del 0 al 56. Entre -28 y 28 */
         if( (nota < -NOTA_MAX) || (nota > NOTA_MAX) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
             notaTocada = SIN_NOTA;
         else
@@ -195,7 +194,7 @@ void Grabar::procesarNota( QByteArray datos )
 *	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::tramaOk(unsigned char* data)
+uint8_t Grabar::tramaOk( QByteArray data)
 {
     uint8_t res = ERROR;
 
@@ -212,7 +211,7 @@ uint8_t Grabar::tramaOk(unsigned char* data)
 *               byte, y en los primeros 4 bits del segundo byte
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::tramaInfo(unsigned char* data)
+uint8_t Grabar::tramaInfo( QByteArray data)
 {
     uint8_t res=0;
 
