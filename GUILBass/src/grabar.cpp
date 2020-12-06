@@ -110,7 +110,7 @@ void Grabar::guardarNota( void )
 
     #ifdef DEBUG
     if(notaTocada != SIN_NOTA)
-        qDebug()<<"guardando: aux[" << i << "].note = [" << aux[i].note<<"]";
+        qDebug()<<"guardando: aux[" << i << "].note = [" << aux[i].note<<"]\n";
     #endif
 
     delete[] recBuf.note_st;
@@ -133,7 +133,7 @@ uint8_t Grabar::guardarCancion( void )
     qDebug()<<"total notas: " << recBuf.total_cntr;
     for(i=0; i<recBuf.total_cntr; i++)
     {
-        qDebug()<<"recBuf.note_st[" << recBuf.note_st[i].cntr << "].note = [" << recBuf.note_st[i].note<<"]";
+        qDebug()<<"recBuf.note_st[" << recBuf.note_st[i].cntr << "].note = [" << recBuf.note_st[i].note<<"]\n";
     }
     #endif
 
@@ -162,20 +162,20 @@ uint8_t Grabar::guardarCancion( void )
 void Grabar::procesarNota( QByteArray datos )
 {
     char nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-//    unsigned char data[2];
+    unsigned char data[2];
 
     /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
 
-//    data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
-//    data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
+    data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
+    data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
 
     ///////////////////////////////////////////////////////////////
-    if( tramaOk(datos) )
+    if( tramaOk(data) )
     {
         #ifdef DEBUG
         qDebug()<<"Trama correcta";
         #endif
-        nota = tramaInfo(datos); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
+        nota = tramaInfo(data); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
 
         /* notaTocada podra tomar valores del 0 al 56. Entre -28 y 28 */
         if( (nota < -NOTA_MAX) || (nota > NOTA_MAX) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
@@ -195,7 +195,7 @@ void Grabar::procesarNota( QByteArray datos )
 *	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::tramaOk( QByteArray data)
+uint8_t Grabar::tramaOk( unsigned char* data)
 {
     uint8_t res = ERROR;
 
@@ -212,7 +212,7 @@ uint8_t Grabar::tramaOk( QByteArray data)
 *               byte, y en los primeros 4 bits del segundo byte
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::tramaInfo( QByteArray data)
+uint8_t Grabar::tramaInfo( unsigned char* data)
 {
     uint8_t res=0;
 
@@ -269,6 +269,7 @@ void Grabar::on_PBfinRec_clicked()
 *	\details    Guarda la informacion disponible en el puerto en una variable, y llama a setColor()
 *	\author     Marcos Goyret
 */
+/*
 void Grabar::puertoSerieRcv_handler( void )
 {
     static uint8_t cant = 0;
@@ -282,7 +283,35 @@ void Grabar::puertoSerieRcv_handler( void )
     datos.resize(cant);
     puerto->read(datos.data(), cant);
 
-    /* procesar data recibida y transformarla a un char o uint8_t
-     * pros.nota devuelve el numero de nota 1-28 o 29-56*/
+    qDebug()<< "byte 1 = " << (int)datos[0] << "\nbyte 2 = " << (int)datos[1] << "\n";
+
+
+    // procesar data recibida y transformarla a un char o uint8_t
+    // pros.nota devuelve el numero de nota 1-28 o 29-56
     procesarNota(datos);
+}
+*/
+void Grabar::puertoSerieRcv_handler()
+{
+    bufferSerie.append(puerto->readAll());
+    validarDatos();
+}
+
+void Grabar::validarDatos() {
+    int cant = bufferSerie.size();
+    QByteArray datoAProcesar;
+    datoAProcesar.clear();
+    while (cant > 1) {
+        if (bufferSerie.at(0) & 0xa0) {
+            if (cant == 1) break;
+            datoAProcesar.append(bufferSerie.at(0));
+            datoAProcesar.append(bufferSerie.at(1));
+            bufferSerie.remove(0, 2);
+            procesarNota(datoAProcesar);
+        } else if (bufferSerie.at(0) & 0x05) {
+            bufferSerie.remove(0,1);
+        } else {
+            bufferSerie.remove(0,1);
+        }
+    }
 }
