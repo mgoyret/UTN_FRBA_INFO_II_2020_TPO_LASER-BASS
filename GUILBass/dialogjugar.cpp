@@ -18,3 +18,6 @@ void DialogJugar::on_comboBox_currentIndexChanged(int index)
 {
    cancion = ui->comboBox->itemText(index);
 }
+QString DialogJugar::getNombreCancion(void) {
+    return cancion;
+}
