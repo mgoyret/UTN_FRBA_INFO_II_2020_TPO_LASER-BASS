@@ -33,15 +33,14 @@
 
 #define SONG_FILE_NAME "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
-#define TIMER_TIME 100
+#define TIMER_TIME 500
 
 
 //////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
 #define PRIMER_MITAD    240 // 240 = 11110000
 #define ULTIMA_MITAD    15  // 15  = 00001111
 #define INICIO_TRAMA    10  // 10  = 1010 que es el inicio de trama que esta en el primer byte
-#define FIN_TRAMA       13  // 13  = 1101 que es fin de trama 101 mas el bit de paridad 1000
-//#define FIN_TRAMA     5   // 5   = 0101 que es el fin de trama que esta en el segundo byte
+#define FIN_TRAMA       5   // 13  = 0101 que es fin de trama
 #define INICIO_TRAMA_OK ( ( ( ((uint8_t)data[0]) & PRIMER_MITAD ) >>4) == (uint8_t)INICIO_TRAMA )
 #define FIN_TRAMA_OK    ( ( ((uint8_t)data[1]) & ULTIMA_MITAD ) == (uint8_t)FIN_TRAMA )
 
@@ -57,7 +56,7 @@
     en si, que va desde 0 a 28 para los noteOnn y desde 29 a 52 para los noteOff */
 typedef struct noteBuffer{
     uint64_t cntr;
-    uint8_t note;
+    char note;
 }noteBuffer;
 
 
@@ -100,9 +99,9 @@ private slots:
 
 
 private:
-    Ui::Grabar *ui;
+    Ui::Grabar  *ui;
     uint8_t     grabacion; //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
-    uint8_t     notaTocada;
+    char        notaTocada;
     uint8_t     status;
     QFile       songFile;
     songBuffer  recBuf;
