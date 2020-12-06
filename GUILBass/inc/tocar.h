@@ -76,6 +76,8 @@ private:
     QSerialPort *puerto;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //void setColor(const char * estado);
+    QByteArray bufferSerie;
+    void validarDatos();
 };
 
 #endif // TOCAR_H

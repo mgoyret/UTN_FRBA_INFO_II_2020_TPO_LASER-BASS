@@ -34,7 +34,7 @@ class ClaseMIDI {
     QString getNombreSalida(unsigned int);
     QStringList getNombresSalidas();
     uint8_t abrirPuerto(unsigned int);
-    uint8_t inicializarGS(unsigned int);
+    uint8_t inicializarGS();
 
 
     //Funciones para mensajes comunes
@@ -42,7 +42,7 @@ class ClaseMIDI {
     uint8_t enviarProgramChange(uint8_t, uint8_t);
     uint8_t enviarNoteOn(uint8_t, uint8_t, uint8_t);
     uint8_t enviarNoteOff(uint8_t, uint8_t);
-    uint8_t enviarMensaje(QByteArray);
+    uint8_t enviarMensaje(QByteArray &);
 
 };
 
