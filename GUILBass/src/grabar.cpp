@@ -91,14 +91,14 @@ void Grabar::monitoreo()
 
 /**
 *	\fn         void guardarNota(void)
-*	\brief      guarda la nota tocada en el archivo
+*	\brief      buffer de cancion que se guardara
 *	\details    Guarda la nota actual almacenada en el array secuencial de estructuras notas y tiempos
 *	\author     Marcos Goyret
 */
 void Grabar::guardarNota( void )
 {
     uint64_t i=0;
-    noteBuffer *aux = new noteBuffer[recBuf.total_cntr + 1];
+    noteBuffer *aux = new noteBuffer[recBuf.total_cntr + 1]; //creo array con una posicion mas, para almacenar ueva posicion
     for(i=0; i<recBuf.total_cntr; i++)
     {
         aux[i].note = recBuf.note_st[i].note;
@@ -153,14 +153,14 @@ uint8_t Grabar::guardarCancion( void )
 
 
 /**
-*	\fn         void prosesarNota( QByteArray datos )
+*	\fn         void procesarNota( QByteArray datos )
 *	\brief      Transforma informacion del puerto serie en una representacion util
 *	\details    La trama que recibo por puerto serie, la decodifico y la represento con una letra o numero, segun la nota que sea
 *	\author     Marcos Goyret
 */
-void Grabar::prosesarNota( QByteArray datos )
+void Grabar::procesarNota( QByteArray datos )
 {
-    uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
+    char nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
     unsigned char data[2];
 
     /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
@@ -178,7 +178,7 @@ void Grabar::prosesarNota( QByteArray datos )
 
         /*  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
             y entre el 29 y 56 corresponde a los noteoff */
-        if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
+        if( (nota < -NOTA_MAX) || (nota > NOTA_MAX) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
             notaTocada = SIN_NOTA;
         else
             notaTocada = nota;
@@ -271,19 +271,20 @@ void Grabar::on_PBfinRec_clicked()
 */
 void Grabar::puertoSerieRcv_handler( void )
 {
-    uint8_t cant = 0;
-    QByteArray datos;
+    static uint8_t cant = 0;
+    static QByteArray datos;
 
     #ifdef DEBUG
     qDebug() << "Datos recibidos ";
     #endif
     cant = (int)puerto->bytesAvailable();
+    while(cant>0)
+    {
+        datos.resize(cant);
+        puerto->read(datos.data(), cant);
 
-
-    datos.resize(cant);
-    puerto->read(datos.data(), cant);
-
-    /* prosesar data recibida y transformarla a un char o uint8_t
-     * pros.nota devuelve el numero de nota 1-28 o 29-56*/
-    prosesarNota(datos);
+        /* procesar data recibida y transformarla a un char o uint8_t
+         * pros.nota devuelve el numero de nota 1-28 o 29-56*/
+        procesarNota(datos);
+    }
 }
