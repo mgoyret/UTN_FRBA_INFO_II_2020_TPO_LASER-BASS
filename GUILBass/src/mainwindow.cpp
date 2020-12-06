@@ -11,8 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     enumerarPuertos();
     //para probar si no tienen puerto serie virtual para conectarse
     //comenten las 2 dos lineas siguientes
-    ui->PBJugar->setDisabled(true);
-    ui->PBTocar->setDisabled(true);
+ //   ui->PBJugar->setDisabled(true);
+ //   ui->PBTocar->setDisabled(true);
     puerto = new QSerialPort;
 }
 
@@ -33,7 +33,7 @@ void MainWindow::enumerarPuertos()
 void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wMenuJugar(this);
-    wMenuJugar.set_puerto(puerto);
+    wMenuJugar.setPuerto(puerto);
     wMenuJugar.setWindowTitle("Maneras de jugar");
     hide();
     wMenuJugar.exec();
@@ -43,7 +43,7 @@ void MainWindow::on_PBJugar_clicked()
 void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
-    wtocar.setPuerto(puerto->portName());
+    wtocar.setPuerto(puerto);
     hide();
     wtocar.exec();
     show();

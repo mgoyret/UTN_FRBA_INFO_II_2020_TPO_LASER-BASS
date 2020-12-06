@@ -27,7 +27,7 @@ Grabar::~Grabar()
 *	\details    La conecion del slot, sera desconectada en el destructor, para dejar la senal readyRead() libre para otras ventanas
 *	\author     Marcos Goyret
 */
-void Grabar::set_puerto(QSerialPort *puertoExt)
+void Grabar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
@@ -278,13 +278,11 @@ void Grabar::puertoSerieRcv_handler( void )
     qDebug() << "Datos recibidos ";
     #endif
     cant = (int)puerto->bytesAvailable();
-    while(cant>0)
-    {
-        datos.resize(cant);
-        puerto->read(datos.data(), cant);
 
-        /* procesar data recibida y transformarla a un char o uint8_t
-         * pros.nota devuelve el numero de nota 1-28 o 29-56*/
-        procesarNota(datos);
-    }
+    datos.resize(cant);
+    puerto->read(datos.data(), cant);
+
+    /* prosesar data recibida y transformarla a un char o uint8_t
+     * pros.nota devuelve el numero de nota 1-28 o 29-56*/
+    procesarNota(datos);
 }
