@@ -1,6 +1,5 @@
 #include "ui_menujugar.h"
 #include <menujugar.h>
-
 MenuJugar::MenuJugar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MenuJugar)
@@ -41,4 +40,22 @@ void MenuJugar::on_PBgrabarNueva_clicked()
     wGrabar.setWindowTitle("Grabar");
     wGrabar.setPuerto(puerto);
     wGrabar.exec();
+}
+
+void MenuJugar::on_PBpuntajes_clicked()
+{
+    // VENTANA FELIPE
+    TablaPuntajes a(this);
+    a.setWindowTitle("Puntajes");
+    //hide();
+    a.exec();
+}
+
+void MenuJugar::on_PBpuntajes_clicked()
+{
+    // VENTANA FELIPE
+    TablaPuntajes a(this);
+    a.setWindowTitle("Puntajes");
+    //hide();
+    a.exec();
 }

@@ -26,7 +26,7 @@ class QGuitarView : public QGraphicsView
 
 
 public:
-    QGuitarView(QWidget *parent = 0);
+    QGuitarView(QWidget *parent = nullptr);
     ~QGuitarView();
 
     int setNotaPrendida(int);

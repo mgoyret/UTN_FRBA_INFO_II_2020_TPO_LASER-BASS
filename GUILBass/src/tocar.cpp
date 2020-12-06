@@ -6,6 +6,7 @@ Tocar::Tocar(QWidget *parent) :
     ui(new Ui::Tocar)
 {
     ui->setupUi(this);
+    bufferSerie.clear();
 }
 
 Tocar::~Tocar()
@@ -22,10 +23,10 @@ Tocar::~Tocar()
     puerto->setFlowControl(QSerialPort::NoFlowControl);
     connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
 }
+/*
 void Tocar::on_datosRecibidos(){
-
-    QByteArray datos;
-    int cant = int (puerto->bytesAvailable());
+    /*QByteArray datos;
+    int cant = int (puerto.bytesAvailable());
     datos.resize(cant);
     puerto->read(datos.data(), cant);
     //Procesar Dato y poner MIDI
@@ -33,10 +34,11 @@ void Tocar::on_datosRecibidos(){
     //transforma el dato o la nota en el array para setColor
     //29 xq son 28 lugares que hay que cpnfigurar + 1 por el retun 0
     char status[29]="0011010101010111111111111110";
-//    setColor(status);
+    //    setColor(status);
+
 }
 
-*/
+
 /*void Tocar :: setColor(const char* estado){
     QColor red(255,0,0);
     QColor white(255,255,255);
@@ -64,6 +66,7 @@ void Tocar::on_datosRecibidos(){
 }
 */
 
+/*
 void Tocar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
@@ -84,8 +87,8 @@ void Tocar::puertoSerieRcv_handler( void )
     datos.resize(cant);
     puerto->read(datos.data(), cant);
 
-    /* prosesar data recibida y transformarla a un char o uint8_t
-     * pros.nota devuelve el numero de nota 1-28 o 29-56*/
+    //prosesar data recibida y transformarla a un char o uint8_t
+    //pros.nota devuelve el numero de nota 1-28 o 29-56
     procesarNota(datos);
     setNotaCorrecta();
 }
@@ -109,8 +112,8 @@ void Tocar::procesarNota( QByteArray datos )
         #endif
         nota = tramaInfo(data); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
 
-        /*  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
-            y entre el 29 y 56 corresponde a los noteoff */
+        //  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
+        //  y entre el 29 y 56 corresponde a los noteoff 
         if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
             notaTocada = SIN_NOTA;
         else
@@ -128,6 +131,7 @@ void Tocar::procesarNota( QByteArray datos )
 *	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
 *	\author     Marcos Goyret
 */
+/*
 uint8_t Tocar::tramaOk(unsigned char* data)
 {
     uint8_t res = ERROR;
@@ -137,7 +141,7 @@ uint8_t Tocar::tramaOk(unsigned char* data)
 
     return res;
 }
-
+*/
 /**
 *	\fn         void tramaInfo(QByteArray datos)
 *	\brief      Obtiene la informacion de la nota tocada
@@ -145,6 +149,7 @@ uint8_t Tocar::tramaOk(unsigned char* data)
 *               byte, y en los primeros 4 bits del segundo byte
 *	\author     Marcos Goyret
 */
+/*
 uint8_t Tocar::tramaInfo(unsigned char* data)
 {
     uint8_t res=0;
@@ -157,6 +162,7 @@ uint8_t Tocar::tramaInfo(unsigned char* data)
 
     return res;
 }
+*/
 
 void Tocar::setNotaCorrecta(void)
 {
@@ -181,6 +187,30 @@ void Tocar::setNotaCorrecta(void)
 
             aux.setColorNotaApagada(QColor::fromRgb(255));
             //aux.setColorCuerdaApagada(QColor c);
+        }
+    }
+}
+
+void Tocar::on_datosRecibidos() {
+    bufferSerie.append(puerto.readAll());
+    validarDatos();
+}
+
+void Tocar::validarDatos() {
+    int cant = bufferSerie.size();
+    QByteArray datoAProcesar;
+    datoAProcesar.clear();
+    while (cant > 1) {
+        if (bufferSerie.at(0) & 0xa0) {
+            if (cant == 1) break;
+            datoAProcesar.append(bufferSerie.at(0));
+            datoAProcesar.append(bufferSerie.at(1));
+            bufferSerie.remove(0, 2);
+            procesarNota(datoAProcesar);
+        } else if (bufferSerie.at(0) & 0x05) {
+            bufferSerie.remove(0,1);
+        } else {
+            bufferSerie.remove(0,1);
         }
     }
 }
