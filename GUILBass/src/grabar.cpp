@@ -225,13 +225,17 @@ uint8_t Grabar::tramaInfo( unsigned char* data)
     return res;
 }
 
-/////////////////////////     PRIVATE SLOTS    //////////////////////////////////////////////////////
+/////////////////////////     PRIVATE SLOTS      //////////////////////////////////////////////////////
 
 //boton iniciar grabacion
 void Grabar::on_PBrec_clicked()
 {
     ui->PBrec->setEnabled(false);
     ui->PBfinRec->setEnabled(true);
+
+    DialogGrabar wDialog;
+    wDialog.exec();
+
 
     grabacion = ON;
     inicializar();
@@ -301,14 +305,17 @@ void Grabar::validarDatos() {
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
     datoAProcesar.clear();
-    while (cant > 1) {
-        if (bufferSerie.at(0) & 0xa0) {
+    datoAProcesar.resize(2);
+    while (cant > 1)
+    {
+        if (!(bufferSerie[0] & 0x50))
+        {
             if (cant == 1) break;
-            datoAProcesar.append(bufferSerie.at(0));
-            datoAProcesar.append(bufferSerie.at(1));
+            datoAProcesar.append(bufferSerie[0]);
+            datoAProcesar.append(bufferSerie[0]);
             bufferSerie.remove(0, 2);
             procesarNota(datoAProcesar);
-        } else if (bufferSerie.at(0) & 0x05) {
+        } else if (bufferSerie[0] & 0x05) {
             bufferSerie.remove(0,1);
         } else {
             bufferSerie.remove(0,1);

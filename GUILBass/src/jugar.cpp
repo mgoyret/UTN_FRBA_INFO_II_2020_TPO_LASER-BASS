@@ -163,6 +163,8 @@ void Jugar::setNotaIncorrecta(void)
         }
     }
 }
+
+
 void Jugar::LeerArchivo(void){
     QFile cancion(nombreCancion);
 
@@ -229,8 +231,9 @@ void Jugar::LeerArchivo(void){
     }
     cancion.close();
     }
-   /* Ejemplo uso QStringList
+    Ejemplo uso QStringList
       QStringList str = {"Hola", "todo", "bien"};
       ui->textEdit->setText(str[2]);
-   */
-/* }*/
+
+ }
+*/

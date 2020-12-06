@@ -12,6 +12,8 @@
 #include <QTimer>
 #include <QDebug>
 
+#include <dialoggrabar.h>
+
 #define DEBUG
 
 #define	TRUE    1
