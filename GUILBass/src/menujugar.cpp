@@ -50,3 +50,12 @@ void MenuJugar::on_PBpuntajes_clicked()
     //hide();
     a.exec();
 }
+
+void MenuJugar::on_PBpuntajes_clicked()
+{
+    // VENTANA FELIPE
+    TablaPuntajes a(this);
+    a.setWindowTitle("Puntajes");
+    //hide();
+    a.exec();
+}

@@ -31,10 +31,7 @@ private slots:
 
     void on_PBgrabarNueva_clicked();
 
-<<<<<<< HEAD
-=======
     void on_PBpuntajes_clicked();
->>>>>>> d454771... Agregue la QNoteView
 
 private:
     Ui::MenuJugar *ui;
