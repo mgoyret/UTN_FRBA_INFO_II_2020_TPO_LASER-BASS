@@ -108,7 +108,8 @@ void Grabar::guardarNota( void )
     aux[i].cntr = i;
 
     #ifdef DEBUG
-    qDebug()<<"guardando: aux[" << i << "].note = [" << aux[i].note<<"]";
+    if(notaTocada != SIN_NOTA)
+        qDebug()<<"guardando: aux[" << i << "].note = [" << aux[i].note<<"]";
     #endif
 
     delete[] recBuf.note_st;
@@ -160,32 +161,33 @@ uint8_t Grabar::guardarCancion( void )
 void Grabar::prosesarNota( QByteArray datos )
 {
     uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-        unsigned char data[2];
 
-        /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
+    unsigned char data[2];
 
-        data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
-        data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
+    /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
 
-        ///////////////////////////////////////////////////////////////
-        if( tramaOk(data) )
-        {
-            #ifdef DEBUG
-            qDebug()<<"Trama correcta";
-            #endif
-            nota = tramaInfo(data); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
+    data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
+    data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
 
-            /*  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
-                y entre el 29 y 56 corresponde a los noteoff */
-            if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
-                notaTocada = SIN_NOTA;
-            else
-                notaTocada = nota;
-        }
+    ///////////////////////////////////////////////////////////////
+    if( tramaOk(data) )
+    {
         #ifdef DEBUG
-        else
-            qDebug()<<"trama incorrecta";
+        qDebug()<<"Trama correcta";
         #endif
+        nota = tramaInfo(data); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
+
+        /*  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
+            y entre el 29 y 56 corresponde a los noteoff */
+        if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
+            notaTocada = SIN_NOTA;
+        else
+            notaTocada = nota;
+    }
+    #ifdef DEBUG
+    else
+        qDebug()<<"trama incorrecta";
+    #endif
 }
 
 /**
