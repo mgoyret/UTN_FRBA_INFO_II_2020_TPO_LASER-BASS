@@ -282,7 +282,7 @@ void Grabar::puertoSerieRcv_handler( void )
     datos.resize(cant);
     puerto->read(datos.data(), cant);
 
-    /* prosesar data recibida y transformarla a un char o uint8_t
+    /* procesar data recibida y transformarla a un char o uint8_t
      * pros.nota devuelve el numero de nota 1-28 o 29-56*/
     procesarNota(datos);
 }
