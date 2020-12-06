@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSerialPort>
 #include <QDebug>
+#include <QFile>
 #include <QTextStream>
 
 #define DEBUG

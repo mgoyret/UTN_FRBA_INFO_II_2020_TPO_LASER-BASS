@@ -166,8 +166,7 @@ void Jugar::setNotaIncorrecta(void)
     }
 }
 
-void Jugar::LeerArchivo(void)
-{
+void Jugar::LeerArchivo(void){
     QString line;
     QStringList list;
     int i = 0;
@@ -191,22 +190,16 @@ void Jugar::LeerArchivo(void)
 
     //Comparo list[1] (nota) con el dato recibido
     if(list[1].toInt() == (int) notaTocada){
-
         setNotaCorrecta(); //la nota se prende en color verde
         //Sumo puntaje
         //ui->Puntos->setText(Puntaje);
-    }
-    else{
+    }else{
         setNotaIncorrecta(); //la nota se prende en color rojo
         //Resto puntaje
         //ui->Puntos->setText(Puntaje);
-        }
-
+    }
     cancion.close();
     }
-
-
-
    /* Ejemplo uso QStringList
       QStringList str = {"Hola", "todo", "bien"};
       ui->textEdit->setText(str[2]);
