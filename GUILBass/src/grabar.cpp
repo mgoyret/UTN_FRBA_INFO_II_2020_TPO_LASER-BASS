@@ -158,7 +158,7 @@ uint8_t Grabar::guardarCancion( void )
 *	\details    La trama que recibo por puerto serie, la decodifico y la represento con una letra o numero, segun la nota que sea
 *	\author     Marcos Goyret
 */
-void Grabar::prosesarNota( QByteArray datos )
+void Grabar::procesarNota( QByteArray datos )
 {
     uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
 
