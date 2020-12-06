@@ -23,9 +23,10 @@ Tocar::~Tocar()
     puerto->setFlowControl(QSerialPort::NoFlowControl);
     connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
 }
+*/
 /*
 void Tocar::on_datosRecibidos(){
-    /*QByteArray datos;
+    QByteArray datos;
     int cant = int (puerto.bytesAvailable());
     datos.resize(cant);
     puerto->read(datos.data(), cant);
@@ -37,9 +38,10 @@ void Tocar::on_datosRecibidos(){
     //    setColor(status);
 
 }
+*/
 
-
-/*void Tocar :: setColor(const char* estado){
+/*
+ * void Tocar :: setColor(const char* estado){
     QColor red(255,0,0);
     QColor white(255,255,255);
     QColor green(0,255,0);
@@ -72,7 +74,8 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
 }
-
+*/
+/*
 void Tocar::puertoSerieRcv_handler( void )
 {
     uint8_t cant = 0;
@@ -92,7 +95,8 @@ void Tocar::puertoSerieRcv_handler( void )
     procesarNota(datos);
     setNotaCorrecta();
 }
-
+*/
+/*
 void Tocar::procesarNota( QByteArray datos )
 {
     uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
@@ -124,7 +128,7 @@ void Tocar::procesarNota( QByteArray datos )
         qDebug()<<"trama incorrecta";
     #endif
 }
-
+*/
 /**
 *	\fn         void tramaOk(QByteArray datos)
 *	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
@@ -192,7 +196,7 @@ void Tocar::setNotaCorrecta(void)
 }
 
 void Tocar::on_datosRecibidos() {
-    bufferSerie.append(puerto.readAll());
+    bufferSerie.append(puerto->readAll());
     validarDatos();
 }
 

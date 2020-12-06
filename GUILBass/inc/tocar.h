@@ -28,22 +28,22 @@
 
 #define SONG_FILE_NAME "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
-#define TIMER_TIME 100
+#define TIMER_TIME_ 100
 
 
 //////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
-#define PRIMER_MITAD    240 // 240 = 11110000
-#define ULTIMA_MITAD    15  // 15  = 00001111
-#define INICIO_TRAMA    10  // 10  = 1010 que es el inicio de trama que esta en el primer byte
-#define FIN_TRAMA       13  // 13  = 1101 que es fin de trama 101 mas el bit de paridad 1000
+#define PRIMER_MITAD_    240 // 240 = 11110000
+#define ULTIMA_MITAD_    15  // 15  = 00001111
+#define INICIO_TRAMA_    10  // 10  = 1010 que es el inicio de trama que esta en el primer byte
+#define FIN_TRAMA__       13  // 13  = 1101 que es fin de trama 101 mas el bit de paridad 1000
 //#define FIN_TRAMA     5   // 5   = 0101 que es el fin de trama que esta en el segundo byte
-#define INICIO_TRAMA_OK ( ( ( ((uint8_t)data[0]) & PRIMER_MITAD ) >>4) == (uint8_t)INICIO_TRAMA )
-#define FIN_TRAMA_OK    ( ( ((uint8_t)data[1]) & ULTIMA_MITAD ) == (uint8_t)FIN_TRAMA )
+#define INICIO_TRAMA_OK_ ( ( ( ((uint8_t)data[0]) & PRIMER_MITAD_ ) >>4) == (uint8_t)INICIO_TRAMA_ )
+#define FIN_TRAMA_OK_    ( ( ((uint8_t)data[1]) & ULTIMA_MITAD_ ) == (uint8_t)FIN_TRAMA_ )
 
-#define BIT1_MITAD1 ( ( ((uint8_t)data[0]) & PRIMER_MITAD ) >>4)
-#define BIT1_MITAD2 ( ((uint8_t)data[0]) & ULTIMA_MITAD )
-#define BIT2_MITAD1 ( ( ((uint8_t)data[1]) & PRIMER_MITAD ) >>4)
-#define BIT2_MITAD2 ( ((uint8_t)data[1]) & ULITMA_MITAD )
+#define BIT1_MITAD1_ ( ( ((uint8_t)data[0]) & PRIMER_MITAD_ ) >>4)
+#define BIT1_MITAD2_ ( ((uint8_t)data[0]) & ULTIMA_MITAD_ )
+#define BIT2_MITAD1_ ( ( ((uint8_t)data[1]) & PRIMER_MITAD_ ) >>4)
+#define BIT2_MITAD2_ ( ((uint8_t)data[1]) & ULITMA_MITAD_ )
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -66,7 +66,7 @@ public:
 
 
 private slots:
-  //  void on_datosRecibidos();
+    void on_datosRecibidos();
     void puertoSerieRcv_handler( void );
 
 

@@ -47,7 +47,6 @@ void MainWindow::on_PBTocar_clicked()
     hide();
     wtocar.exec();
     show();
-
 }
 
 void MainWindow::on_PBActualizar_clicked()
