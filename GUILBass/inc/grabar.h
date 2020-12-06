@@ -88,7 +88,7 @@ public:
     void monitoreo( void );
     void guardarNota( void );
     uint8_t guardarCancion( void );
-    void prosesarNota( QByteArray );
+    void procesarNota( QByteArray );
     uint8_t tramaOk( unsigned char* );
     uint8_t tramaInfo( unsigned char* );
 
