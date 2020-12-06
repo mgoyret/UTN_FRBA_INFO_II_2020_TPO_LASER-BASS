@@ -82,7 +82,7 @@ public:
 
     ~Grabar( void );
 
-    void set_puerto( QSerialPort* );
+    void setPuerto( QSerialPort* );
     void inicializar( void );
     void iniciarTimer( void );
     void monitoreo( void );

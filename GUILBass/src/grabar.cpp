@@ -27,7 +27,7 @@ Grabar::~Grabar()
 *	\details    La conecion del slot, sera desconectada en el destructor, para dejar la senal readyRead() libre para otras ventanas
 *	\author     Marcos Goyret
 */
-void Grabar::set_puerto(QSerialPort *puertoExt)
+void Grabar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
@@ -161,6 +161,7 @@ uint8_t Grabar::guardarCancion( void )
 void Grabar::prosesarNota( QByteArray datos )
 {
     uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
+
     unsigned char data[2];
 
     /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
@@ -285,5 +286,5 @@ void Grabar::puertoSerieRcv_handler( void )
 
     /* prosesar data recibida y transformarla a un char o uint8_t
      * pros.nota devuelve el numero de nota 1-28 o 29-56*/
-    prosesarNota(datos);
+    procesarNota(datos);
 }

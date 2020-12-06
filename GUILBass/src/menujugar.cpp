@@ -15,7 +15,7 @@ MenuJugar::~MenuJugar()
 
 /////////////////////////     PUBLIC     //////////////////////////////////////////////////////
 
-void MenuJugar::set_puerto( QSerialPort *puertoExt )
+void MenuJugar::setPuerto( QSerialPort *puertoExt )
 {
     puerto = puertoExt;
 }
@@ -26,8 +26,9 @@ void MenuJugar::on_PBpreGrabada_clicked()
 {
     // VENTANA CAMI
     Jugar wJugar(this);
-    wJugar.setWindowTitle("Jugar");
     hide();
+    wJugar.setWindowTitle("Jugar");
+    wJugar.setPuerto(puerto);
     wJugar.exec();
     close();
 }
@@ -38,6 +39,6 @@ void MenuJugar::on_PBgrabarNueva_clicked()
     Grabar wGrabar(this);
     hide();
     wGrabar.setWindowTitle("Grabar");
-    wGrabar.set_puerto(puerto);
+    wGrabar.setPuerto(puerto);
     wGrabar.exec();
 }
