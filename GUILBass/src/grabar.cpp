@@ -157,34 +157,35 @@ uint8_t Grabar::guardarCancion( void )
 *	\details    La trama que recibo por puerto serie, la decodifico y la represento con una letra o numero, segun la nota que sea
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::procesarNota( QByteArray datos )
+void Grabar::prosesarNota( QByteArray datos )
 {
-    uint8_t res = SIN_NOTA, nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-    if( tramaOk(datos) )
-    {
-        #ifdef DEBUG
-        qDebug()<<"Trama correcta";
-        #endif
-        nota = tramaInfo(datos); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
+    uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
+        unsigned char data[2];
 
-        /*  notaTocada podra tomar valores del 0 al 52. Entre 1 y 28 corresponde a los note on
-            y entre el 29 y 56 corresponde a los noteoff */
-        if( (nota<1) || (nota>NOTA_MAX/**2*/) ) //es porque hubo error
-            notaTocada = SIN_NOTA;
+        /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
+
+        data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
+        data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
+
+        ///////////////////////////////////////////////////////////////
+        if( tramaOk(data) )
+        {
+            #ifdef DEBUG
+            qDebug()<<"Trama correcta";
+            #endif
+            nota = tramaInfo(data); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
+
+            /*  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
+                y entre el 29 y 56 corresponde a los noteoff */
+            if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
+                notaTocada = SIN_NOTA;
+            else
+                notaTocada = nota;
+        }
+        #ifdef DEBUG
         else
-            notaTocada = nota;
-    }
-    #ifdef DEBUG
-    else
-        qDebug()<<"trama incorrecta";
-    #endif
-    /*
-    //Esto es temporal para experimentar
-    srand(time(nullptr));
-    res = rand() % 53; //random entre 0 y 53
-    notaTocada = res;
-*/
-    return res;
+            qDebug()<<"trama incorrecta";
+        #endif
 }
 
 /**
@@ -193,7 +194,7 @@ uint8_t Grabar::procesarNota( QByteArray datos )
 *	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::tramaOk(QByteArray datos)
+uint8_t Grabar::tramaOk(unsigned char* data)
 {
     uint8_t res = ERROR;
 
@@ -210,11 +211,11 @@ uint8_t Grabar::tramaOk(QByteArray datos)
 *               byte, y en los primeros 4 bits del segundo byte
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::tramaInfo(QByteArray datos)
+uint8_t Grabar::tramaInfo(unsigned char* data)
 {
     uint8_t res=0;
 
-    res = ( (((uint8_t)datos[0])&ULTIMA_MITAD)<<4 ) + ( (((uint8_t)datos[1])&PRIMER_MITAD)>>4 );
+    res = ( (((uint8_t)data[0])&ULTIMA_MITAD)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD)>>4 );
 
     #ifdef DEBUG
     qDebug()<< "info: " << res << " = " << (BIT1_MITAD2<<4) << " + " << BIT2_MITAD1;

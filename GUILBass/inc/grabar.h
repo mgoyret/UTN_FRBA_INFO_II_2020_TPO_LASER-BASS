@@ -42,13 +42,13 @@
 #define INICIO_TRAMA    10  // 10  = 1010 que es el inicio de trama que esta en el primer byte
 #define FIN_TRAMA       13  // 13  = 1101 que es fin de trama 101 mas el bit de paridad 1000
 //#define FIN_TRAMA     5   // 5   = 0101 que es el fin de trama que esta en el segundo byte
-#define INICIO_TRAMA_OK ( ( ( ((uint8_t)datos[0]) & PRIMER_MITAD ) >>4) == (uint8_t)INICIO_TRAMA )
-#define FIN_TRAMA_OK    ( ( ((uint8_t)datos[1]) & ULTIMA_MITAD ) == (uint8_t)FIN_TRAMA )
+#define INICIO_TRAMA_OK ( ( ( ((uint8_t)data[0]) & PRIMER_MITAD ) >>4) == (uint8_t)INICIO_TRAMA )
+#define FIN_TRAMA_OK    ( ( ((uint8_t)data[1]) & ULTIMA_MITAD ) == (uint8_t)FIN_TRAMA )
 
-#define BIT1_MITAD1 ( ( ((uint8_t)datos[0]) & PRIMER_MITAD ) >>4)
-#define BIT1_MITAD2 ( ((uint8_t)datos[0]) & ULTIMA_MITAD )
-#define BIT2_MITAD1 ( ( ((uint8_t)datos[1]) & PRIMER_MITAD ) >>4)
-#define BIT2_MITAD2 ( ((uint8_t)datos[1]) & ULITMA_MITAD )
+#define BIT1_MITAD1 ( ( ((uint8_t)data[0]) & PRIMER_MITAD ) >>4)
+#define BIT1_MITAD2 ( ((uint8_t)data[0]) & ULTIMA_MITAD )
+#define BIT2_MITAD1 ( ( ((uint8_t)data[1]) & PRIMER_MITAD ) >>4)
+#define BIT2_MITAD2 ( ((uint8_t)data[1]) & ULITMA_MITAD )
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -88,9 +88,9 @@ public:
     void monitoreo( void );
     void guardarNota( void );
     uint8_t guardarCancion( void );
-    uint8_t procesarNota( QByteArray );
-    uint8_t tramaOk( QByteArray );
-    uint8_t tramaInfo( QByteArray );
+    void prosesarNota( QByteArray );
+    uint8_t tramaOk( unsigned char* );
+    uint8_t tramaInfo( unsigned char* );
 
 private slots:
     void on_PBrec_clicked( void );
