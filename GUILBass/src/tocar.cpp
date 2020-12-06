@@ -14,16 +14,6 @@ Tocar::~Tocar()
     delete ui;
 }
 
-/*void Tocar :: setPuerto(QString name){
-    puerto->portName()=name;
-    puerto->setBaudRate(QSerialPort::Baud9600);
-    puerto->setDataBits(QSerialPort::Data8);
-    puerto->setParity(QSerialPort::NoParity);
-    puerto->setStopBits(QSerialPort::OneStop);
-    puerto->setFlowControl(QSerialPort::NoFlowControl);
-    connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
-}
-*/
 /*
 void Tocar::on_datosRecibidos(){
     QByteArray datos;
@@ -68,14 +58,14 @@ void Tocar::on_datosRecibidos(){
 }
 */
 
-/*
+
 void Tocar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
 }
-*/
-/*
+
+
 void Tocar::puertoSerieRcv_handler( void )
 {
     uint8_t cant = 0;
@@ -95,20 +85,12 @@ void Tocar::puertoSerieRcv_handler( void )
     procesarNota(datos);
     setNotaCorrecta();
 }
-*/
-/*
-void Tocar::procesarNota( QByteArray datos )
+
+
+void Tocar::procesarNota( QByteArray data )
 {
     uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
 
-    unsigned char data[2];
-
-    /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
-
-    data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
-    data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
-
-    ///////////////////////////////////////////////////////////////
     if( tramaOk(data) )
     {
         #ifdef DEBUG
@@ -128,24 +110,24 @@ void Tocar::procesarNota( QByteArray datos )
         qDebug()<<"trama incorrecta";
     #endif
 }
-*/
+
 /**
 *	\fn         void tramaOk(QByteArray datos)
 *	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
 *	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
 *	\author     Marcos Goyret
 */
-/*
-uint8_t Tocar::tramaOk(unsigned char* data)
+
+uint8_t Tocar::tramaOk( QByteArray data)
 {
     uint8_t res = ERROR;
 
-    if( INICIO_TRAMA_OK && FIN_TRAMA_OK )
+    if( INICIO_TRAMA_OK_ && FIN_TRAMA_OK_ )
         res = EXITO;
 
     return res;
 }
-*/
+
 /**
 *	\fn         void tramaInfo(QByteArray datos)
 *	\brief      Obtiene la informacion de la nota tocada
@@ -153,20 +135,20 @@ uint8_t Tocar::tramaOk(unsigned char* data)
 *               byte, y en los primeros 4 bits del segundo byte
 *	\author     Marcos Goyret
 */
-/*
-uint8_t Tocar::tramaInfo(unsigned char* data)
+
+uint8_t Tocar::tramaInfo( QByteArray data)
 {
     uint8_t res=0;
 
-    res = ( (((uint8_t)data[0])&ULTIMA_MITAD)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD)>>4 );
+    res = ( (((uint8_t)data[0])&ULTIMA_MITAD_)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD_)>>4 );
 
     #ifdef DEBUG
-    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2<<4) << " + " << BIT2_MITAD1;
+    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2_<<4) << " + " << BIT2_MITAD1_;
     #endif
 
     return res;
 }
-*/
+
 
 void Tocar::setNotaCorrecta(void)
 {

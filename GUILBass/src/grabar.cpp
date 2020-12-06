@@ -13,6 +13,7 @@ Grabar::~Grabar()
 {
     /* Desconecta el vinculo signal slot del puerto serie que cree en set_puerto()   */
     disconnect(conection);
+    puerto->disconnect();
     if(puerto->isOpen())
         puerto->close();
     delete ui;
