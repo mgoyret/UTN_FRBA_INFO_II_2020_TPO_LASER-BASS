@@ -82,13 +82,13 @@ public:
 
     ~Grabar( void );
 
-    void set_puerto( QSerialPort* );
+    void setPuerto( QSerialPort* );
     void inicializar( void );
     void iniciarTimer( void );
     void monitoreo( void );
     void guardarNota( void );
     uint8_t guardarCancion( void );
-    uint8_t prosesarNota( QByteArray );
+    uint8_t procesarNota( QByteArray );
     uint8_t tramaOk( QByteArray );
     uint8_t tramaInfo( QByteArray );
 

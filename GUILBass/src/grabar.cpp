@@ -27,7 +27,7 @@ Grabar::~Grabar()
 *	\details    La conecion del slot, sera desconectada en el destructor, para dejar la senal readyRead() libre para otras ventanas
 *	\author     Marcos Goyret
 */
-void Grabar::set_puerto(QSerialPort *puertoExt)
+void Grabar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
@@ -157,7 +157,7 @@ uint8_t Grabar::guardarCancion( void )
 *	\details    La trama que recibo por puerto serie, la decodifico y la represento con una letra o numero, segun la nota que sea
 *	\author     Marcos Goyret
 */
-uint8_t Grabar::prosesarNota( QByteArray datos )
+uint8_t Grabar::procesarNota( QByteArray datos )
 {
     uint8_t res = SIN_NOTA, nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
     if( tramaOk(datos) )
@@ -283,5 +283,5 @@ void Grabar::puertoSerieRcv_handler( void )
 
     /* prosesar data recibida y transformarla a un char o uint8_t
      * pros.nota devuelve el numero de nota 1-28 o 29-56*/
-    prosesarNota(datos);
+    procesarNota(datos);
 }
