@@ -64,12 +64,12 @@ public:
     uint8_t tramaOk( QByteArray );
     uint8_t tramaInfo( QByteArray );
     void setNotaCorrecta(void);
+    void mostrarNota(uint8_t nota);
+    int  notaACuerdaYNota(uint8_t nota);
 
 
 private slots:
     void on_datosRecibidos();
-    void puertoSerieRcv_handler();
-
 
 private:
     Ui::Tocar *ui;

@@ -275,53 +275,44 @@ void Grabar::on_PBfinRec_clicked()
 *	\details    Guarda la informacion disponible en el puerto en una variable, y llama a setColor()
 *	\author     Marcos Goyret
 */
-/*
-void Grabar::puertoSerieRcv_handler( void )
-{
-    static uint8_t cant = 0;
-    static QByteArray datos;
-
-    #ifdef DEBUG
-    qDebug() << "Datos recibidos ";
-    #endif
-    cant = (int)puerto->bytesAvailable();
-
-    datos.resize(cant);
-    puerto->read(datos.data(), cant);
-
-    qDebug()<< "byte 1 = " << (int)datos[0] << "\nbyte 2 = " << (int)datos[1] << "\n";
-
-
-    // procesar data recibida y transformarla a un char o uint8_t
-    // pros.nota devuelve el numero de nota 1-28 o 29-56
-    procesarNota(datos);
-}
-*/
 void Grabar::puertoSerieRcv_handler()
 {
     bufferSerie.append(puerto->readAll());
     validarDatos();
 }
 
-void Grabar::validarDatos() {
+void Grabar::validarDatos()
+{
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
     datoAProcesar.clear();
-    datoAProcesar.resize(2);
-    while (cant > 1)
-    {
-        if (!(bufferSerie[0]>>4 & ~(INICIO_TRAMA)))
-        {
+    while (cant > 1) {
+        if (bufferSerie[0] & 0xa0) {
             if (cant == 1) break;
             datoAProcesar.append(bufferSerie[0]);
-            datoAProcesar.append(bufferSerie[0]);
+            datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
-            procesarNota(datoAProcesar);
-        } else if (bufferSerie[0] & 0x05) {
-            bufferSerie.remove(0,1);
+            procesarNotaATocar(datoAProcesar);
+            datoAProcesar.clear();
         } else {
-            bufferSerie.remove(0,1);
+            bufferSerie.remove(0, 1);
         }
+        cant = bufferSerie.size();
+    }
+}
+
+void Grabar::procesarNotaATocar(QByteArray dato)
+{
+    char nota = 0;
+    if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
+    nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
+    nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
+    notaTocada = nota;
+    qDebug() << (uint8_t)nota;
+    if (nota < 0) {
+        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+    } else {
+        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
     }
 }
 

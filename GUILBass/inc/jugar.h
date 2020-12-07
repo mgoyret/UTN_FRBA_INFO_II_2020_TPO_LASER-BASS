@@ -56,7 +56,7 @@ class Jugar : public QDialog
     Q_OBJECT
 
 public:
-    explicit Jugar(QWidget *parent = nullptr);
+    explicit Jugar(QWidget *parent = nullptr, QString nombre = "");
     ~Jugar();
     void setPuerto( QSerialPort* );
     void procesarNota( QByteArray );

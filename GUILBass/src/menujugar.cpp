@@ -1,5 +1,7 @@
 #include "ui_menujugar.h"
 #include <menujugar.h>
+#include <dialogjugar.h>
+
 MenuJugar::MenuJugar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MenuJugar)
@@ -20,16 +22,24 @@ void MenuJugar::setPuerto( QSerialPort *puertoExt )
 }
 
 /////////////////////////     PRIVATE SLOTS    //////////////////////////////////////////////////////
-
 void MenuJugar::on_PBpreGrabada_clicked()
 {
+
+    QString nombreCancion = "";
+    DialogJugar SelecionCancion(this);
+    SelecionCancion.exec();
+    nombreCancion = SelecionCancion.getNombreCancion();
+    SelecionCancion.close();
     // VENTANA CAMI
-    Jugar wJugar(this);
-    hide();
-    wJugar.setWindowTitle("Jugar");
-    wJugar.setPuerto(puerto);
-    wJugar.exec();
-    close();
+    if( nombreCancion != "" )
+    {
+        Jugar wJugar(this, nombreCancion);
+        hide();
+        wJugar.setWindowTitle("Jugar");
+        wJugar.setPuerto(puerto);
+        wJugar.exec();
+        close();
+    }
 }
 
 void MenuJugar::on_PBgrabarNueva_clicked()
