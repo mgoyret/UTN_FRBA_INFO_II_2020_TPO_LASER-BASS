@@ -69,7 +69,8 @@ private:
     int msCounter;
     nota mostrar;
     void moverNota(nota &);
-
+public signals:
+    void monitoreoSignal();
 private slots:
     void moverNotas();
 
