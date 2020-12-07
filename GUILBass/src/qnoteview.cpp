@@ -125,12 +125,22 @@ void QNoteView::moverNotas() {
                     if (noteArray[i].pos + DELAY_NOTA < msCounter && noteArray[i].estado == 3) {
                         noteArray[i].estado = -1;
                         noteArray[i].noteColor = QColor(Qt::red);
+<<<<<<< Updated upstream
                         //--------Mandar signal--------------------
                         nota mostrar;
                         mostrar.nro=noteArray[i].nro;
                         mostrar.cuerda=noteArray[i].cuerda;
                         emit monitoreoSignal();
                         //hacer variable numero de nota , bien o mal ,nota
+=======
+                        //----------------pongo en rojo la cuerda Guitar View-------------------NO ANDAA_
+                        QGuitarView aux;
+                        int variablex;
+                        aux.setNotaPrendida(variablex);
+                        aux.setCuerdaPrendida(variablex);
+                        aux.setColorNotaPrendida(QColor(Qt::red));
+                        aux.setColorCuerdaPrendida(QColor(Qt::red));
+>>>>>>> Stashed changes
                          //---------------------------------------------------------------
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         scene->update(noteArray[i].circlePtr->boundingRect());

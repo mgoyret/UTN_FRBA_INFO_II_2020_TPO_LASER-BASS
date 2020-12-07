@@ -47,8 +47,11 @@ Jugar::Jugar(QWidget *parent) :
       notaView.startTiempo();
 }
 void Jugar::monitoreoPuntos() {
+<<<<<<< Updated upstream
     getCuerdaMostrar(void);
     getNroMostrar(void);
+=======
+>>>>>>> Stashed changes
     //muestro qguitarview y puntos
 }
 Jugar::~Jugar()
