@@ -67,9 +67,15 @@ void Tocar::on_datosRecibidos(){
 void Tocar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
-    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
+    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
 }
 
+/*
+void Tocar::procesarNota( QByteArray datos )
+{
+    uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
+
+    unsigned char data[2];
 
 
 void Tocar::procesarNota( QByteArray data )
@@ -94,7 +100,7 @@ void Tocar::procesarNota( QByteArray data )
     else
         qDebug()<<"trama incorrecta";
     #endif
-}
+}*/
 
 /**
 *	\fn         void tramaOk(QByteArray datos)
@@ -103,7 +109,9 @@ void Tocar::procesarNota( QByteArray data )
 *	\author     Marcos Goyret
 */
 
+
 uint8_t Tocar::tramaOk( QByteArray data)
+
 {
     uint8_t res = ERROR;
 
@@ -134,6 +142,33 @@ uint8_t Tocar::tramaInfo( QByteArray data)
     return res;
 }
 
+
+void Tocar::setNotaCorrecta(void)
+{
+    if(notaTocada >= 1 && notaTocada <= 28){
+        //prendo la nota
+
+        QGuitarView aux;
+
+        if(aux.setNotaPrendida(notaTocada)){
+
+            aux.setColorNotaPrendida(QColor::fromRgb(0,255,0));
+            //aux.setColorCuerdaPrendida(QColor::fromRgb(0,255,0));
+        }
+    }
+
+    if(notaTocada >= -28 && notaTocada <= -1){
+        //apago la nota
+
+        QGuitarView aux;
+
+        if(aux.setNotaApagada(notaTocada)){
+
+            aux.setColorNotaApagada(QColor::fromRgb(255));
+            //aux.setColorCuerdaApagada(QColor c);
+        }
+    }
+}
 
 void Tocar::mostrarNota(char nota) {
     int cuerdaYNota = notaACuerdaYNota(std::abs(nota));
@@ -175,21 +210,18 @@ void Tocar::validarDatos() {
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {
-        if (bufferSerie.at(0) & 0xa0) {
         if (!(bufferSerie[0] & 0x50)) {
             if (cant == 1) break;
-            datoAProcesar.append(bufferSerie.at(0));
-            datoAProcesar.append(bufferSerie.at(1));
+            datoAProcesar.append(bufferSerie[0]);
+            datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
-            procesarNota(datoAProcesar);
-        } else if (bufferSerie.at(0) & 0x05) {
-            bufferSerie.remove(0,1);
+            procesarNotaATocar(datoAProcesar);
+            datoAProcesar.clear();
         } else {
-            bufferSerie.remove(0,1);
+            bufferSerie.remove(0, 1);
         }
         cant = bufferSerie.size();
     }
-  }
 }
 
 void Tocar::procesarNotaATocar(QByteArray dato) {

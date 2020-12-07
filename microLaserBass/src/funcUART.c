@@ -57,7 +57,11 @@ void mandarnota(uint8_t tipo,uint8_t cuerda,uint8_t traste){
 	 * |         |
 	 *  ---------
 	 * */
-	nota=7*cuerda +7-traste+1;
+        if (traste==0){
+		nota=7*cuerda+1;
+	}else{
+		nota=7*cuerda +7-traste+1;
+	}
 	if(tipo == NOTEOFF){
 		nota= -nota;
 	}
