@@ -7,6 +7,10 @@ Tocar::Tocar(QWidget *parent) :
 {
     ui->setupUi(this);
     bufferSerie.clear();
+    qDebug() << puertoMidi.abrirPuerto(1);
+    qDebug() << puertoMidi.getNombreSalida(1) << "\n" << puertoMidi.getNombresSalidas();
+    qDebug() << puertoMidi.inicializarGS();
+    qDebug() << puertoMidi.enviarNoteOn(0, 64, 127);
 }
 
 Tocar::~Tocar()
@@ -14,16 +18,6 @@ Tocar::~Tocar()
     delete ui;
 }
 
-/*void Tocar :: setPuerto(QString name){
-    puerto->portName()=name;
-    puerto->setBaudRate(QSerialPort::Baud9600);
-    puerto->setDataBits(QSerialPort::Data8);
-    puerto->setParity(QSerialPort::NoParity);
-    puerto->setStopBits(QSerialPort::OneStop);
-    puerto->setFlowControl(QSerialPort::NoFlowControl);
-    connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
-}
-*/
 /*
 void Tocar::on_datosRecibidos(){
     QByteArray datos;
@@ -68,14 +62,14 @@ void Tocar::on_datosRecibidos(){
 }
 */
 
-/*
+
 void Tocar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
-    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
+    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
 }
-*/
-/*
+
+
 void Tocar::puertoSerieRcv_handler( void )
 {
     uint8_t cant = 0;
@@ -92,10 +86,10 @@ void Tocar::puertoSerieRcv_handler( void )
 
     //prosesar data recibida y transformarla a un char o uint8_t
     //pros.nota devuelve el numero de nota 1-28 o 29-56
-    procesarNota(datos);
+    //procesarNota(datos);
     setNotaCorrecta();
 }
-*/
+
 /*
 void Tocar::procesarNota( QByteArray datos )
 {
@@ -127,25 +121,25 @@ void Tocar::procesarNota( QByteArray datos )
     else
         qDebug()<<"trama incorrecta";
     #endif
-}
-*/
+}*/
+
 /**
 *	\fn         void tramaOk(QByteArray datos)
 *	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
 *	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
 *	\author     Marcos Goyret
 */
-/*
+
 uint8_t Tocar::tramaOk(unsigned char* data)
 {
     uint8_t res = ERROR;
 
-    if( INICIO_TRAMA_OK && FIN_TRAMA_OK )
+    if( INICIO_TRAMA_OK_ && FIN_TRAMA_OK_ )
         res = EXITO;
 
     return res;
 }
-*/
+
 /**
 *	\fn         void tramaInfo(QByteArray datos)
 *	\brief      Obtiene la informacion de la nota tocada
@@ -153,20 +147,20 @@ uint8_t Tocar::tramaOk(unsigned char* data)
 *               byte, y en los primeros 4 bits del segundo byte
 *	\author     Marcos Goyret
 */
-/*
+
 uint8_t Tocar::tramaInfo(unsigned char* data)
 {
     uint8_t res=0;
 
-    res = ( (((uint8_t)data[0])&ULTIMA_MITAD)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD)>>4 );
+    res = ( (((uint8_t)data[0])&ULTIMA_MITAD_)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD_)>>4 );
 
     #ifdef DEBUG
-    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2<<4) << " + " << BIT2_MITAD1;
+    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2_<<4) << " + " << BIT2_MITAD1_;
     #endif
 
     return res;
 }
-*/
+
 
 void Tocar::setNotaCorrecta(void)
 {
@@ -182,7 +176,7 @@ void Tocar::setNotaCorrecta(void)
         }
     }
 
-    if(notaTocada >= 29 && notaTocada <= 56){
+    if(notaTocada >= -28 && notaTocada <= -1){
         //apago la nota
 
         QGuitarView aux;
@@ -195,6 +189,18 @@ void Tocar::setNotaCorrecta(void)
     }
 }
 
+void Tocar::mostrarNota(uint8_t nota) {
+
+}
+
+int Tocar::notaACuerdaYNota(uint8_t nota) {
+    int ret = 0, cuerda = 0, notaConv = 0;
+    cuerda = nota / 7;
+    notaConv = 7 - ((nota - 1) % 7);
+    ret |= nota << 8;
+
+}
+
 void Tocar::on_datosRecibidos() {
     bufferSerie.append(puerto->readAll());
     validarDatos();
@@ -205,16 +211,29 @@ void Tocar::validarDatos() {
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {
-        if (bufferSerie.at(0) & 0xa0) {
+        if (bufferSerie[0] & 0xa0) {
             if (cant == 1) break;
-            datoAProcesar.append(bufferSerie.at(0));
-            datoAProcesar.append(bufferSerie.at(1));
+            datoAProcesar.append(bufferSerie[0]);
+            datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
-            procesarNota(datoAProcesar);
-        } else if (bufferSerie.at(0) & 0x05) {
-            bufferSerie.remove(0,1);
+            procesarNotaATocar(datoAProcesar);
+            datoAProcesar.clear();
         } else {
-            bufferSerie.remove(0,1);
+            bufferSerie.remove(0, 1);
         }
+        cant = bufferSerie.size();
+    }
+}
+
+void Tocar::procesarNotaATocar(QByteArray dato) {
+    char nota = 0;
+    if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
+    nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
+    nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
+    qDebug() << (uint8_t)nota;
+    if (nota < 0) {
+        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+    } else {
+        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
     }
 }

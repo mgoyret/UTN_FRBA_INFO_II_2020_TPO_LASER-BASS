@@ -84,51 +84,47 @@ uint8_t ClaseMIDI::inicializarGS() {
 uint8_t ClaseMIDI::enviarNoteOn(uint8_t ch, uint8_t note, uint8_t vel) {
     QByteArray arr;
     arr.clear();
-    if (ch < 0x10 || note < 0x80) return 1;
+    if (ch > 0xf0 || note > 0x80) return 1;
     arr.append(0x90 + ch);
     arr.append(note);
     arr.append(vel);
-    enviarMensaje(arr);
-    return 0;
+    return enviarMensaje(arr);
 }
 
 uint8_t ClaseMIDI::enviarNoteOff(uint8_t ch, uint8_t note) {
     QByteArray arr;
     arr.clear();
-    if (ch < 0x10 || note < 0x80) return 1;
+    if (ch > 0xf0 || note > 0x80) return 1;
     arr.append(0x90 + ch);
     arr.append(note);
     arr.append(static_cast<uint8_t>(0x00));
-    enviarMensaje(arr);
-    return 0;
+    return enviarMensaje(arr);
 }
 
 uint8_t ClaseMIDI::enviarProgramChange(uint8_t ch, uint8_t prgm) {
     QByteArray arr;
     arr.clear();
-    if (ch < 0x10 || prgm < 0x80) return 1;
+    if (ch > 0x10 || prgm > 0x80) return 1;
     arr.append(0xC0 + ch);
     arr.append(prgm);
-    enviarMensaje(arr);
-    return 0;
+    return enviarMensaje(arr);
 }
 
 uint8_t ClaseMIDI::enviarControlChange(uint8_t ch, uint8_t byte_1, uint8_t byte_2) {
     QByteArray arr;
     arr.clear();
-    if (ch < 0x10 || byte_1 < 0x80 || byte_2 < 0x80) return 1;
+    if (ch > 0x10 || byte_1 > 0x80 || byte_2 > 0x80) return 1;
     arr.append(0xB0 + ch);
     arr.append(byte_1);
     arr.append(byte_2);
-    enviarMensaje(arr);
-    return 0;
+    return enviarMensaje(arr);
 }
 
 uint8_t ClaseMIDI::enviarMensaje(QByteArray & msg) {
-    if (out->isPortOpen()) {
+    //if (!out->isPortOpen()) {
         out->sendMessage(reinterpret_cast<const uint8_t *>(msg.constData()), msg.length());
         return 0;
-    }
-    return 1;
+    //}
+    //return 1;
 }
 
