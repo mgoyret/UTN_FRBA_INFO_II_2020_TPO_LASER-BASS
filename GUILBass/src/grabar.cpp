@@ -1,12 +1,17 @@
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 
-
 Grabar::Grabar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Grabar)
 {
     ui->setupUi(this);
+
+    //inicializar midi
+    qDebug() << puertoMidi.abrirPuerto(0);
+    qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
+    qDebug() << puertoMidi.inicializarGS();
+    puertoMidi.enviarProgramChange(0, 30);
 }
 
 Grabar::~Grabar()
@@ -19,26 +24,21 @@ Grabar::~Grabar()
     delete ui;
 }
 
-
-/////////////////////////     PUBLIC     //////////////////////////////////////////////////////
-
 /**
 *	\fn         void set_puerto( QSerialPort *puertoExt )
 *	\brief      Apunta mi puntero de QSerialPort, a la direccion del puerto que tenemos conectado, y conecta el slot
 *	\details    La conecion del slot, sera desconectada en el destructor, para dejar la senal readyRead() libre para otras ventanas
-*	\author     Marcos Goyret
 */
 void Grabar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
-    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
+    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
 }
 
 /**
 *	\fn void inicializarMdE( void )
 *	\brief Inicializa variables que haya que inicializar
 *	\details Detalles
-*	\author Marcos Goyret
 */
 void Grabar::inicializar( void )
 {
@@ -51,19 +51,16 @@ void Grabar::inicializar( void )
 *	\fn         void iniciarTimer_250ms(void)
 *	\brief      inicializa un timer de 250ms
 *	\details    Inicia un timer que ejecuta el timer handler al terminar
-*	\author     Marcos Goyret
 */
 void Grabar::iniciarTimer()
 {
     QTimer::singleShot(TIMER_TIME, this, SLOT(timer_handler()));
 }
 
-
 /**
 *	\fn         void guardarNota(void)
 *	\brief      buffer de cancion que se guardara
 *	\details    Guarda la nota actual almacenada en el array secuencial de estructuras notas y tiempos
-*	\author     Marcos Goyret
 */
 void Grabar::guardarNota( void )
 {
@@ -86,12 +83,10 @@ void Grabar::guardarNota( void )
     recBuf.total_cntr++;
 }
 
-
 /**
 *	\fn         void guardarCancion(void)
 *	\brief      Guarda la cancion grabada, en un archivo
 *	\details    Imprime la informacion contenida en la estructura del tipo songBuffer, en un archivo
-*	\author     Marcos Goyret
 */
 uint8_t Grabar::guardarCancion( void )
 {
@@ -126,35 +121,34 @@ uint8_t Grabar::guardarCancion( void )
     return res;
 }
 
-
-void Grabar::validarDatos()
-{
+void Grabar::validarDatos () {
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {
-        if (bufferSerie[0] & 0xa0) {
+        if (!(bufferSerie[0] & 0x50)) {
             if (cant == 1) break;
-            datoAProcesar.append(bufferSerie[0]);
-            datoAProcesar.append(bufferSerie[1]);
+            datoAProcesar.append(bufferSerie.at(0));
+            datoAProcesar.append(bufferSerie.at(1));
             bufferSerie.remove(0, 2);
             procesarNotaATocar(datoAProcesar);
-            datoAProcesar.clear();
+        } else if (bufferSerie.at(0) & 0x0a) {
+            bufferSerie.remove(0,1);
         } else {
-            bufferSerie.remove(0, 1);
+            bufferSerie.remove(0,1);
         }
         cant = bufferSerie.size();
     }
 }
 
-void Grabar::procesarNotaATocar(QByteArray dato)
-{
+void Grabar::procesarNotaATocar(QByteArray dato) {
     char nota = 0;
     if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     notaTocada = nota;
     qDebug() << (uint8_t)nota;
+    //mostrarNota(nota);
     if (nota < 0) {
         qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {
@@ -214,12 +208,10 @@ void Grabar::on_PBfinRec_clicked()
     ui->PBnombre->setEnabled(true);
 }
 
-
 /**
 *	\fn         void timer_250ms_handler(void)
 *	\brief      handler del timer inicializado de 250ms
 *	\details    ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
-*	\author     Marcos Goyret
 */
 void Grabar::timer_handler( void )
 {
@@ -232,13 +224,11 @@ void Grabar::timer_handler( void )
 }
 
 /**
-*	\fn         void puertoSerieRcv_handler( void )
+*	\fn         void on_datosRecibidos( void )
 *	\brief      Slot de la interrupcion cada vez que se emite la senal ReadyRead()
 *	\details    Guarda la informacion disponible en el puerto en una variable, y llama a setColor()
-*	\author     Marcos Goyret
 */
-void Grabar::puertoSerieRcv_handler()
-{
+void Grabar::on_datosRecibidos() {
     bufferSerie.append(puerto->readAll());
     validarDatos();
 }
@@ -260,7 +250,6 @@ void Grabar::on_PBnombre_clicked()
         }
     }
 }
-
 
 void Grabar::on_lineEditNombre_textChanged(const QString &arg1)
 {
