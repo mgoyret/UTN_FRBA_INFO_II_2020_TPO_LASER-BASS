@@ -8,6 +8,7 @@
 #include <QTextStream>
 #include "dialogjugar.h"
 #include "inc/qnoteview.h"
+#include "parserpuntaje.h"
 #include <clasemidi.h>
 #define DEBUG
 
@@ -68,11 +69,13 @@ public:
 
 private slots:
     void on_datosRecibidos();
+    void monitoreoPuntos();
 
 private:
     Ui::Jugar *ui;
     uint8_t notaTocada;
     int posicion = 0;
+    ParserPuntaje puntajes;
     QString nombreCancion;
     QSerialPort *puerto;
     QStringList listaNota;
@@ -80,6 +83,7 @@ private:
     //funcion para el line_edit Puntos
     QByteArray bufferSerie;
     ClaseMIDI puertoMidi;
+
     void validarDatos();
     void procesarNotaATocar(QByteArray);
 

@@ -70,13 +70,11 @@ public:
 
     QString getNombrePuntaje(puntaje &);
     int getValorPuntaje(puntaje &);
-
+    void cargarDesdeArchivo();
+    int guardarArchivo();
 
 private:
     QJsonDocument * jDocPuntajes;
-
-    void cargarDesdeArchivo();
-    int guardarArchivo();
     bool verificarDocumentoJson(QJsonDocument &);
     void ordenarCancionesYPuntajes(QJsonDocument &, bool tambienPuntajes = false);
     void ordenarPuntajes(QJsonArray &);

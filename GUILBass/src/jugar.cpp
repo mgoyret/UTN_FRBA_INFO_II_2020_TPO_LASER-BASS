@@ -13,6 +13,9 @@ Jugar::Jugar(QWidget *parent) :
       //esto sino hacer un boton de empezar y que en el click se ppone
       //leo el archivo y lo cargo a un array
       LeerArchivo();
+      //cargar archivo
+      ParserPuntaje a;
+      cargarDesdeArchivo();
       int i=0;
       int cuerda,nota,cant=0,duracion=0;
       QNoteView notaView(this);
@@ -40,7 +43,13 @@ Jugar::Jugar(QWidget *parent) :
         notaView.agregarNota(nota,cuerda,i,duracion);
         i++;
       }
+      connect(puerto, SIGNAL(monitoreoSignal()), this, SLOT(monitoreoPuntos()));
       notaView.startTiempo();
+}
+void Jugar::monitoreoPuntos() {
+    getCuerdaMostrar(void);
+    getNroMostrar(void);
+    //muestro qguitarview y puntos
 }
 Jugar::~Jugar()
 {
@@ -126,7 +135,7 @@ uint8_t Jugar::tramaInfo( unsigned char* data)
 
     return res;
 }
-
+/*
 void Jugar::setNotaCorrecta(void)
 {
     if(notaTocada >= 1 && notaTocada <= 28){
@@ -153,7 +162,6 @@ void Jugar::setNotaCorrecta(void)
         }
     }
 }
-
 void Jugar::setNotaIncorrecta(void)
 {
     if(notaTocada >= 1 && notaTocada <= 28){
@@ -179,14 +187,14 @@ void Jugar::setNotaIncorrecta(void)
             //aux.setColorCuerdaApagada(QColor c);
         }
     }
-}
+}*/
 void Jugar::LeerArchivo(void){
     QString line;
     int i = 0;
     QFile cancion(nombreCancion);
     if(!cancion.open(QIODevice::ReadOnly)){
 
-    QTextStream in(&cancion);
+        QTextStream in(&cancion);
 
     while (!in.atEnd()) //La funcion !in.atEnd() no me funcionaba bien, asi que quizas haya que reemplazarla por otra
     {
