@@ -11,6 +11,7 @@
 #include "grabar.h"
 #include "jugar.h"
 #include "tablapuntajes.h"
+#include <dialogjugar.h>
 
 namespace Ui {
 class MenuJugar;
@@ -28,9 +29,7 @@ public:
 
 private slots:
     void on_PBpreGrabada_clicked();
-
     void on_PBgrabarNueva_clicked();
-
     void on_PBpuntajes_clicked();
 
 private:

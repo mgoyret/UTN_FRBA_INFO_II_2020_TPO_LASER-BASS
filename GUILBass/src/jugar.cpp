@@ -1,15 +1,21 @@
 #include "jugar.h"
 #include "ui_jugar.h"
 
-Jugar::Jugar(QWidget *parent) :
+Jugar::Jugar(QWidget *parent, QString nombre) :
     QDialog(parent),
     ui(new Ui::Jugar)
 {
     ui->setupUi(this);
     // selecciono la cancion
+<<<<<<< HEAD
     DialogJugar dSelecionCancion(this);
       while(dSelecionCancion.exec() == QDialog::Accepted);
       nombreCancion=dSelecionCancion.getNombreCancion();
+=======
+      //esto sino hacer un boton de empezar y que en el click se ppone
+      //leo el archivo y lo cargo a un array
+    nombreCancion = nombre;
+>>>>>>> d9b435e1287480d96a4289a56305ddfefea654ed
       LeerArchivo();
       //cargar archivo
       ParserPuntaje a;
@@ -23,9 +29,16 @@ Jugar::Jugar(QWidget *parent) :
           15---21   Cuerda 3
           22---28   Cuerda 4*/
           //las cuerdas van d e0 a 3 y las notas de 0 a 6
+<<<<<<< HEAD
          cuerda =(listaNota[i].toInt()/4)-1;
          nota= (listaNota[i].toInt()-7*cuerda)-1;
         //el array de notas tiene q ser igual al del archivo xq sino es posible perder info
+=======
+        cuerda =(listaNota[i].toInt()/4)-1;
+        nota= (listaNota[i].toInt()-7*cuerda)-1;
+        //el array de notas tiene q ser igual al del archivo xq
+        //sino es posible perder info
+>>>>>>> d9b435e1287480d96a4289a56305ddfefea654ed
          while(listaNota[i]==listaNota[i+1]){
             cant++;
             i++;
@@ -45,7 +58,10 @@ Jugar::Jugar(QWidget *parent) :
       ui->graphicsView->setColorNotaApagada(Qt::black);
 }
 void Jugar::monitoreoPuntos() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> d9b435e1287480d96a4289a56305ddfefea654ed
     getCuerdaMostrar(void);
     getNroMostrar(void);
     //muestro qguitarview y puntos

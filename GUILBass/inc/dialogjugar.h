@@ -2,7 +2,9 @@
 #define DIALOGJUGAR_H
 
 #include <QDialog>
-#include <parserpuntaje.h>
+#include <QDir>
+#include <QDebug>
+
 namespace Ui {
 class DialogJugar;
 }
@@ -14,15 +16,15 @@ class DialogJugar : public QDialog
 public:
     explicit DialogJugar(QWidget *parent = nullptr);
     ~DialogJugar();
-    QString getNombreCancion(void);
+
+    inline QString getNombreCancion( void ) { return nombreCancion; }
 
 private slots:
-    void on_comboBox_currentIndexChanged(int index);
+    void on_pushButton_clicked();
 
 private:
-    ParserPuntaje parser;
-    QString cancion;
     Ui::DialogJugar *ui;
+    QString nombreCancion;
 };
 
 #endif // DIALOGJUGAR_H

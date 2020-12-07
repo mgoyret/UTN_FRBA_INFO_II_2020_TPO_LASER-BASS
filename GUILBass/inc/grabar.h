@@ -12,6 +12,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <QDir>
+#include <clasemidi.h>
 
 #define DEBUG
 
@@ -93,16 +94,15 @@ public:
     uint8_t tramaInfo( unsigned char* );
     void validarDatos(void);
     uint8_t checkName( void );
+    void procesarNotaATocar(QByteArray dato);
+
 
 private slots:
     void on_PBrec_clicked( void );
     void on_PBfinRec_clicked( void );
     void timer_handler( void );
     void puertoSerieRcv_handler( void );
-
-
     void on_PBnombre_clicked();
-
     void on_lineEditNombre_textChanged(const QString &arg1);
 
 private:
@@ -116,6 +116,7 @@ private:
     QSerialPort *puerto;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     QByteArray  bufferSerie; //para lo de felipe
+    ClaseMIDI   puertoMidi;
 
 
 };

@@ -30,6 +30,7 @@ void MainWindow::enumerarPuertos()
         ui->CBPuertos->addItem(puertos.at(i).portName());
     }
 }
+
 void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wMenuJugar(this);
