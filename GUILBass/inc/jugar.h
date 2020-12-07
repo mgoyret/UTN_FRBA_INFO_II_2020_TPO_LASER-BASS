@@ -73,6 +73,7 @@ private:
     int posicion = 0;
     QString nombreCancion;
     QSerialPort *puerto;
+    QStringList listaNota;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //funcion para el line_edit Puntos
 
