@@ -8,7 +8,7 @@
 #include <QTextStream>
 #include "qguitarview.h"
 #include "dialogjugar.h"
-#include "inc/qnoteview.h"
+#include "qnoteview.h"
 #include "parserpuntaje.h"
 #include <clasemidi.h>
 #define DEBUG
@@ -33,6 +33,7 @@
 #define SONG_FILE_NAME_ "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
 #define TIMER_TIME_ 100
+#define PUNTOCSIMPLE 10;
 
 
 //////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
@@ -76,6 +77,7 @@ private:
     Ui::Jugar *ui;
     uint8_t notaTocada;
     int posicion = 0;
+    int puntos=0;
     ParserPuntaje puntajes;
     QString nombreCancion;
     QSerialPort *puerto;
@@ -84,9 +86,11 @@ private:
     //funcion para el line_edit Puntos
     QByteArray bufferSerie;
     ClaseMIDI puertoMidi;
-
+    QNoteView mostrar;
     void validarDatos();
     void procesarNotaATocar(QByteArray);
+     void mostrarNota(char nota);
+     int notaACuerdaYNota(uint8_t nota) ;
 
 };
 

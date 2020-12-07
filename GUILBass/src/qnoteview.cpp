@@ -126,11 +126,11 @@ void QNoteView::moverNotas() {
                         noteArray[i].estado = -1;
                         noteArray[i].noteColor = QColor(Qt::red);
                         //--------Mandar signal--------------------
-                        nota mostrar;
                         mostrar.nro=noteArray[i].nro;
                         mostrar.cuerda=noteArray[i].cuerda;
+                        mostrar.estado=noteArray[i].estado;
                         emit monitoreoSignal();
-                        //hacer variable numero de nota , bien o mal ,nota
+
                          //---------------------------------------------------------------
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         scene->update(noteArray[i].circlePtr->boundingRect());

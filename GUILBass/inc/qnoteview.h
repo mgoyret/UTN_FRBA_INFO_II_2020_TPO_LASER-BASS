@@ -56,7 +56,8 @@ public:
     void startTiempo();
     void stopTiempo();
     inline int getCuerdaMostrar(void) {return mostrar.cuerda;};
-    inline int getNroMostrar(void) {return mostrar.cuerda;};
+    inline int getNroMostrar(void) {return mostrar.nro;};
+    inline int getEstadoMostrar(void) {return mostrar.estado;};
 signals:
     void monitoreoSignal();
 private:

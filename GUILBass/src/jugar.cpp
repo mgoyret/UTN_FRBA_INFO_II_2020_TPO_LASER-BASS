@@ -6,22 +6,21 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
     ui(new Ui::Jugar)
 {
     ui->setupUi(this);
-    // selecciono la cancion
     nombreCancion = nombre;
-    LeerArchivo();
-    //cargar archivo
-    puntajes.cargarDesdeArchivo();
-    int i=0;
-    int cuerda,nota,cant=0,duracion=0;
-    QNoteView notaView(this);
-    while(i<listaNota.size()){
-        /*1----7 Cuerda 1
-        8----14   Cuerda 2
-        15---21   Cuerda 3
-        22---28   Cuerda 4*/
-        //las cuerdas van d e0 a 3 y las notas de 0 a 6
-         cuerda =(listaNota[i].toInt()/4)-1;
-         nota= (listaNota[i].toInt()-7*cuerda)-1;
+      LeerArchivo();
+      //cargar archivo
+
+      puntajes.cargarDesdeArchivo();
+      int i=0;
+      int cuerda,nota,cant=0,duracion=0;
+      while(i<listaNota.size()){
+          /*1----7 Cuerda 1
+          8----14   Cuerda 2
+          15---21   Cuerda 3
+          22---28   Cuerda 4*/
+          //las cuerdas van d e0 a 3 y las notas de 0 a 6
+        cuerda =std::abs((listaNota[i].toInt()/4)-1);
+        nota= std::abs((listaNota[i].toInt()-7*cuerda)-1);
         //el array de notas tiene q ser igual al del archivo xq sino es posible perder info
          while(listaNota[i]==listaNota[i+1]){
             cant++;
@@ -34,25 +33,82 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
             i-=cant;
             cant=0;
         }
-        notaView.agregarNota(nota,cuerda,i,duracion);
+        ui->graphicsView_2->agregarNota(nota,cuerda,i,duracion);
         i++;
       }
       connect(puerto, SIGNAL(monitoreoSignal()), this, SLOT(monitoreoPuntos()));
-      notaView.startTiempo();
+      //despues hay q apagarlo
+      ui->graphicsView_2->startTiempo();
       ui->graphicsView->setColorNotaApagada(Qt::black);
 }
-void Jugar::monitoreoPuntos() {
 
-}
+
 Jugar::~Jugar()
 {
     delete ui;
 }
+void Jugar::monitoreoPuntos() {
 
+    //esto es lo que tengo
+    //cuerda =(listaNota[i].toInt()/4)-1;
+    //nota= (listaNota[i].toInt()-7*cuerda)-1;
+    //necesito llevarlo a lo que habia
+   char nota= (ui->graphicsView_2->getCuerdaMostrar())*7 +(ui->graphicsView_2->getNroMostrar())+1;
+  // char estado; //determina el estado de la nota:
+                //-1 : Se paso y no se toco
+                //0 : Esta en el futuro
+                //1 : Ya se toco bien
+                //2 : (Solo largas) se esta tocando
+                //3 : Esta en un momento donde se puede tocar
+                //4 : Se toco
+                //5 : (Solo largas) se solto a mitad de camino
+   // 0->no me importa 5-> poner amarillo es medio punto -1-> rojo  1,4-> verde
+   if(ui->graphicsView_2->getEstadoMostrar()==-1){
+       ui->graphicsView->setColorNotaApagada(Qt::red);
+       //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
+       ui->Puntos->setPalette(Qt::red);
+   }else{
+       ui->graphicsView->setColorNotaApagada(Qt::green);
+       //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
+       ui->Puntos->setPalette(Qt::green);
+       puntos+=PUNTOCSIMPLE;
+   }
+   mostrarNota(nota);
+   //muestro qguitarview y puntos
+}
 void Jugar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this,  SLOT(on_datosRecibidos() ));
+}
+void Jugar::mostrarNota(char nota) {
+
+    int cuerdaYNota = notaACuerdaYNota(std::abs(nota));
+    if (nota > 0) {
+        if ((cuerdaYNota & 0x000000ff) != 0xff) ui->graphicsView->setNotaPrendida(cuerdaYNota & 0x000000ff);
+        ui->graphicsView->setCuerdaPrendida(cuerdaYNota >> 8);
+    } else {
+        if ((cuerdaYNota & 0x000000ff) != 0xff) ui->graphicsView->setNotaApagada(cuerdaYNota & 0x000000ff);
+        ui->graphicsView->setCuerdaApagada(cuerdaYNota >> 8);
+    }
+
+    qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
+}
+int Jugar::notaACuerdaYNota(uint8_t nota) {
+    int ret = 0, cuerda = 0, notaConv = 0;
+    nota--;
+    notaConv = nota % 7;
+    if (notaConv) {
+        cuerda = nota / 7;
+        notaConv = (6 - notaConv) + (6 * cuerda);
+    } else {
+        cuerda = nota / 7;
+        notaConv = 0xff;
+    }
+    qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
+    ret |= notaConv;
+    ret |= cuerda << 8;
+    return ret;
 }
 void Jugar::on_datosRecibidos() {
     bufferSerie.append(puerto->readAll());
