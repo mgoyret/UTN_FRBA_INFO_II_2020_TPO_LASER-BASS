@@ -70,7 +70,7 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
 }
 
-
+/*
 void Tocar::puertoSerieRcv_handler( void )
 {
     uint8_t cant = 0;
@@ -90,7 +90,7 @@ void Tocar::puertoSerieRcv_handler( void )
     procesarNota(datos);
     setNotaCorrecta();
 }
-
+*/
 
 void Tocar::procesarNota( QByteArray data )
 {

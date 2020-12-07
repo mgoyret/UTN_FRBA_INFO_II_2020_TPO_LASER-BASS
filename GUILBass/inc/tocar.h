@@ -82,7 +82,6 @@ private:
     void validarDatos();
     void procesarNotaATocar(QByteArray);
     void mostrarNota(char nota);
-    int notaACuerdaYNota(uint8_t nota);
 };
 
 #endif // TOCAR_H
