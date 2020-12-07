@@ -48,7 +48,7 @@ Q_OBJECT
 public:
     QNoteView(QWidget* parent = nullptr);
     ~QNoteView();
-
+    //0 es q dura una sola base,1 es que hay que matenerlo una base mas
     void agregarNota(int nroNota, int nroCuerda, int posTemporal, int duracion = 0);
     bool tocarNota(int nroNota, int nroCuerda);
     bool soltarNota(int nroNota, int nroCuerda);

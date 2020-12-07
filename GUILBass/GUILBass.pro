@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dialogjugar.cpp \
     src/parserpuntaje.cpp \
     src/jugar.cpp \
     main.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
     src/tablapuntajes.cpp
 
 HEADERS += \
+    dialogjugar.h \
     inc/clasemidi.h \
     inc/mainwindow.h \
     inc/menujugar.h \
@@ -43,6 +45,7 @@ HEADERS += \
     inc/qnoteview.h
 
 FORMS += \
+    dialogjugar.ui \
     forms/mainwindow.ui \
     forms/menujugar.ui \
     forms/tocar.ui \

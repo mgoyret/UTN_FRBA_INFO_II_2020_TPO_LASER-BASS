@@ -97,12 +97,11 @@ void Tocar::procesarNota( QByteArray datos )
 
     unsigned char data[2];
 
-    /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
 
-    data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
-    data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
+void Tocar::procesarNota( QByteArray data )
+{
+    uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
 
-    ///////////////////////////////////////////////////////////////
     if( tramaOk(data) )
     {
         #ifdef DEBUG
@@ -130,7 +129,9 @@ void Tocar::procesarNota( QByteArray datos )
 *	\author     Marcos Goyret
 */
 
-uint8_t Tocar::tramaOk(unsigned char* data)
+
+uint8_t Tocar::tramaOk( QByteArray data)
+
 {
     uint8_t res = ERROR;
 
@@ -148,7 +149,7 @@ uint8_t Tocar::tramaOk(unsigned char* data)
 *	\author     Marcos Goyret
 */
 
-uint8_t Tocar::tramaInfo(unsigned char* data)
+uint8_t Tocar::tramaInfo( QByteArray data)
 {
     uint8_t res=0;
 

@@ -6,8 +6,25 @@ Jugar::Jugar(QWidget *parent) :
     ui(new Ui::Jugar)
 {
     ui->setupUi(this);
+    // selecciono la cancion
+    DialogJugar dSelecionCancion(this);
+      while(dSelecionCancion.exec() == QDialog::Accepted);
+      nombreCancion=dSelecionCancion.getNombreCancion();
+      //leo el archivo y lo cargo a un array
+      LeerArchivo();
+      int i=0;
+      while(i<listaNota.size()){
+          /*1----7 Cuerda 1
+          8----14   Cuerda 2
+          15---21   Cuerda 3
+          22---28   Cuerda 4*/
+          //checkear lo de cuerda y nota esta bien
+        int cuerda =listaNota[i].toInt()/4;
+        int nota= listaNota[i].toInt()-7*cuerda;
+        agregarNota(nota,cuerda, int posTemporal, int duracion = 0);
+        i++;
+      }
 }
-
 Jugar::~Jugar()
 {
     delete ui;
@@ -158,8 +175,27 @@ void Jugar::setNotaIncorrecta(void)
         }
     }
 }
-
 void Jugar::LeerArchivo(void){
+    QString line;
+    int i = 0;
+    QFile cancion(nombreCancion);
+    if(!cancion.open(QIODevice::ReadOnly)){
+
+    QTextStream in(&cancion);
+
+    while (!in.atEnd()) //La funcion !in.atEnd() no me funcionaba bien, asi que quizas haya que reemplazarla por otra
+    {
+        line = in.readLine(); //posicion,nota
+        listaNota = line.split(QLatin1Char(',')); //guarda lo separado por las comas en posiciones distintas de un array
+        //saco el numero de la posicion de la lista
+        listaNota.removeAt(i);
+        i++;
+    }
+    cancion.close();
+    }
+}
+/*
+ void Jugar::LeerArchivo(void){
     QString line;
     QStringList list;
     int i = 0;
@@ -196,5 +232,5 @@ void Jugar::LeerArchivo(void){
    /* Ejemplo uso QStringList
       QStringList str = {"Hola", "todo", "bien"};
       ui->textEdit->setText(str[2]);
-    */
-}
+   */
+/* }*/

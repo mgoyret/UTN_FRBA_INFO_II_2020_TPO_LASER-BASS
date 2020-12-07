@@ -35,8 +35,8 @@
 #define PRIMER_MITAD_    240 // 240 = 11110000
 #define ULTIMA_MITAD_    15  // 15  = 00001111
 #define INICIO_TRAMA_    10  // 10  = 1010 que es el inicio de trama que esta en el primer byte
-#define FIN_TRAMA__       13  // 13  = 1101 que es fin de trama 101 mas el bit de paridad 1000
-//#define FIN_TRAMA     5   // 5   = 0101 que es el fin de trama que esta en el segundo byte
+//#define FIN_TRAMA_       13  // 13  = 1101 que es fin de trama 101 mas el bit de paridad 1000
+#define FIN_TRAMA_     5   // 5   = 0101 que es el fin de trama que esta en el segundo byte
 #define INICIO_TRAMA_OK_ ( ( ( ((uint8_t)data[0]) & PRIMER_MITAD_ ) >>4) == (uint8_t)INICIO_TRAMA_ )
 #define FIN_TRAMA_OK_    ( ( ((uint8_t)data[1]) & ULTIMA_MITAD_ ) == (uint8_t)FIN_TRAMA_ )
 
@@ -60,8 +60,8 @@ public:
     ~Tocar();
     void setPuerto( QSerialPort* );
     void procesarNota( QByteArray );
-    uint8_t tramaOk( unsigned char* );
-    uint8_t tramaInfo( unsigned char* );
+    uint8_t tramaOk( QByteArray );
+    uint8_t tramaInfo( QByteArray );
     void setNotaCorrecta(void);
 
 
