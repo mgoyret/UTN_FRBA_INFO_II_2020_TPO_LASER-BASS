@@ -68,6 +68,7 @@ private:
     bool isShown;
     int msCounter;
     nota mostrar;
+    void mandarSignal(int i);
     void moverNota(nota &);
 private slots:
     void moverNotas();

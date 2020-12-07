@@ -62,16 +62,20 @@ void Jugar::monitoreoPuntos() {
                 //3 : Esta en un momento donde se puede tocar
                 //4 : Se toco
                 //5 : (Solo largas) se solto a mitad de camino
-   // 0->no me importa 5-> poner amarillo es medio punto -1-> rojo  1,4-> verde
+   // 0->no me importa 4->no me importa transitorio en el, 3->espero nota asi q no me importa
+  // 5-> poner amarillo es medio punto -1-> rojo  1-> verde
    if(ui->graphicsView_2->getEstadoMostrar()==-1){
        ui->graphicsView->setColorNotaApagada(Qt::red);
        //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
        ui->Puntos->setPalette(Qt::red);
-   }else{
+   }else if(ui->graphicsView_2->getEstadoMostrar()==1) {
        ui->graphicsView->setColorNotaApagada(Qt::green);
        //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
        ui->Puntos->setPalette(Qt::green);
        puntos+=PUNTOCSIMPLE;
+       ui->Puntos->setText(QString::number(puntos));
+   }else if(ui->graphicsView_2->getEstadoMostrar()==2) {
+       ui->Puntos->setPalette(Qt::blue);
    }
    mostrarNota(nota);
    //muestro qguitarview y puntos

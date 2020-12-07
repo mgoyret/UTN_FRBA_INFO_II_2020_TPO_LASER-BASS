@@ -126,19 +126,18 @@ void QNoteView::moverNotas() {
                         noteArray[i].estado = -1;
                         noteArray[i].noteColor = QColor(Qt::red);
                         //--------Mandar signal--------------------
-                        mostrar.nro=noteArray[i].nro;
-                        mostrar.cuerda=noteArray[i].cuerda;
-                        mostrar.estado=noteArray[i].estado;
-                        emit monitoreoSignal();
-
+                        mandarSignal(i);
                          //---------------------------------------------------------------
-                        noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
+                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         scene->update(noteArray[i].circlePtr->boundingRect());
                     }
                     if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos < msCounter && noteArray[i].estado == 4) {
                         noteArray[i].noteColor = QColor(Qt::green);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         noteArray[i].estado = 1;
+                        //--------Mandar signal--------------------
+                        mandarSignal(i);
+                         //---------------------------------------------------------------
                         scene->update(noteArray[i].circlePtr->boundingRect());
                     } else if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos < msCounter && noteArray[i].estado == 0) {
                         noteArray[i].estado = 3;
@@ -158,13 +157,11 @@ void QNoteView::moverNotas() {
                         pen.setColor(Qt::red);
                         noteArray[i].linePtr->setPen(pen);
                         noteArray[i].noteColor = QColor(Qt::red);
-                        //----------------pongo en rojo la cuerda Guitar View-------------------NO ANDAA_
-                        QGuitarView aux;
-                         aux.setColorNotaPrendida(QColor(Qt::red));
-                         //---------------------------------------------------------------
-
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         noteArray[i].estado = -1;
+                        //--------Mandar signal--------------------
+                        mandarSignal(i);
+                         //---------------------------------------------------------------
                         delete noteArray[i].linePtr2;
                         noteArray[i].linePtr2 = nullptr;
                         scene->update(noteArray[i].circlePtr->boundingRect());
@@ -172,6 +169,9 @@ void QNoteView::moverNotas() {
                     }
                     if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos < msCounter && noteArray[i].estado == 4) {
                         noteArray[i].estado = 2;
+                        //--------Mandar signal--------------------
+                        mandarSignal(i);
+                         //---------------------------------------------------------------
                         noteArray[i].linePtr2 = new QGraphicsLineItem();
                         noteArray[i].linePtr2->setZValue(0);
                         noteArray[i].noteColor = QColor(Qt::blue);
@@ -183,6 +183,9 @@ void QNoteView::moverNotas() {
                     if (noteArray[i].pos + noteArray[i].duracion > msCounter && noteArray[i].estado == 2) {
                         QPen pen = noteArray[i].linePtr->pen();
                         pen.setColor(Qt::blue);
+                        //--------Mandar signal--------------------
+                        mandarSignal(i);
+                         //---------------------------------------------------------------
                         noteArray[i].linePtr2->setPen(pen);
                         noteArray[i].linePtr2->setLine(noteArray[i].circlePtr->x() + RADIO_NUMEROS, noteArray[i].linePtr->y(), noteArray[i].linePtr->x() + PX_POR_UPD * noteArray[i].duracion, noteArray[i].linePtr->y());
                         scene->update(noteArray[i].linePtr2->boundingRect());
@@ -195,6 +198,9 @@ void QNoteView::moverNotas() {
                         noteArray[i].noteColor = QColor(Qt::green);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         noteArray[i].estado = 1;
+                        //--------Mandar signal--------------------
+                        mandarSignal(i);
+                         //---------------------------------------------------------------
                         delete noteArray[i].linePtr2;
                         noteArray[i].linePtr2 = nullptr;
                         scene->update(noteArray[i].circlePtr->boundingRect());
@@ -207,6 +213,9 @@ void QNoteView::moverNotas() {
                         noteArray[i].noteColor = QColor(Qt::red);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         noteArray[i].estado = -1;
+                        //--------Mandar signal--------------------
+                        mandarSignal(i);
+                         //---------------------------------------------------------------
                         delete noteArray[i].linePtr2;
                         noteArray[i].linePtr2 = nullptr;
                         scene->update(noteArray[i].circlePtr->boundingRect());
@@ -232,7 +241,12 @@ void QNoteView::moverNotas() {
     msCounter++;
 
 }
-
+void QNoteView:: mandarSignal(int i){
+    mostrar.nro=noteArray[i].nro;
+    mostrar.cuerda=noteArray[i].cuerda;
+    mostrar.estado=noteArray[i].estado;
+    emit monitoreoSignal();
+}
 void QNoteView::moverNota(nota & refNota) {
     if (refNota.duracion > 0) {
         if (refNota.duracion + refNota.pos > msCounter && refNota.pos < msCounter && refNota.estado == 2) {
