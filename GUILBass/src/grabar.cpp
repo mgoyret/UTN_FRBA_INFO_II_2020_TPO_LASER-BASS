@@ -137,8 +137,13 @@ uint8_t Grabar::guardarCancion( void )
     }
     #endif
 
-    //Pedir nombre y verificar que no exista
-    songFile.setFileName(SONG_FILE_NAME);
+    //Estas tres lineas son porque tengo que poner el nombre con el directorio
+    QString nombre;
+    nombre.append("../media/");
+    nombre.append(songName);
+    nombre.append(".csv");
+
+    songFile.setFileName(nombre);
     if(songFile.open(QFile::WriteOnly |QFile::Truncate))
     {
         QTextStream out(&songFile);
@@ -233,10 +238,6 @@ void Grabar::on_PBrec_clicked()
     ui->PBrec->setEnabled(false);
     ui->PBfinRec->setEnabled(true);
 
-    DialogGrabar wDialog;
-    wDialog.exec();
-
-
     grabacion = ON;
     inicializar();
     iniciarTimer();
@@ -264,7 +265,8 @@ void Grabar::on_PBfinRec_clicked()
     }else
         QMessageBox::critical(this, "ERROR", "Ocurrio un error inesperado [on_PBfinRed_clicked()]");
 
-    ui->PBrec->setEnabled(true);
+    ui->lineEditNombre->setEnabled(true);
+    ui->PBnombre->setEnabled(true);
 }
 
 /**
@@ -308,7 +310,7 @@ void Grabar::validarDatos() {
     datoAProcesar.resize(2);
     while (cant > 1)
     {
-        if (!(bufferSerie[0] & 0x50))
+        if (!(bufferSerie[0]>>4 & ~(INICIO_TRAMA)))
         {
             if (cant == 1) break;
             datoAProcesar.append(bufferSerie[0]);
@@ -322,3 +324,41 @@ void Grabar::validarDatos() {
         }
     }
 }
+
+void Grabar::on_PBnombre_clicked()
+{
+    if( ui->lineEditNombre->text() != "" )
+    {
+        if ( checkName() )
+        {
+            songName = auxName;
+            ui->lineEditNombre->setDisabled(true);
+            ui->PBnombre->setDisabled(true);
+            ui->PBrec->setEnabled(true);
+        }else
+        {
+            QMessageBox::critical(this, "Atencion", "Nombre en uso");
+            ui->lineEditNombre->setText("Ingrese Nombre");
+        }
+    }
+}
+
+uint8_t Grabar::checkName( void )
+{
+    uint8_t res = TRUE;
+    QStringList lista = QDir("../media").entryList();
+    for(uint8_t i=0; i<lista.size(); i++)
+    {
+        if( lista.at(i) == auxName )
+            res = FALSE;
+        qDebug() << lista.at(i);
+    }
+    return res;
+}
+
+void Grabar::on_lineEditNombre_textChanged(const QString &arg1)
+{
+    auxName = arg1;
+}
+
+

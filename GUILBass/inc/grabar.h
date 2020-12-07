@@ -11,8 +11,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QDebug>
-
-#include <dialoggrabar.h>
+#include <QDir>
 
 #define DEBUG
 
@@ -93,6 +92,7 @@ public:
     uint8_t tramaOk( unsigned char* );
     uint8_t tramaInfo( unsigned char* );
     void validarDatos(void);
+    uint8_t checkName( void );
 
 private slots:
     void on_PBrec_clicked( void );
@@ -101,16 +101,22 @@ private slots:
     void puertoSerieRcv_handler( void );
 
 
+    void on_PBnombre_clicked();
+
+    void on_lineEditNombre_textChanged(const QString &arg1);
+
 private:
     Ui::Grabar  *ui;
     uint8_t     grabacion; //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
-    uint8_t        notaTocada;
+    uint8_t     notaTocada;
     uint8_t     status;
     QFile       songFile;
+    QString     songName, auxName;
     songBuffer  recBuf;
     QSerialPort *puerto;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
-    QByteArray bufferSerie; //para lo de felipe
+    QByteArray  bufferSerie; //para lo de felipe
+
 
 };
 

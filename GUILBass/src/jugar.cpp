@@ -19,9 +19,9 @@ Jugar::Jugar(QWidget *parent) :
           15---21   Cuerda 3
           22---28   Cuerda 4*/
           //checkear lo de cuerda y nota esta bien
-        int cuerda =listaNota[i].toInt()/4;
-        int nota= listaNota[i].toInt()-7*cuerda;
-        agregarNota(nota,cuerda, int posTemporal, int duracion = 0);
+        //int cuerda =listaNota[i].toInt()/4;
+        //int nota= listaNota[i].toInt()-7*cuerda;
+        //agregarNota(nota,cuerda, int posTemporal, int duracion = 0);
         i++;
       }
 }
