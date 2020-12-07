@@ -12,6 +12,7 @@ QNoteView::QNoteView(QWidget *parent) : QGraphicsView(parent){
 
     //modifico el borde de la graphicsview y la hago transparente
     //esto es CSS (lo que se usa en pags web)
+
     this->setStyleSheet("border:0px; background:transparent");
 
 }
