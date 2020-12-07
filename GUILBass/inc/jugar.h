@@ -6,8 +6,10 @@
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
+#include "qguitarview.h"
 #include "dialogjugar.h"
 #include "inc/qnoteview.h"
+#include "parserpuntaje.h"
 #include <clasemidi.h>
 #define DEBUG
 
@@ -68,11 +70,21 @@ public:
 
 private slots:
     void on_datosRecibidos();
+    void monitoreoPuntos();
+<<<<<<< Updated upstream
+=======
+    void on_horizontalSlider_rangeChanged(int min, int max);
+
+    void on_lineEdit_returnPressed();
+
+    void on_lineEdit_textChanged(const QString &arg1);
+>>>>>>> Stashed changes
 
 private:
     Ui::Jugar *ui;
     uint8_t notaTocada;
     int posicion = 0;
+    ParserPuntaje puntajes;
     QString nombreCancion;
     QSerialPort *puerto;
     QStringList listaNota;
@@ -80,6 +92,7 @@ private:
     //funcion para el line_edit Puntos
     QByteArray bufferSerie;
     ClaseMIDI puertoMidi;
+
     void validarDatos();
     void procesarNotaATocar(QByteArray);
 

@@ -38,7 +38,6 @@ public:
     inline void setColorNotaApagada(QColor c) {noteColorOff = c;};
     inline void setColorCuerdaApagada(QColor c) {stringColorOff = c;};
 
-
 private:
     QGraphicsScene * scene;
     QColor noteColorOn;
