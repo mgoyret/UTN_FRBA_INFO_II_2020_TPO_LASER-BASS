@@ -69,27 +69,6 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
 }
 
-
-void Tocar::puertoSerieRcv_handler( void )
-{
-    uint8_t cant = 0;
-    QByteArray datos;
-
-    #ifdef DEBUG
-    qDebug() << "Datos recibidos ";
-    #endif
-    cant = (int)puerto->bytesAvailable();
-
-
-    datos.resize(cant);
-    puerto->read(datos.data(), cant);
-
-    //prosesar data recibida y transformarla a un char o uint8_t
-    //pros.nota devuelve el numero de nota 1-28 o 29-56
-    //procesarNota(datos);
-    setNotaCorrecta();
-}
-
 /*
 void Tocar::procesarNota( QByteArray datos )
 {

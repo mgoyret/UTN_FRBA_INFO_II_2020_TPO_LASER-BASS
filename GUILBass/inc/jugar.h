@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QTextStream>
 #include "dialogjugar.h"
+#include "inc/qnoteview.h"
+#include <clasemidi.h>
 #define DEBUG
 
 #define	TRUE_    1
@@ -58,14 +60,14 @@ public:
     ~Jugar();
     void setPuerto( QSerialPort* );
     void procesarNota( QByteArray );
-    uint8_t tramaOk( QByteArray );
-    uint8_t tramaInfo( QByteArray );
+    uint8_t tramaOk(unsigned char* );
+    uint8_t tramaInfo( unsigned char* );
     void LeerArchivo(void);
     void setNotaCorrecta(void);
     void setNotaIncorrecta(void);
 
-
-
+private slots:
+    void on_datosRecibidos();
 
 private:
     Ui::Jugar *ui;
@@ -76,9 +78,10 @@ private:
     QStringList listaNota;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //funcion para el line_edit Puntos
-
-private slots:
-    void puertoSerieRcv_handler( void );
+    QByteArray bufferSerie;
+    ClaseMIDI puertoMidi;
+    void validarDatos();
+    void procesarNotaATocar(QByteArray);
 
 };
 

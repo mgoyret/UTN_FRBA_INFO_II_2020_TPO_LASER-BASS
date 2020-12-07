@@ -10,20 +10,37 @@ Jugar::Jugar(QWidget *parent) :
     DialogJugar dSelecionCancion(this);
       while(dSelecionCancion.exec() == QDialog::Accepted);
       nombreCancion=dSelecionCancion.getNombreCancion();
+      //esto sino hacer un boton de empezar y que en el click se ppone
       //leo el archivo y lo cargo a un array
       LeerArchivo();
       int i=0;
+      int cuerda,nota,cant=0,duracion=0;
+      QNoteView notaView(this);
       while(i<listaNota.size()){
           /*1----7 Cuerda 1
           8----14   Cuerda 2
           15---21   Cuerda 3
           22---28   Cuerda 4*/
-          //checkear lo de cuerda y nota esta bien
-        int cuerda =listaNota[i].toInt()/4;
-        int nota= listaNota[i].toInt()-7*cuerda;
-        agregarNota(nota,cuerda, int posTemporal, int duracion = 0);
+          //las cuerdas van d e0 a 3 y las notas de 0 a 6
+         cuerda =(listaNota[i].toInt()/4)-1;
+         nota= (listaNota[i].toInt()-7*cuerda)-1;
+        //el array de notas tiene q ser igual al del archivo xq
+        //sino es posible perder info
+         while(listaNota[i]==listaNota[i+1]){
+            cant++;
+            i++;
+         }
+        if(!cant){
+           duracion=0;
+        }else{
+            duracion=cant;
+            i-=cant;
+            cant=0;
+        }
+        notaView.agregarNota(nota,cuerda,i,duracion);
         i++;
       }
+      notaView.startTiempo();
 }
 Jugar::~Jugar()
 {
@@ -33,58 +50,46 @@ Jugar::~Jugar()
 void Jugar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
-    conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(puertoSerieRcv_handler()));
+    conection = connect(puerto, SIGNAL(readyRead()), this,  SLOT(on_datosRecibidos() ));
 }
-
-void Jugar::puertoSerieRcv_handler( void )
-{
-    uint8_t cant = 0;
-    QByteArray datos;
-
-    #ifdef DEBUG
-    qDebug() << "Datos recibidos ";
-    #endif
-    cant = (int)puerto->bytesAvailable();
-
-
-    datos.resize(cant);
-    puerto->read(datos.data(), cant);
-
-    /* prosesar data recibida y transformarla a un char o uint8_t
-     * pros.nota devuelve el numero de nota 1-28 o 29-56*/
-    procesarNota(datos);
-    LeerArchivo();
+void Jugar::on_datosRecibidos() {
+    bufferSerie.append(puerto->readAll());
+    validarDatos();
 }
-
-void Jugar::procesarNota( QByteArray datos )
-{
-    char nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-//    unsigned char data[2];
-
-    /////// ESTO NO SE SI VA, ES PORQ RECIBO UNSIGNED PERO QT LEE SIGNED
-
-//    data[0] = (datos[0] < (char)0)?(datos[0] + 256):datos[0];
-//    data[1] = (datos[1] < (char)0)?(datos[1] + 256):datos[1];
-
-    ///////////////////////////////////////////////////////////////
-    if( tramaOk(datos) )
-    {
-        #ifdef DEBUG
-        qDebug()<<"Trama correcta";
-        #endif
-        nota = tramaInfo(datos); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
-
-        /* notaTocada podra tomar valores del 0 al 56. Entre -28 y 28 */
-        if( (nota < -NOTA_MAX_) || (nota > NOTA_MAX_) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
-            notaTocada = SIN_NOTA_;
-        else
-            notaTocada = nota;
+void Jugar::validarDatos() {
+    int cant = bufferSerie.size();
+    QByteArray datoAProcesar;
+    datoAProcesar.clear();
+    while (cant > 1) {
+        if (bufferSerie[0] & 0xa0) {
+            if (cant == 1) break;
+            datoAProcesar.append(bufferSerie[0]);
+            datoAProcesar.append(bufferSerie[1]);
+            bufferSerie.remove(0, 2);
+            procesarNotaATocar(datoAProcesar);
+            datoAProcesar.clear();
+        } else {
+            bufferSerie.remove(0, 1);
+        }
+        cant = bufferSerie.size();
     }
-    #ifdef DEBUG
-    else
-        qDebug()<<"trama incorrecta";
-    #endif
 }
+
+void Jugar::procesarNotaATocar(QByteArray dato) {
+    char nota = 0;
+    if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
+    nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
+    nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
+    qDebug() << (uint8_t)nota;
+    //set color guitar
+    if (nota < 0) {
+        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+    } else {
+        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+    }
+}
+
+
 
 /**
 *	\fn         void tramaOk(QByteArray datos)
@@ -92,7 +97,7 @@ void Jugar::procesarNota( QByteArray datos )
 *	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
 *	\author     Marcos Goyret
 */
-uint8_t Jugar::tramaOk( QByteArray data)
+uint8_t Jugar::tramaOk(unsigned char* data)
 {
     uint8_t res = ERROR_;
 
@@ -109,7 +114,7 @@ uint8_t Jugar::tramaOk( QByteArray data)
 *               byte, y en los primeros 4 bits del segundo byte
 *	\author     Marcos Goyret
 */
-uint8_t Jugar::tramaInfo( QByteArray data)
+uint8_t Jugar::tramaInfo( unsigned char* data)
 {
     uint8_t res=0;
 
@@ -229,7 +234,7 @@ void Jugar::LeerArchivo(void){
     }
     cancion.close();
     }
-   /* Ejemplo uso QStringList
+    Ejemplo uso QStringList
       QStringList str = {"Hola", "todo", "bien"};
       ui->textEdit->setText(str[2]);
    */
