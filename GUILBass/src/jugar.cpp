@@ -21,12 +21,10 @@ Jugar::Jugar(QWidget *parent) :
           8----14   Cuerda 2
           15---21   Cuerda 3
           22---28   Cuerda 4*/
-<<<<<<< HEAD
           //checkear lo de cuerda y nota esta bien
         //int cuerda =listaNota[i].toInt()/4;
         //int nota= listaNota[i].toInt()-7*cuerda;
         //agregarNota(nota,cuerda, int posTemporal, int duracion = 0);
-=======
           //las cuerdas van d e0 a 3 y las notas de 0 a 6
          cuerda =(listaNota[i].toInt()/4)-1;
          nota= (listaNota[i].toInt()-7*cuerda)-1;
@@ -44,7 +42,10 @@ Jugar::Jugar(QWidget *parent) :
             cant=0;
         }
         notaView.agregarNota(nota,cuerda,i,duracion);
->>>>>>> 26e2ed66cbf925dc6b3c04a037e976df4ddbc749
+        int cuerda =listaNota[i].toInt()/4;
+        int nota= listaNota[i].toInt()-7*cuerda;
+        //agregarNota(nota,cuerda, int posTemporal, int duracion = 0);
+
         i++;
       }
       notaView.startTiempo();

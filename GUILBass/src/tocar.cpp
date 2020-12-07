@@ -11,6 +11,7 @@ Tocar::Tocar(QWidget *parent) :
     qDebug() << puertoMidi.getNombreSalida(1) << "\n" << puertoMidi.getNombresSalidas();
     qDebug() << puertoMidi.inicializarGS();
     qDebug() << puertoMidi.enviarNoteOn(0, 64, 127);
+    ui->graphicsView->setColorNotaApagada(Qt::black);
 }
 
 Tocar::~Tocar()
@@ -169,16 +170,34 @@ void Tocar::setNotaCorrecta(void)
     }
 }
 
-void Tocar::mostrarNota(uint8_t nota) {
+void Tocar::mostrarNota(char nota) {
+    int cuerdaYNota = notaACuerdaYNota(std::abs(nota));
+    if (nota > 0) {
+        if ((cuerdaYNota & 0x000000ff) != 0xff) ui->graphicsView->setNotaPrendida(cuerdaYNota & 0x000000ff);
+        ui->graphicsView->setCuerdaPrendida(cuerdaYNota >> 8);
+    } else {
+        if ((cuerdaYNota & 0x000000ff) != 0xff) ui->graphicsView->setNotaApagada(cuerdaYNota & 0x000000ff);
+        ui->graphicsView->setCuerdaApagada(cuerdaYNota >> 8);
+    }
 
+    qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
 }
 
 int Tocar::notaACuerdaYNota(uint8_t nota) {
     int ret = 0, cuerda = 0, notaConv = 0;
-    cuerda = nota / 7;
-    notaConv = 7 - ((nota - 1) % 7);
-    ret |= nota << 8;
-
+    nota--;
+    notaConv = nota % 7;
+    if (notaConv) {
+        cuerda = nota / 7;
+        notaConv = (6 - notaConv) + (6 * cuerda);
+    } else {
+        cuerda = nota / 7;
+        notaConv = 0xff;
+    }
+    qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
+    ret |= notaConv;
+    ret |= cuerda << 8;
+    return ret;
 }
 
 void Tocar::on_datosRecibidos() {
@@ -191,7 +210,7 @@ void Tocar::validarDatos() {
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {
-        if (bufferSerie[0] & 0xa0) {
+        if (!(bufferSerie[0] & 0x50)) {
             if (cant == 1) break;
             datoAProcesar.append(bufferSerie[0]);
             datoAProcesar.append(bufferSerie[1]);
@@ -211,6 +230,7 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     qDebug() << (uint8_t)nota;
+    mostrarNota(nota);
     if (nota < 0) {
         qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {
