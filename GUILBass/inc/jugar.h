@@ -71,14 +71,6 @@ public:
 private slots:
     void on_datosRecibidos();
     void monitoreoPuntos();
-<<<<<<< Updated upstream
-=======
-    void on_horizontalSlider_rangeChanged(int min, int max);
-
-    void on_lineEdit_returnPressed();
-
-    void on_lineEdit_textChanged(const QString &arg1);
->>>>>>> Stashed changes
 
 private:
     Ui::Jugar *ui;

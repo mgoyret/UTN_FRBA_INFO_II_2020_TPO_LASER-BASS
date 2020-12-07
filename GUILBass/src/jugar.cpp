@@ -13,7 +13,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
       LeerArchivo();
       //cargar archivo
       ParserPuntaje a;
-      cargarDesdeArchivo();
+      a.cargarDesdeArchivo();
       int i=0;
       int cuerda,nota,cant=0,duracion=0;
       QNoteView notaView(this);
@@ -45,11 +45,8 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
       notaView.startTiempo();
 }
 void Jugar::monitoreoPuntos() {
-<<<<<<< Updated upstream
     getCuerdaMostrar(void);
     getNroMostrar(void);
-=======
->>>>>>> Stashed changes
     //muestro qguitarview y puntos
 }
 Jugar::~Jugar()
