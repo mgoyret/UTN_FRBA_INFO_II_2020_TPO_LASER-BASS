@@ -10,12 +10,10 @@ Jugar::Jugar(QWidget *parent) :
     DialogJugar dSelecionCancion(this);
       while(dSelecionCancion.exec() == QDialog::Accepted);
       nombreCancion=dSelecionCancion.getNombreCancion();
-      //esto sino hacer un boton de empezar y que en el click se ppone
-      //leo el archivo y lo cargo a un array
       LeerArchivo();
       //cargar archivo
       ParserPuntaje a;
-      cargarDesdeArchivo();
+      a.cargarDesdeArchivo();
       int i=0;
       int cuerda,nota,cant=0,duracion=0;
       QNoteView notaView(this);
@@ -27,8 +25,7 @@ Jugar::Jugar(QWidget *parent) :
           //las cuerdas van d e0 a 3 y las notas de 0 a 6
          cuerda =(listaNota[i].toInt()/4)-1;
          nota= (listaNota[i].toInt()-7*cuerda)-1;
-        //el array de notas tiene q ser igual al del archivo xq
-        //sino es posible perder info
+        //el array de notas tiene q ser igual al del archivo xq sino es posible perder info
          while(listaNota[i]==listaNota[i+1]){
             cant++;
             i++;
@@ -45,13 +42,12 @@ Jugar::Jugar(QWidget *parent) :
       }
       connect(puerto, SIGNAL(monitoreoSignal()), this, SLOT(monitoreoPuntos()));
       notaView.startTiempo();
+      ui->graphicsView->setColorNotaApagada(Qt::black);
 }
 void Jugar::monitoreoPuntos() {
-<<<<<<< Updated upstream
+
     getCuerdaMostrar(void);
     getNroMostrar(void);
-=======
->>>>>>> Stashed changes
     //muestro qguitarview y puntos
 }
 Jugar::~Jugar()
