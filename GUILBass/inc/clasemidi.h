@@ -31,18 +31,18 @@ class ClaseMIDI {
 
     //Salida
     unsigned int getSalidasDisponibles();
-    QString getNombreSalida(unsigned int);
+    QString getNombreSalida(unsigned int n);
     QStringList getNombresSalidas();
-    uint8_t abrirPuerto(unsigned int);
+    uint8_t abrirPuerto(unsigned int port);
     uint8_t inicializarGS();
 
 
     //Funciones para mensajes comunes
-    uint8_t enviarControlChange(uint8_t, uint8_t, uint8_t);
-    uint8_t enviarProgramChange(uint8_t, uint8_t);
-    uint8_t enviarNoteOn(uint8_t, uint8_t, uint8_t);
-    uint8_t enviarNoteOff(uint8_t, uint8_t);
-    uint8_t enviarMensaje(QByteArray &);
+    uint8_t enviarControlChange(uint8_t ch, uint8_t byte_1, uint8_t byte_2);
+    uint8_t enviarProgramChange(uint8_t ch, uint8_t prgm);
+    uint8_t enviarNoteOn(uint8_t ch, uint8_t note, uint8_t vel);
+    uint8_t enviarNoteOff(uint8_t ch, uint8_t note);
+    uint8_t enviarMensaje(QByteArray & msg);
 
 };
 

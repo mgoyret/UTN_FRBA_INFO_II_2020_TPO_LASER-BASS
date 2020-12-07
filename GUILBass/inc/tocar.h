@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <clasemidi.h>
 //#include "qguitarview.h"
 
 #define DEBUG
@@ -67,17 +68,19 @@ public:
 
 private slots:
     void on_datosRecibidos();
-    void puertoSerieRcv_handler( void );
+    void puertoSerieRcv_handler();
 
 
 private:
     Ui::Tocar *ui;
-    uint8_t notaTocada;
+    char notaTocada;
     QSerialPort *puerto;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //void setColor(const char * estado);
     QByteArray bufferSerie;
+    ClaseMIDI puertoMidi;
     void validarDatos();
+    void procesarNotaATocar(QByteArray);
 };
 
 #endif // TOCAR_H
