@@ -6,7 +6,6 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
     ui(new Ui::Jugar)
 {
     ui->setupUi(this);
-
     nombreCancion = nombre;
       LeerArchivo();
       //cargar archivo
@@ -42,6 +41,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
       ui->graphicsView_2->startTiempo();
       ui->graphicsView->setColorNotaApagada(Qt::black);
 }
+
 
 Jugar::~Jugar()
 {

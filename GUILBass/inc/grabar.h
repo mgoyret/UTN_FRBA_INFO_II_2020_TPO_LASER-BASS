@@ -14,7 +14,7 @@
 #include <QDir>
 #include <clasemidi.h>
 
-#define DEBUG
+//#define DEBUG
 
 #define	TRUE    1
 #define	FALSE   0
@@ -108,7 +108,7 @@ private slots:
 private:
     Ui::Grabar  *ui;
     uint8_t     grabacion; //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
-    uint8_t     notaTocada;
+    char     notaTocada;
     uint8_t     status;
     QFile       songFile;
     QString     songName, auxName;
