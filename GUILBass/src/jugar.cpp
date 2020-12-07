@@ -248,5 +248,6 @@ void Jugar::LeerArchivo(void){
     Ejemplo uso QStringList
       QStringList str = {"Hola", "todo", "bien"};
       ui->textEdit->setText(str[2]);
-   */
-/* }*/
+
+ }
+*/

@@ -137,8 +137,13 @@ uint8_t Grabar::guardarCancion( void )
     }
     #endif
 
-    //Pedir nombre y verificar que no exista
-    songFile.setFileName(SONG_FILE_NAME);
+    //Estas tres lineas son porque tengo que poner el nombre con el directorio
+    QString nombre;
+    nombre.append("../media/");
+    nombre.append(songName);
+    nombre.append(".csv");
+
+    songFile.setFileName(nombre);
     if(songFile.open(QFile::WriteOnly |QFile::Truncate))
     {
         QTextStream out(&songFile);
@@ -225,7 +230,7 @@ uint8_t Grabar::tramaInfo( unsigned char* data)
     return res;
 }
 
-/////////////////////////     PRIVATE SLOTS    //////////////////////////////////////////////////////
+/////////////////////////     PRIVATE SLOTS      //////////////////////////////////////////////////////
 
 //boton iniciar grabacion
 void Grabar::on_PBrec_clicked()
@@ -260,7 +265,8 @@ void Grabar::on_PBfinRec_clicked()
     }else
         QMessageBox::critical(this, "ERROR", "Ocurrio un error inesperado [on_PBfinRed_clicked()]");
 
-    ui->PBrec->setEnabled(true);
+    ui->lineEditNombre->setEnabled(true);
+    ui->PBnombre->setEnabled(true);
 }
 
 /**
@@ -301,17 +307,58 @@ void Grabar::validarDatos() {
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
     datoAProcesar.clear();
-    while (cant > 1) {
-        if (bufferSerie.at(0) & 0xa0) {
+    datoAProcesar.resize(2);
+    while (cant > 1)
+    {
+        if (!(bufferSerie[0]>>4 & ~(INICIO_TRAMA)))
+        {
             if (cant == 1) break;
-            datoAProcesar.append(bufferSerie.at(0));
-            datoAProcesar.append(bufferSerie.at(1));
+            datoAProcesar.append(bufferSerie[0]);
+            datoAProcesar.append(bufferSerie[0]);
             bufferSerie.remove(0, 2);
             procesarNota(datoAProcesar);
-        } else if (bufferSerie.at(0) & 0x05) {
+        } else if (bufferSerie[0] & 0x05) {
             bufferSerie.remove(0,1);
         } else {
             bufferSerie.remove(0,1);
         }
     }
 }
+
+void Grabar::on_PBnombre_clicked()
+{
+    if( ui->lineEditNombre->text() != "" )
+    {
+        if ( checkName() )
+        {
+            songName = auxName;
+            ui->lineEditNombre->setDisabled(true);
+            ui->PBnombre->setDisabled(true);
+            ui->PBrec->setEnabled(true);
+        }else
+        {
+            QMessageBox::critical(this, "Atencion", "Nombre en uso");
+            ui->lineEditNombre->setText("Ingrese Nombre");
+        }
+    }
+}
+
+uint8_t Grabar::checkName( void )
+{
+    uint8_t res = TRUE;
+    QStringList lista = QDir("../media").entryList();
+    for(uint8_t i=0; i<lista.size(); i++)
+    {
+        if( lista.at(i) == auxName )
+            res = FALSE;
+        qDebug() << lista.at(i);
+    }
+    return res;
+}
+
+void Grabar::on_lineEditNombre_textChanged(const QString &arg1)
+{
+    auxName = arg1;
+}
+
+
