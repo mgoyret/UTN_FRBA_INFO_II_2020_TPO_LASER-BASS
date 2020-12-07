@@ -10,7 +10,6 @@
 #include <QTimer>
 #include <QDebug>
 #include "qguitarview.h"
-#include "qnoteview.h"
 #define ALTO_EXTRA_BARRA_PRESENTE 10
 #define DENOM_MARGEN_BARRA_PRESENTE 5
 #define ANCHO_LINEAS 2
@@ -57,7 +56,8 @@ public:
     void startTiempo();
     void stopTiempo();
     inline int getCuerdaMostrar(void) {return mostrar.cuerda;};
-    inline int getNroMostrar(void) {return mostrar.cuerda;};
+    inline int getNroMostrar(void) {return mostrar.nro};
+    inline int getEstadoMostrar(void) {return mostrar.estado;};
 signals:
     void monitoreoSignal();
 private:
@@ -69,8 +69,6 @@ private:
     int msCounter;
     nota mostrar;
     void moverNota(nota &);
-public signals:
-    void monitoreoSignal();
 private slots:
     void moverNotas();
 
