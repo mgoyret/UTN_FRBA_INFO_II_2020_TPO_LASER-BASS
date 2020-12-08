@@ -7,19 +7,21 @@ DialogPuntajes::DialogPuntajes(QWidget *parent, int puntos) :
 {
     ui->setupUi(this);
     ui->labelNombre->setText("Ingese 3 letras");
-    ui->labelBajo->setDisabled(true);
-    ui->labelMedio_1->setDisabled(true);
-    ui->labelMedio_2->setDisabled(true);
-    ui->labelAlto->setDisabled(true);
+    ui->labelBajo->hide();
+    ui->labelBajo->hide();
+    ui->labelMedio_1->hide();
+    ui->labelMedio_2->hide();
+    ui->labelAlto->hide();
+
     if ( PUNTAJE_BAJO )
-        ui->labelBajo->setEnabled(true);
+        ui->labelBajo->show();
     if ( PUNTAJE_BAJO )
     {
-        ui->labelMedio_1->setEnabled(true);
-        ui->labelMedio_2->setEnabled(true);
+        ui->labelMedio_1->show();
+        ui->labelMedio_2->show();
     }
     if ( PUNTAJE_BAJO )
-        ui->labelAlto->setEnabled(true);
+        ui->labelAlto->show();
 }
 
 DialogPuntajes::~DialogPuntajes()

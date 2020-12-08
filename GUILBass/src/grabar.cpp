@@ -2,9 +2,9 @@
 #include "ui_grabar.h"
 
 /**
-\fn 		Grabar( QWidget* )
-\brief 	    Constructor de la clase
-\details    Inicializa el midi
+*   \fn 		Grabar( QWidget* )
+*   \brief 	    Constructor de la clase
+*   \details    Inicializa el midi
 */
 Grabar::Grabar(QWidget *parent) :
     QDialog(parent),
@@ -13,6 +13,10 @@ Grabar::Grabar(QWidget *parent) :
     ui->setupUi(this);
 }
 
+/**
+*   \fn 		~Grabar( QWidget* )
+*   \brief 	    Destructor de la clase
+*/
 Grabar::~Grabar()
 {
     /* Desconecta el vinculo signal slot del puerto serie que cree en set_puerto()   */
@@ -35,8 +39,8 @@ void Grabar::setPuerto(QSerialPort *puertoExt)
 }
 
 /**
-*	\fn void inicializarMdE( void )
-*	\brief Inicializa variables que haya que inicializar
+*	\fn void inicializar void )
+*	\brief Inicializa la grabacion
 *	\details Se inicializa la primera nota en 0, para salvar el caso en el que se toca en la primera posicion
 * lo cual dificultaria a la hora de jugar con esa cancion, ya que no habria tiempo de ver la nota que haya que tocar
 */
@@ -52,8 +56,8 @@ void Grabar::inicializar( void )
 
 /**
 *	\fn         void iniciarTimer_250ms(void)
-*	\brief      inicializa un timer de 250ms
-*	\details    Inicia un timer que ejecuta el timer handler al terminar
+*	\brief      inicializa un timer periodico
+*	\details    Inicia un timer que ejecuta timer_handler() al terminar
 */
 void Grabar::iniciarTimer()
 {
@@ -87,9 +91,10 @@ void Grabar::guardarNota( void )
 }
 
 /**
-*	\fn         void guardarCancion(void)
-*	\brief      Guarda la cancion grabada, en un archivo
-*	\details    Imprime la informacion contenida en la estructura del tipo songBuffer, en un archivo
+*	\fn 		uint8_t guardarCancion ( void )
+*	\brief 	    Guarda la cancion grabada, en un archivo
+*	\details 	Imprime la informacion contenida en la estructura del tipo songBuffer, en un archivo
+*	\return 	chequeo de errores
 */
 uint8_t Grabar::guardarCancion( void )
 {
@@ -124,6 +129,12 @@ uint8_t Grabar::guardarCancion( void )
     return res;
 }
 
+/**
+*	\fn 		void validarDatos ( void )
+*	\brief 	    Chequea los datos recibidos por el puerto serie
+*	\details 	Chequea inicio y fin de trama, y envia
+*	\return 	chequeo de errores
+*/
 void Grabar::validarDatos() {
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
@@ -144,6 +155,12 @@ void Grabar::validarDatos() {
     }
 }
 
+/**
+*	\fn 		uint8_t guardarCancion ( void )
+*	\brief 	    Guarda la cancion grabada, en un archivo
+*	\details 	Imprime la informacion contenida en la estructura del tipo songBuffer, en un archivo
+*	\return 	chequeo de errores
+*/
 void Grabar::procesarNotaATocar(QByteArray dato) {
     char nota = 0;
     if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
@@ -243,7 +260,7 @@ void Grabar::on_PBfinRec_clicked()
 
 /**
 *	\fn         void timer_250ms_handler(void)
-*	\brief      handler del timer inicializado de 250ms
+*	\brief      handler del timer periodico
 *	\details    ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
 */
 void Grabar::timer_handler( void )

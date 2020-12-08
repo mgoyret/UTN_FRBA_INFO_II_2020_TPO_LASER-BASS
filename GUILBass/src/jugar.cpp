@@ -249,6 +249,9 @@ void Jugar::slotPuntaje()
     estructuraPuntajes.iniciales = dPuntajes.getName();
     estructuraPuntajes.puntaje = puntos;
     dPuntajes.close();
-    puntajes.agregarPuntaje(nombreCancion, estructuraPuntajes);   
+    puntajes.agregarPuntaje(nombreCancion, estructuraPuntajes);
+    puntajes.guardarPuntajes();
+    puntajes.guardarArchivo();
+    hide();//cierro ventana jugar
 }
 
