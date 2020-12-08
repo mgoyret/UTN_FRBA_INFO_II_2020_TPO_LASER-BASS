@@ -7,9 +7,6 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
 {
     ui->setupUi(this);
     bufferSerie.clear();
-    qDebug() << puertoMidi.abrirPuerto(0);
-    qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
-    qDebug() << puertoMidi.inicializarGS();
     nombreCancion = nombre;
     nombreCancion=nombreCancion.prepend("../media/");
     qDebug()<< "el nombre es:"<<nombreCancion;
@@ -182,11 +179,11 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     qDebug() << (uint8_t)nota;
     if (nota < 0) {
-        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
         nota=-nota;
         ui->graphicsView_2->soltarNota(nota/7,nota-7*(nota/7)-1);
     } else {
-        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        qDebug() << puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
         ui->graphicsView_2->tocarNota(nota/7,nota-7*(nota/7)-1);
     }
 }

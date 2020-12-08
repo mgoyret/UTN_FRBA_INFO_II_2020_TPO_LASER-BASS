@@ -35,7 +35,7 @@
 
 #define SONG_FILE_NAME "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
-#define TIMER_TIME 500
+#define TIMER_TIME 100
 
 
 //////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
@@ -84,6 +84,7 @@ public:
     ~Grabar( void );
 
     void setPuerto( QSerialPort* );
+    void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
     void inicializar( void );
     void iniciarTimer( void );
     void monitoreo( void );
@@ -110,7 +111,7 @@ private slots:
 private:
     Ui::Grabar  *ui;
     uint8_t     grabacion; //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
-    char     notaTocada;
+    char        notaTocada;
     uint8_t     status;
     QFile       songFile;
     QString     songName, auxName;
@@ -118,7 +119,7 @@ private:
     QSerialPort *puerto;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     QByteArray  bufferSerie; //para lo de felipe
-    ClaseMIDI   puertoMidi;
+    ClaseMIDI   *puertoMidi;
 
 
 };

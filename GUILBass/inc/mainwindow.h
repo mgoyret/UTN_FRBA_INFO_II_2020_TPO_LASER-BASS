@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <clasemidi.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,6 +32,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSerialPort *puerto;
+    ClaseMIDI *puertoMidi;
     void enumerarPuertos();
 };
 #endif // MAINWINDOW_H
