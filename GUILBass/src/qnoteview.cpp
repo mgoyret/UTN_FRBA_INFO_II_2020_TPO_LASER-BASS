@@ -244,8 +244,8 @@ void QNoteView::moverNotas() {
     counter->setPlainText(QString::number(msCounter * BASE_TIEMPO_MS) + QString(" ms / ") + QString::number(posMinAMostrar * BASE_TIEMPO_MS) + QString(" ms"));
     scene->update(counter->boundingRect());
     msCounter++;
-    qDebug()<<msCounter;
-    if(msCounter==tam){
+   // qDebug()<<msCounter;
+    if(msCounter==(tam+DELAY_NOTA)){
         emit puntajeSignal();
     }
 
@@ -273,19 +273,20 @@ void QNoteView::moverNota(nota & refNota) {
 
 bool QNoteView::tocarNota(int nroNota, int nroCuerda) {
     bool ret = false;
-    int i = 0;
+    int i;
+
     for (i=0; i<noteArray.size(); i++) {
-       qDebug()<<"ARRAY C:"<<noteArray[i].cuerda<<"N:"<<noteArray[i].nro<<"LLEGA C:"<<nroCuerda<<"N:"<<nroNota;
-        if (noteArray[i].nro == nroNota && noteArray[i].cuerda == nroCuerda) {
-            ret = true;
+        //qDebug()<<"POS"<<noteArray[i].pos<< "ARRAY C:"<<noteArray[i].cuerda<<"N:"<<noteArray[i].nro<<"LLEGA C:"<<nroCuerda<<"N:"<<nroNota;
+         if (noteArray[i].nro == nroNota && noteArray[i].cuerda == nroCuerda) {
+             ret = true;
             break;
         }
     }
         //qDebug()<<"tamano"<<noteArray.size()<<"indice"<<(i-1);
         //sino se va de rango no se xq
-        if(noteArray.size() && i>0){
-        if (noteArray[i-1].estado == 3) {
-            noteArray[i-1].estado = 4;
+        if(noteArray.size() && i>-1 && i<noteArray.size()){
+        if (noteArray[i].estado == 3) {
+            noteArray[i].estado = 4;
             qDebug()<<"ESTOY EN ESTADO 4";
          }
     }
@@ -333,7 +334,7 @@ void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal, int dur
 
     if (posTemporal > msCounter) {
         if (nroNota > -1 && nroNota < 7) {
-            if (nroCuerda > -1 && nroCuerda < 3) {
+            if (nroCuerda > -1 && nroCuerda < 4) {
                 aux.nro = nroNota;
                 aux.cuerda = nroCuerda;
                 aux.pos = posTemporal;
@@ -353,7 +354,7 @@ void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal, int dur
             }
         }
     }
-   // if(noteArray.size()>0)
-       // qDebug()<<"pos"<<noteArray[noteArray.size()-1].pos<<"nota"<<noteArray[noteArray.size()-1].nro<<"cuerda"<<noteArray[noteArray.size()-1].cuerda<<"duracion"<<noteArray[noteArray.size()-1].duracion;
+    if(noteArray.size()>0)
+       qDebug()<<"pos"<<noteArray[noteArray.size()-1].pos<<"nota"<<noteArray[noteArray.size()-1].nro<<"cuerda"<<noteArray[noteArray.size()-1].cuerda<<"duracion"<<noteArray[noteArray.size()-1].duracion;
 }
 
