@@ -8,22 +8,14 @@ DialogPuntajes::DialogPuntajes(QWidget *parent, int puntos) :
     ui->setupUi(this);
 
     ui->labelNombre->setText("Ingese 3 letras");
-    ui->labelBajo->setVisible(false);
-    ui->labelBajo->setVisible(false);
-    ui->labelMedio_1->setVisible(false);
-    ui->labelMedio_2->setVisible(false);
-    ui->labelAlto->setVisible(false);
-
+    ui->labelMensaje->setText("");
 
     if ( PUNTAJE_BAJO )
-        ui->labelBajo->setVisible(true);
+        ui->labelMensaje->setText("Hoy no es tu dia, sigue practicando!");
     if ( PUNTAJE_BAJO )
-    {
-        ui->labelMedio_1->setVisible(true);
-        ui->labelMedio_2->setVisible(true);
-    }
+        ui->labelMensaje->setText("Bien jugado, pero hay mejores formas\nde rascarce la oreja...");
     if ( PUNTAJE_BAJO )
-        ui->labelAlto->show();
+        ui->labelMensaje->setText("EXCELENTE! ya podes tocar para el duko");
 }
 
 DialogPuntajes::~DialogPuntajes()

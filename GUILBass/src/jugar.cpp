@@ -6,29 +6,26 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
     ui(new Ui::Jugar)
 {
     ui->setupUi(this);
+
     bufferSerie.clear();
     nombreCancion = nombre;
     nombreCancion=nombreCancion.prepend("../media/");
-    qDebug()<< "el nombre es:"<<nombreCancion;
-    qDebug() << puertoMidi.abrirPuerto(0);
-       qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
-       qDebug() << puertoMidi.inicializarGS();
-      LeerArchivo();
-      ui->graphicsView_2->tam=listaNota.size();
-      int i;
-      /*for(i=0;i<listaNota.size();i++){
-          qDebug()<<"lista["<<i<<"] ="<<listaNota[i].toInt();
-      }*/
-       qDebug()<<"size de lista"<<listaNota.size();
-      //cargar archivo
-      puntajes.cargarDesdeArchivo();
-      //arranco desde 1 xq la posicion 0 es imposible menos Tom Cruise
-      i=1;
-      int cuerda,nota,cant=0,duracion=0;
+    LeerArchivo();
+    ui->graphicsView_2->tam=listaNota.size();
+    int i;
+    /*for(i=0;i<listaNota.size();i++){
+        qDebug()<<"lista["<<i<<"] ="<<listaNota[i].toInt();
+    }*/
+     qDebug()<<"size de lista"<<listaNota.size();
+    //cargar archivo
+    puntajes.cargarDesdeArchivo();
+    //arranco desde 1 xq la posicion 0 es imposible menos Tom Cruise
+    i=1;
+    int cuerda,nota,cant=0,duracion=0;
 
 
 
-      while(i<listaNota.size()-1){
+    while(i<listaNota.size()-1){
 
         cuerda =(listaNota[i].toInt()-1)/7;
         nota=(std::abs(listaNota[i].toInt())-7*cuerda-1);
