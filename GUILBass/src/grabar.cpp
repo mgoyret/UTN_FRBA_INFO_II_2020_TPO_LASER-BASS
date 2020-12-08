@@ -131,7 +131,7 @@ uint8_t Grabar::guardarCancion( void )
     return res;
 }
 
-void Grabar::validarDatos () {
+void Grabar::validarDatos() {
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
     datoAProcesar.clear();

@@ -6,6 +6,10 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
     ui(new Ui::Jugar)
 {
     ui->setupUi(this);
+    bufferSerie.clear();
+    qDebug() << puertoMidi.abrirPuerto(0);
+    qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
+    qDebug() << puertoMidi.inicializarGS();
     nombreCancion = nombre;
     nombreCancion=nombreCancion.prepend("../media/");
     qDebug()<< "el nombre es:"<<nombreCancion;
@@ -157,10 +161,10 @@ void Jugar::validarDatos() {
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {
-        if (bufferSerie[0] & 0xa0) {
+        if (bufferSerie[0] & 0x50) {
             if (cant == 1) break;
-            datoAProcesar.append(bufferSerie[0]);
-            datoAProcesar.append(bufferSerie[1]);
+            datoAProcesar.append(bufferSerie.at(0));
+            datoAProcesar.append(bufferSerie.at(1));
             bufferSerie.remove(0, 2);
             procesarNotaATocar(datoAProcesar);
             datoAProcesar.clear();
@@ -177,14 +181,23 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     qDebug() << (uint8_t)nota;
-    //set color guitar
     if (nota < 0) {
         qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        nota=-nota;
+        ui->graphicsView_2->soltarNota(nota/7,nota-7*(nota/7)-1);
     } else {
         qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        ui->graphicsView_2->tocarNota(nota/7,nota-7*(nota/7)-1);
     }
 }
-
+/*void Tocar::procesarNota(QByteArray data) {
+    uint8_t nota;
+    if(tramaOk(data)){
+        nota = TramaInfo(data);
+        if((nota<1) || (nota>NOTE_MAX*2))
+            NOT
+    }
+}*/
 
 
 /**
@@ -297,12 +310,11 @@ void Jugar::LeerArchivo(void){
         i++;
         qDebug()<<listaNota.size();
         aux = in.readLine();
-
     }
-    /*
-    for(i=0;i<listaNota.size();i++){
-        qDebug()<< "lista[" << i << "] =" <<listaNota[i];
-    }*/
+        /*
+        for(i=0;i<listaNota.size();i++){
+            qDebug()<< "lista[" << i << "] =" <<listaNota[i];
+        }*/
     cancion.close();
     }
 }
@@ -316,47 +328,6 @@ void Jugar::slotPuntaje()
     estructuraPuntajes.iniciales = dPuntajes.getName();
     estructuraPuntajes.puntaje = puntos;
     dPuntajes.close();
-    puntajes.agregarPuntaje(nombreCancion, estructuraPuntajes);
+    puntajes.agregarPuntaje(nombreCancion, estructuraPuntajes);   
 }
 
-/*
- void Jugar::LeerArchivo(void){
-    QString line;
-    QStringList list;
-    int i = 0;
-
-    QFile cancion(SONG_FILE_NAME_);
-
-
-    if(!cancion.open(QIODevice::ReadOnly)){
-
-    QTextStream in(&cancion);
-
-    while (i < posicion && !in.atEnd()) //La funcion !in.atEnd() no me funcionaba bien, asi que quizas haya que reemplazarla por otra
-    {
-        line = in.readLine(); //posicion,nota
-        list = line.split(QLatin1Char(',')); //guarda lo separado por las comas en posiciones distintas de un array
-
-        i++;
-    }
-    //En el paso anterior se va a leer el archivo linea por lina hasta llegar a la que corresponde a la posicion de la nota recibida,
-    //por lo que una vez que se sale del while, list[1] va a tener los datos en esa posicion
-
-    //Comparo list[1] (nota) con el dato recibido
-    if(list[1].toInt() == (int) notaTocada){
-        setNotaCorrecta(); //la nota se prende en color verde
-        //Sumo puntaje
-        //ui->Puntos->setText(Puntaje);
-    }else{
-        setNotaIncorrecta(); //la nota se prende en color rojo
-        //Resto puntaje
-        //ui->Puntos->setText(Puntaje);
-    }
-    cancion.close();
-    }
-    Ejemplo uso QStringList
-      QStringList str = {"Hola", "todo", "bien"};
-      ui->textEdit->setText(str[2]);
-
- }
-*/

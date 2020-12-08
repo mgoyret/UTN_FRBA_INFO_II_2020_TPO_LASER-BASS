@@ -64,11 +64,16 @@ public:
     uint8_t tramaOk( QByteArray );
     uint8_t tramaInfo( QByteArray );
     void setNotaCorrecta(void);
+    void mostrarNota(uint8_t nota);
+    int  notaACuerdaYNota(uint8_t nota);
 
 
 private slots:
     void on_datosRecibidos();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1b2b0e9b8e45a89ac002efa50df0f028c2ddca2b
 
 private:
     Ui::Tocar *ui;
@@ -81,7 +86,6 @@ private:
     void validarDatos();
     void procesarNotaATocar(QByteArray);
     void mostrarNota(char nota);
-    int notaACuerdaYNota(uint8_t nota);
 };
 
 #endif // TOCAR_H
