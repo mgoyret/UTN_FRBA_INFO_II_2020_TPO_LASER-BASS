@@ -10,8 +10,8 @@ Tocar::Tocar(QWidget *parent) :
     qDebug() << puertoMidi.abrirPuerto(0);
     qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
     qDebug() << puertoMidi.inicializarGS();
-    qDebug() << puertoMidi.enviarNoteOn(0, 64, 127);
-    ui->graphicsView->setColorNotaApagada(Qt::black);
+    puertoMidi.enviarProgramChange(0, 30);
+    puertoMidi.enviarNoteOn(0, 64, 127);
 }
 
 Tocar::~Tocar()
@@ -19,88 +19,12 @@ Tocar::~Tocar()
     delete ui;
 }
 
-/*
-void Tocar::on_datosRecibidos(){
-    QByteArray datos;
-    int cant = int (puerto.bytesAvailable());
-    datos.resize(cant);
-    puerto->read(datos.data(), cant);
-    //Procesar Dato y poner MIDI
-    //Funcion que procese el dato y devuelva un string con la nota
-    //transforma el dato o la nota en el array para setColor
-    //29 xq son 28 lugares que hay que cpnfigurar + 1 por el retun 0
-    char status[29]="0011010101010111111111111110";
-    //    setColor(status);
-
-}
-*/
-
-/*
- * void Tocar :: setColor(const char* estado){
-    QColor red(255,0,0);
-    QColor white(255,255,255);
-    QColor green(0,255,0);
-    if(estado[0]==ON){
-        ui->Cuerda1->setPalette(red);
-    }else{
-        ui->Cuerda1->setPalette(white);
-    }
-    if(estado[7]==ON){
-        ui->Punto6A->setPalette(green);
-    }else{
-        ui->Punto6A->setPalette(white);
-    }
-    if(estado[8]==ON){
-        ui->Cuerda2->setPalette(green);
-    }else{
-        ui->Cuerda2->setPalette(white);
-    }
-    //y asi con el resto a mi se me ocurrio hacer esto para no tener 58 if
-    //y de esta forma tmb queda separado lo otro que se me ocurrio sino
-    //es q en vez del array uno le entrege un numero de noto y despues en esta funcion
-    //pase esa nota al array ,seria otra opcion
-
-}
-*/
-
-
 void Tocar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
 }
 
-/*
-void Tocar::procesarNota( QByteArray datos )
-{
-    uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-
-    unsigned char data[2];
-
-
-void Tocar::procesarNota( QByteArray data )
-{
-    uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-
-    if( tramaOk(data) )
-    {
-        #ifdef DEBUG
-        qDebug()<<"Trama correcta";
-        #endif
-        nota = tramaInfo(data); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
-
-        //  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
-        //  y entre el 29 y 56 corresponde a los noteoff
-        if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
-            notaTocada = SIN_NOTA;
-        else
-            notaTocada = nota;
-    }
-    #ifdef DEBUG
-    else
-        qDebug()<<"trama incorrecta";
-    #endif
-}*/
 
 /**
 *	\fn         void tramaOk(QByteArray datos)
@@ -216,7 +140,8 @@ void Tocar::validarDatos() {
             datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
             procesarNotaATocar(datoAProcesar);
-            datoAProcesar.clear();
+        } else if (bufferSerie.at(0) & 0x0a) {
+            bufferSerie.remove(0,1);
         } else {
             bufferSerie.remove(0, 1);
         }
@@ -232,7 +157,6 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     qDebug() << (uint8_t)nota;
     mostrarNota(nota);
     if (nota < 0) {
-
         qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {
         qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);

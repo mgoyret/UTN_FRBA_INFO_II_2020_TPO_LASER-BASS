@@ -1,12 +1,17 @@
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 
-
 Grabar::Grabar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Grabar)
 {
     ui->setupUi(this);
+
+    //inicializar midi
+    qDebug() << puertoMidi.abrirPuerto(0);
+    qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
+    qDebug() << puertoMidi.inicializarGS();
+    puertoMidi.enviarProgramChange(0, 30);
 }
 
 Grabar::~Grabar()
@@ -18,7 +23,6 @@ Grabar::~Grabar()
         puerto->close();
     delete ui;
 }
-
 
 /**
 *	\fn         void set_puerto( QSerialPort *puertoExt )
@@ -53,7 +57,6 @@ void Grabar::iniciarTimer()
     QTimer::singleShot(TIMER_TIME, this, SLOT(timer_handler()));
 }
 
-
 /**
 *	\fn         void guardarNota(void)
 *	\brief      buffer de cancion que se guardara
@@ -79,7 +82,6 @@ void Grabar::guardarNota( void )
     recBuf.note_st = aux;
     recBuf.total_cntr++;
 }
-
 
 /**
 *	\fn         void guardarCancion(void)
@@ -118,7 +120,6 @@ uint8_t Grabar::guardarCancion( void )
     }
     return res;
 }
-
 
 void Grabar::validarDatos() {
     int cant = bufferSerie.size();
@@ -207,7 +208,6 @@ void Grabar::on_PBfinRec_clicked()
     ui->PBnombre->setEnabled(true);
 }
 
-
 /**
 *	\fn         void timer_250ms_handler(void)
 *	\brief      handler del timer inicializado de 250ms
@@ -250,7 +250,6 @@ void Grabar::on_PBnombre_clicked()
         }
     }
 }
-
 
 void Grabar::on_lineEditNombre_textChanged(const QString &arg1)
 {

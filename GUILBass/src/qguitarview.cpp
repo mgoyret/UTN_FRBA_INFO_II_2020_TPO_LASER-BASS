@@ -10,10 +10,10 @@ QGuitarView::QGuitarView(QWidget *parent) : QGraphicsView(parent){
     stringArr.clear();
 
     //Colores por defecto
-    noteColorOff.setRgb(0, 0, 0);
-    stringColorOff.setRgb(0, 0, 0);
-    noteColorOn.setRgb(192, 0, 0);
-    stringColorOn.setRgb(64, 0, 192);
+    noteColorOff.setRgb  (0,  0, 0);
+    stringColorOff.setRgb(0,  0, 0);
+    noteColorOn.setRgb   (192,0, 0);
+    stringColorOn.setRgb (64, 0, 192);
 
     isShown = false;
 
