@@ -7,10 +7,6 @@ Tocar::Tocar(QWidget *parent) :
 {
     ui->setupUi(this);
     bufferSerie.clear();
-    qDebug() << puertoMidi.abrirPuerto(0);
-    qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
-    qDebug() << puertoMidi.inicializarGS();
-    puertoMidi.enviarProgramChange(0, 30);
 }
 
 Tocar::~Tocar()
@@ -23,48 +19,6 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
 }
-
-
-/**
-*	\fn         void tramaOk(QByteArray datos)
-*	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
-*	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
-*	\author     Marcos Goyret
-*/
-
-
-uint8_t Tocar::tramaOk( QByteArray data)
-
-{
-    uint8_t res = ERROR;
-
-    if( INICIO_TRAMA_OK_ && FIN_TRAMA_OK_ )
-        res = EXITO;
-
-    return res;
-}
-
-/**
-*	\fn         void tramaInfo(QByteArray datos)
-*	\brief      Obtiene la informacion de la nota tocada
-*	\details    En el mensaje recibido por puerto serie, la info. de la nota esta en los ultimos 4 bits del primer
-*               byte, y en los primeros 4 bits del segundo byte
-*	\author     Marcos Goyret
-*/
-
-uint8_t Tocar::tramaInfo( QByteArray data)
-{
-    uint8_t res=0;
-
-    res = ( (((uint8_t)data[0])&ULTIMA_MITAD_)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD_)>>4 );
-
-    #ifdef DEBUG
-    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2_<<4) << " + " << BIT2_MITAD1_;
-    #endif
-
-    return res;
-}
-
 
 void Tocar::setNotaCorrecta(void)
 {
@@ -156,8 +110,8 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     qDebug() << (uint8_t)nota;
     mostrarNota(nota);
     if (nota < 0) {
-        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {
-        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        qDebug() << puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
     }
 }

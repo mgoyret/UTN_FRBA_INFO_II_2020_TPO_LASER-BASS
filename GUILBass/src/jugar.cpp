@@ -7,9 +7,6 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
 {
     ui->setupUi(this);
     bufferSerie.clear();
-    qDebug() << puertoMidi.abrirPuerto(0);
-    qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
-    qDebug() << puertoMidi.inicializarGS();
     nombreCancion = nombre;
     nombreCancion=nombreCancion.prepend("../media/");
     qDebug()<< "el nombre es:"<<nombreCancion;
@@ -194,59 +191,16 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
    // qDebug()<<"la nota es:"<<(uint8_t) nota;
     if (nota < 0) {
-        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
         nota=-nota;
         ui->graphicsView_2->soltarNota(nota/7,nota-7*(nota/7)-1);
     } else {
-        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        qDebug() << puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
         ui->graphicsView_2->tocarNota(nota/7,nota-7*(nota/7)-1);
     }
 }
-/*void Tocar::procesarNota(QByteArray data) {
-    uint8_t nota;
-    if(tramaOk(data)){
-        nota = TramaInfo(data);
-        if((nota<1) || (nota>NOTE_MAX*2))
-            NOT
-    }
-}*/
 
 
-/**
-*	\fn         void tramaOk(QByteArray datos)
-*	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
-*	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
-*	\author     Marcos Goyret
-*/
-uint8_t Jugar::tramaOk(unsigned char* data)
-{
-    uint8_t res = ERROR_;
-
-    if( INICIO_TRAMA_OK_ && FIN_TRAMA_OK_ )
-        res = EXITO_;
-
-    return res;
-}
-
-/**
-*	\fn         void tramaInfo(QByteArray datos)
-*	\brief      Obtiene la informacion de la nota tocada
-*	\details    En el mensaje recibido por puerto serie, la info. de la nota esta en los ultimos 4 bits del primer
-*               byte, y en los primeros 4 bits del segundo byte
-*	\author     Marcos Goyret
-*/
-uint8_t Jugar::tramaInfo( unsigned char* data)
-{
-    uint8_t res=0;
-
-    res = ( (((uint8_t)data[0])&ULTIMA_MITAD_)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD_)>>4 );
-
-    #ifdef DEBUG
-    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2_<<4) << " + " << BIT2_MITAD1_;
-    #endif
-
-    return res;
-}
 void Jugar::LeerArchivo(void){
     int i = 0;
     QFile cancion(nombreCancion);
@@ -269,12 +223,24 @@ void Jugar::LeerArchivo(void){
         i++;
         aux = in.readLine();
     }
-    /*
-    for(i=0;i<listaNota.size();i++){
-        qDebug()<< "lista[" << i << "] =" <<listaNota[i];
-    }*/
+        /*
+        for(i=0;i<listaNota.size();i++){
+            qDebug()<< "lista[" << i << "] =" <<listaNota[i];
+        }*/
     cancion.close();
    qDebug()<<"cerramos leer archivo";
     }
+}
+
+void Jugar::slotPuntaje()
+{
+    QString nombreCancion = "";
+    puntaje estructuraPuntajes;
+    DialogPuntajes dPuntajes(this, puntos);
+    dPuntajes.exec();
+    estructuraPuntajes.iniciales = dPuntajes.getName();
+    estructuraPuntajes.puntaje = puntos;
+    dPuntajes.close();
+    puntajes.agregarPuntaje(nombreCancion, estructuraPuntajes);   
 }
 

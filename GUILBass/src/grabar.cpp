@@ -1,17 +1,16 @@
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 
+/**
+\fn 		Grabar( QWidget* )
+\brief 	    Constructor de la clase
+\details    Inicializa el midi
+*/
 Grabar::Grabar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Grabar)
 {
     ui->setupUi(this);
-
-    //inicializar midi
-    qDebug() << puertoMidi.abrirPuerto(0);
-    qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
-    qDebug() << puertoMidi.inicializarGS();
-    puertoMidi.enviarProgramChange(0, 30);
 }
 
 Grabar::~Grabar()
@@ -38,12 +37,16 @@ void Grabar::setPuerto(QSerialPort *puertoExt)
 /**
 *	\fn void inicializarMdE( void )
 *	\brief Inicializa variables que haya que inicializar
-*	\details Detalles
+*	\details Se inicializa la primera nota en 0, para salvar el caso en el que se toca en la primera posicion
+* lo cual dificultaria a la hora de jugar con esa cancion, ya que no habria tiempo de ver la nota que haya que tocar
 */
 void Grabar::inicializar( void )
 {
-    recBuf.note_st = nullptr;
-    recBuf.total_cntr = 0;
+    noteBuffer *offset = new noteBuffer;
+    offset->cntr=0;
+    offset->note=SIN_NOTA;
+    recBuf.note_st = offset;
+    recBuf.total_cntr = 1;
     notaTocada = SIN_NOTA;
 }
 
@@ -148,12 +151,42 @@ void Grabar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     notaTocada = nota;
     qDebug() << (uint8_t)nota;
-    //mostrarNota(nota);
+    mostrarNota(nota);
     if (nota < 0) {
-        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {
-        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        qDebug() << puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
     }
+}
+
+void Grabar::mostrarNota(char nota) {
+    int cuerdaYNota = notaACuerdaYNota(std::abs(nota));
+    if (nota > 0) {
+        if ((cuerdaYNota & 0x000000ff) != 0xff) ui->graphicsView->setNotaPrendida(cuerdaYNota & 0x000000ff);
+        ui->graphicsView->setCuerdaPrendida(cuerdaYNota >> 8);
+    } else {
+        if ((cuerdaYNota & 0x000000ff) != 0xff) ui->graphicsView->setNotaApagada(cuerdaYNota & 0x000000ff);
+        ui->graphicsView->setCuerdaApagada(cuerdaYNota >> 8);
+    }
+
+    qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
+}
+
+int Grabar::notaACuerdaYNota(uint8_t nota) {
+    int ret = 0, cuerda = 0, notaConv = 0;
+    nota--;
+    notaConv = nota % 7;
+    if (notaConv) {
+        cuerda = nota / 7;
+        notaConv = (6 - notaConv) + (6 * cuerda);
+    } else {
+        cuerda = nota / 7;
+        notaConv = 0xff;
+    }
+    qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
+    ret |= notaConv;
+    ret |= cuerda << 8;
+    return ret;
 }
 
 uint8_t Grabar::checkName( void )

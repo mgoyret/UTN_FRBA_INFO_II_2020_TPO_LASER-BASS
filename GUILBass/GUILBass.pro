@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/dialogjugar.cpp \
+    src/dialogpuntajes.cpp \
     src/parserpuntaje.cpp \
     src/jugar.cpp \
     main.cpp \
@@ -42,7 +43,8 @@ HEADERS += \
     inc/parserpuntaje.h \
     inc/tablapuntajes.h \
     inc/qnoteview.h \
-    inc/dialogjugar.h
+    inc/dialogjugar.h \
+    inc/dialogpuntajes.h
 
 FORMS += \
     forms/mainwindow.ui \
@@ -51,7 +53,8 @@ FORMS += \
     forms/grabar.ui \
     forms/jugar.ui \
     forms/tablapuntajes.ui \
-    forms/dialogjugar.ui
+    forms/dialogjugar.ui \
+    forms/dialogpuntajes.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

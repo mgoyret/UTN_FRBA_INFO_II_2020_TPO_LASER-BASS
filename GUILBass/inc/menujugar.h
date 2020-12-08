@@ -25,7 +25,8 @@ public:
     explicit MenuJugar(QWidget *parent = nullptr);
     ~MenuJugar();
 
-    void setPuerto(QSerialPort*);
+    void setPuerto( QSerialPort* );
+    void setPuertoMidi( ClaseMIDI* );
 
 private slots:
     void on_PBpreGrabada_clicked();
@@ -35,6 +36,7 @@ private slots:
 private:
     Ui::MenuJugar *ui;
     QSerialPort *puerto;
+    ClaseMIDI *puertoMidi;
 };
 
 #endif // MENUJUGAR_H

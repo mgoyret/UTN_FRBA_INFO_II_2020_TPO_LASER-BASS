@@ -2,4 +2,7 @@
     <qresource prefix="/Images">
         <file>Images/guitarrista.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>utn.ico</file>
+    </qresource>
 </RCC>

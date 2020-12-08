@@ -12,6 +12,8 @@
 #include "qnoteview.h"
 #include "parserpuntaje.h"
 #include <clasemidi.h>
+#include <dialogpuntajes.h>
+
 #define DEBUG
 
 #define	TRUE_    1
@@ -61,6 +63,7 @@ public:
     explicit Jugar(QWidget *parent = nullptr, QString nombre = "");
     ~Jugar();
     void setPuerto( QSerialPort* );
+    inline void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
     void procesarNota( QByteArray );
     uint8_t tramaOk(unsigned char* );
     uint8_t tramaInfo( unsigned char* );
@@ -71,6 +74,7 @@ public:
 private slots:
     void on_datosRecibidos();
     void monitoreoPuntos();
+    void slotPuntaje();
 
 private:
     Ui::Jugar *ui;
@@ -88,7 +92,7 @@ private:
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //funcion para el line_edit Puntos
     QByteArray bufferSerie;
-    ClaseMIDI puertoMidi;
+    ClaseMIDI *puertoMidi;
     QNoteView mostrar;
     void validarDatos();
     void procesarNotaATocar(QByteArray);

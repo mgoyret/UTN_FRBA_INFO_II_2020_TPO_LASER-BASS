@@ -11,9 +11,11 @@ MainWindow::MainWindow(QWidget *parent)
     enumerarPuertos();
     //para probar si no tienen puerto serie virtual para conectarse
     //comenten las 2 dos lineas siguientes
- //   ui->PBJugar->setDisabled(true);
- //   ui->PBTocar->setDisabled(true);
+    ui->PBJugar->setDisabled(true);
+    ui->PBTocar->setDisabled(true);
     puerto = new QSerialPort;
+    setWindowIcon(QIcon("../GUILBass/utn.ico"));
+    setWindowTitle("Menu Principal");
 }
 
 MainWindow::~MainWindow()
@@ -35,19 +37,18 @@ void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wMenuJugar(this);
     wMenuJugar.setPuerto(puerto);
+    wMenuJugar.setPuertoMidi(puertoMidi);
+
     wMenuJugar.setWindowTitle("Maneras de jugar");
-    hide();
     wMenuJugar.exec();
-    show();
 }
 
 void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
     wtocar.setPuerto(puerto);
-    hide();
+    wtocar.setPuertoMidi(puertoMidi);
     wtocar.exec();
-    show();
 }
 
 void MainWindow::on_PBActualizar_clicked()
