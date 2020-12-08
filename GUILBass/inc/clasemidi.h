@@ -34,6 +34,8 @@ class ClaseMIDI {
     QString getNombreSalida(unsigned int n);
     QStringList getNombresSalidas();
     uint8_t abrirPuerto(unsigned int port);
+    uint8_t cerrarPuerto();
+    uint8_t estaAbierto();
     uint8_t inicializarGS();
 
 

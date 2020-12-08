@@ -60,13 +60,7 @@ public:
     explicit Tocar(QWidget *parent = nullptr);
     ~Tocar();
     void setPuerto( QSerialPort* );
-    inline void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
-    void procesarNota( QByteArray );
-    uint8_t tramaOk( QByteArray );
-    uint8_t tramaInfo( QByteArray );
-    void setNotaCorrecta(void);
-    void mostrarNota(uint8_t nota);
-    int  notaACuerdaYNota(uint8_t nota);
+    void setPuertoMidi(ClaseMIDI* puertoExt);
 
 
 private slots:
@@ -84,6 +78,8 @@ private:
     void validarDatos();
     void procesarNotaATocar(QByteArray);
     void mostrarNota(char nota);
+    int  notaACuerdaYNota(uint8_t nota);
+
 };
 
 #endif // TOCAR_H

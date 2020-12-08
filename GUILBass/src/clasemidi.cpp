@@ -61,6 +61,21 @@ uint8_t ClaseMIDI::abrirPuerto(unsigned int port) {
     return 1;
 }
 
+uint8_t ClaseMIDI::cerrarPuerto() {
+    if (out != nullptr && out->isPortOpen()) {
+        out->closePort();
+        return 0;
+    }
+    return 1;
+}
+
+uint8_t ClaseMIDI::estaAbierto() {
+    if (out != nullptr) {
+        return out->isPortOpen();
+    }
+    return 0;
+}
+
 uint8_t ClaseMIDI::inicializarGS() {
     //Reinicio el synth en modo GS
     //0xF0, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7

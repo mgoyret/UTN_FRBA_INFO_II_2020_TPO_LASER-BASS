@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    enumerarPuertos();
     //para probar si no tienen puerto serie virtual para conectarse
     //comenten las 2 dos lineas siguientes
     ui->PBJugar->setDisabled(true);
@@ -16,22 +15,16 @@ MainWindow::MainWindow(QWidget *parent)
     puerto = new QSerialPort;
     setWindowIcon(QIcon("../GUILBass/utn.ico"));
     setWindowTitle("Menu Principal");
+    puertoMidi = new ClaseMIDI();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete puerto;
+    delete puertoMidi;
 }
 
-void MainWindow::enumerarPuertos()
-{
-    ui->CBPuertos->clear();
-
-    QList<QSerialPortInfo> puertos = QSerialPortInfo::availablePorts();
-    for (int i = 0; i < puertos.count(); i++) {
-        ui->CBPuertos->addItem(puertos.at(i).portName());
-    }
-}
 
 void MainWindow::on_PBJugar_clicked()
 {
@@ -51,45 +44,68 @@ void MainWindow::on_PBTocar_clicked()
     wtocar.exec();
 }
 
-void MainWindow::on_PBActualizar_clicked()
-{
-    enumerarPuertos();
+
+bool MainWindow::verificarConfiguracionPuertos() {
+    DialogPreferencias pref(this);
+    if (pref.getMidiPortPref() != "" && pref.getSerialPortPref() != "") return true;
+    return false;
 }
 
-void MainWindow::on_PBConectar_clicked()
+void MainWindow::on_actionPreferencias_triggered()
 {
-    QString portName = ui->CBPuertos->currentText();
-
-    if( ui->PBConectar->text() == "CONECTAR" )
-    {
-        if (!puerto->isOpen()) {
-            puerto->setPortName(portName);
-            puerto->setBaudRate(QSerialPort::Baud9600);
-            puerto->setDataBits(QSerialPort::Data8);
-            puerto->setParity(QSerialPort::NoParity);
-            puerto->setStopBits(QSerialPort::OneStop);
-            puerto->setFlowControl(QSerialPort::NoFlowControl);
-
-            if (puerto->open(QIODevice::ReadWrite) == true) {
-                ui->PBConectar->setText("DESCONECTAR");
-                ui->CBPuertos->setDisabled(true);
-                ui->PBTocar->setEnabled(true);
-                ui->PBJugar->setEnabled(true);
-            } else {
-                QMessageBox::critical(this, "Error",
-                                        "No se puedo abrir el puerto "+portName);
-            }
+    DialogPreferencias pref(this);
+    QString serialPortName = pref.getSerialPortPref();
+    QString midiPortName;
+    int retValue;
+    this->hide();
+    retValue = pref.exec();
+    midiPortName = pref.getMidiPortPref();
+    serialPortName = pref.getSerialPortPref();
+    if (retValue == QDialog::Accepted) {
+        configurarPuertoSerie(serialPortName);
+        configurarPuertoMidi(midiPortName);
+    } else {
+        if (serialPortName == "" || midiPortName == "") {
+            ui->PBTocar->setDisabled(true);
+            ui->PBJugar->setDisabled(true);
         } else {
-                QMessageBox::critical(this, "Error",
-                                        "Puerto ["+portName+"] en uso");
+            configurarPuertoSerie(serialPortName);
+            configurarPuertoMidi(midiPortName);
         }
     }
-    else //si ya se esta conectado y se desea desconectar
-    {
+    this->show();
+}
+
+void MainWindow::configurarPuertoSerie(QString portName) {
+    if (!puerto->isOpen()) {
+        puerto->setPortName(portName);
+        puerto->setBaudRate(QSerialPort::Baud9600);
+        puerto->setDataBits(QSerialPort::Data8);
+        puerto->setParity(QSerialPort::NoParity);
+        puerto->setStopBits(QSerialPort::OneStop);
+        puerto->setFlowControl(QSerialPort::NoFlowControl);
+
+        if (puerto->open(QIODevice::ReadWrite) == true) {
+            ui->PBTocar->setEnabled(true);
+            ui->PBJugar->setEnabled(true);
+        } else {
+            QMessageBox::critical(this, "Error", "No se puedo abrir el puerto "+portName);
+        }
+    } else if (puerto->portName() != portName) {
         puerto->close();
-        ui->PBConectar->setText("CONECTAR");
-        ui->CBPuertos->setEnabled(true);
-        ui->PBTocar->setDisabled(true);
-        ui->PBJugar->setDisabled(true);
+        configurarPuertoSerie(portName);
     }
+}
+
+void MainWindow::configurarPuertoMidi(QString portName) {
+    QStringList portNames = puertoMidi->getNombresSalidas();
+    for (int i=0; i<portNames.count(); i++) {
+        if (portName == portNames[i]) {
+            if (puertoMidi->estaAbierto()) puertoMidi->cerrarPuerto(); //no puedo obtener el nombre del puerto abierto, ni el indice
+                                                                       //sino podría hacer lo mismo que hice para el serie
+            puertoMidi->abrirPuerto(i);
+            return;
+        }
+    }
+    QMessageBox::critical(this, "Error", "No se puedo abrir el puerto MIDI " + portName);
 }

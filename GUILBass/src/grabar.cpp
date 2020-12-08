@@ -132,15 +132,14 @@ uint8_t Grabar::guardarCancion( void )
 /**
 *	\fn 		void validarDatos ( void )
 *	\brief 	    Chequea los datos recibidos por el puerto serie
-*	\details 	Chequea inicio y fin de trama, y envia
-*	\return 	chequeo de errores
+*	\details 	Chequea inicio y fin de trama, y envia los dos bytes de la trama a la funcion procesarNotaATocar()
 */
 void Grabar::validarDatos() {
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
     datoAProcesar.clear();
-    while (cant > 1) {
-        if (!(bufferSerie[0] & 0x50)) {
+    while (cant > 1) {          //chequeos de inicio y fin de trama
+        if ( !(bufferSerie[0] & 0x50) && !(bufferSerie[1] & 0x0A) ) {
             if (cant == 1) break;
             datoAProcesar.append(bufferSerie.at(0));
             datoAProcesar.append(bufferSerie.at(1));
@@ -156,10 +155,10 @@ void Grabar::validarDatos() {
 }
 
 /**
-*	\fn 		uint8_t guardarCancion ( void )
-*	\brief 	    Guarda la cancion grabada, en un archivo
-*	\details 	Imprime la informacion contenida en la estructura del tipo songBuffer, en un archivo
-*	\return 	chequeo de errores
+*	\fn 		void procesarNotaATocar ( ByteArray dato )
+*	\brief 	    Procesa la trama recibida puerto serie
+*	\details    obtiene la nota tocada (noteOff o noteOn) y lo envia al puerto midi y a la funcion mostrarNota()
+*   \param      dato: QByteArray de dos posiciones, con la trama verificada que se recibio por puerto serie
 */
 void Grabar::procesarNotaATocar(QByteArray dato) {
     char nota = 0;

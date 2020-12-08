@@ -29,7 +29,8 @@ SOURCES += \
     src/tocar.cpp \
     lib/RtMidi/RtMidi.cpp \
     src/qguitarview.cpp \
-    src/tablapuntajes.cpp
+    src/tablapuntajes.cpp \
+    src/dialogpreferencias.cpp \
 
 HEADERS += \
     inc/clasemidi.h \
@@ -44,7 +45,8 @@ HEADERS += \
     inc/tablapuntajes.h \
     inc/qnoteview.h \
     inc/dialogjugar.h \
-    inc/dialogpuntajes.h
+    inc/dialogpuntajes.h \
+    inc/dialogpreferencias.h \
 
 FORMS += \
     forms/mainwindow.ui \
@@ -54,7 +56,8 @@ FORMS += \
     forms/jugar.ui \
     forms/tablapuntajes.ui \
     forms/dialogjugar.ui \
-    forms/dialogpuntajes.ui
+    forms/dialogpuntajes.ui \
+    forms/dialogpreferencias.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
