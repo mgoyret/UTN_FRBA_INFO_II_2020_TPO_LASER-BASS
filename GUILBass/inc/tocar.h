@@ -60,7 +60,17 @@ public:
     explicit Tocar(QWidget *parent = nullptr);
     ~Tocar();
     void setPuerto( QSerialPort* );
+<<<<<<< HEAD
     void setPuertoMidi(ClaseMIDI* puertoExt);
+=======
+    //inline void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
+    void procesarNota( QByteArray );
+    uint8_t tramaOk( QByteArray );
+    uint8_t tramaInfo( QByteArray );
+    void setNotaCorrecta(void);
+    void mostrarNota(uint8_t nota);
+    int  notaACuerdaYNota(uint8_t nota);
+>>>>>>> 664f43aafcde395cbf5974c0a5166e4a5cb65623
 
 
 private slots:
@@ -71,7 +81,7 @@ private:
     Ui::Tocar *ui;
     char notaTocada;
     QSerialPort *puerto;
-    ClaseMIDI *puertoMidi;
+    ClaseMIDI puertoMidi;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //void setColor(const char * estado);
     QByteArray bufferSerie;

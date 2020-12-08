@@ -10,11 +10,15 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
     nombreCancion = nombre;
     nombreCancion=nombreCancion.prepend("../media/");
     qDebug()<< "el nombre es:"<<nombreCancion;
+    qDebug() << puertoMidi.abrirPuerto(0);
+       qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
+       qDebug() << puertoMidi.inicializarGS();
       LeerArchivo();
+      ui->graphicsView_2->tam=listaNota.size();
       int i;
-      for(i=0;i<listaNota.size();i++){
+      /*for(i=0;i<listaNota.size();i++){
           qDebug()<<"lista["<<i<<"] ="<<listaNota[i].toInt();
-      }
+      }*/
        qDebug()<<"size de lista"<<listaNota.size();
       //cargar archivo
       puntajes.cargarDesdeArchivo();
@@ -47,14 +51,13 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
         }
         i++;
       }
-
+      connect(ui->graphicsView_2, SIGNAL(puntajeSignal()), this, SLOT(slotPuntaje()));
       connect(ui->graphicsView_2, SIGNAL(monitoreoSignal()), this, SLOT(monitoreoPuntos()));
-
       //despues hay q apagarlo
       ui->graphicsView_2->startTiempo();
       ui->graphicsView->setColorNotaApagada(Qt::black);
-      ui->graphicsView->setColorNotaPrendida(Qt::darkRed);
-      ui->graphicsView->setColorCuerdaPrendida(Qt::darkRed);
+      ui->graphicsView->setColorNotaPrendida(Qt::white);
+      ui->graphicsView->setColorCuerdaPrendida(Qt::white);
       ui->graphicsView->setColorCuerdaApagada(Qt::black);
       ui->Puntos->setPalette(Qt::white);
       qDebug()<<"contruimos";
@@ -70,16 +73,15 @@ void Jugar::iniciarTimer(int nota)
     timerNota[nota]=1;
     QTimer::singleShot(TIMER_TIME_, this, SLOT(timer_handler()));
 }
-void Jugar::timer_handler()
+void Jugar::timer_handler(void)
 {
     int i;
     for(i=0;i<29;i++){
         if(timerNota[i]== 1)
         {
-            i=-i;
-            mostrarNota(i);
-            ui->Puntos->setPalette(Qt::white);
             timerNota[i]=0;
+            //mostrarNota(-i);
+            ui->Puntos->setPalette(Qt::white);
         }
     }
 }
@@ -101,8 +103,9 @@ void Jugar::monitoreoPuntos() {
    // 0->no me importa 4->no me importa transitorio en el, 3->espero nota asi q no me importa
   // 5-> poner amarillo es medio punto -1-> rojo  1-> verde
    if(ui->graphicsView_2->getEstadoMostrar()==-1){
-       //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
+       //no se xq en roja no se ve
        ui->Puntos->setPalette(Qt::red);
+       iniciarTimer(nota);
    }else if(ui->graphicsView_2->getEstadoMostrar()==1) {
        //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
        ui->Puntos->setPalette(Qt::green);
@@ -123,8 +126,6 @@ void Jugar::monitoreoPuntos() {
        pesoPunto=0;
        iniciarTimer(nota);
    }
-   mostrarNota(nota);
-   //muestro qguitarview y puntos
 }
 void Jugar::setPuerto(QSerialPort *puertoExt)
 {
@@ -190,13 +191,18 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
    // qDebug()<<"la nota es:"<<(uint8_t) nota;
+    mostrarNota(nota);
     if (nota < 0) {
-        qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
         nota=-nota;
-        ui->graphicsView_2->soltarNota(nota/7,nota-7*(nota/7)-1);
+        int cuerda=(nota-1)/7;
+       // qDebug() <<"C"<<cuerda<<"N"<<(nota-7*(cuerda)-1,cuerda);
+        ui->graphicsView_2->soltarNota(cuerda,nota-7*(cuerda)-1);
     } else {
-        qDebug() << puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
-        ui->graphicsView_2->tocarNota(nota/7,nota-7*(nota/7)-1);
+        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        int cuerda=(nota-1)/7;
+       // qDebug() <<"C"<<cuerda<<"N"<<(nota-7*(cuerda)-1);
+        ui->graphicsView_2->tocarNota(nota-7*(cuerda)-1,cuerda);
     }
 }
 
