@@ -40,7 +40,7 @@ void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
     wtocar.setPuerto(puerto);
-    //wtocar.setPuertoMidi(puertoMidi);
+    wtocar.setPuertoMidi(puertoMidi);
     wtocar.exec();
 }
 

@@ -68,7 +68,7 @@ Jugar::~Jugar()
 void Jugar::iniciarTimer(int nota)
 {
     timerNota[nota]=1;
-    QTimer::singleShot(TIMER_TIME_, this, SLOT(timer_handler()));
+    QTimer::singleShot(TIMER_TIME, this, SLOT(timer_handler()));
 }
 void Jugar::timer_handler(void)
 {

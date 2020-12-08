@@ -33,7 +33,7 @@
 
 #define SONG_FILE_NAME_ "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
-#define TIMER_TIME_ 500
+#define TIMER_TIME 100
 #define PUNTOCSIMPLE 10;
 
 
