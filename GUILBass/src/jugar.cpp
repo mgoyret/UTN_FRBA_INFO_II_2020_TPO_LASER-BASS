@@ -194,13 +194,13 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
    // qDebug()<<"la nota es:"<<(uint8_t) nota;
     mostrarNota(nota);
     if (nota < 0) {
-        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
         nota=-nota;
         int cuerda=(nota-1)/7;
        // qDebug() <<"C"<<cuerda<<"N"<<(nota-7*(cuerda)-1,cuerda);
         ui->graphicsView_2->soltarNota(cuerda,nota-7*(cuerda)-1);
     } else {
-        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
         int cuerda=(nota-1)/7;
        // qDebug() <<"C"<<cuerda<<"N"<<(nota-7*(cuerda)-1);
         ui->graphicsView_2->tocarNota(nota-7*(cuerda)-1,cuerda);
