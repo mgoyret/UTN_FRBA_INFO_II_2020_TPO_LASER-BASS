@@ -9,13 +9,18 @@ QNoteView::QNoteView(QWidget *parent) : QGraphicsView(parent){
 
     noteArray.clear();
     connect(updateTimer, &QTimer::timeout, this, &QNoteView::moverNotas);
-
+   // connect(this, SIGNAL(puntejeSignal()), this, SLOT(llamoPuntaje()));
     //modifico el borde de la graphicsview y la hago transparente
     //esto es CSS (lo que se usa en pags web)
 
     this->setStyleSheet("border:0px; background:transparent");
 
 }
+/*void QNoteView::llamoPuntaje()
+{
+    qDebug()<<"entro";
+
+}*/
 
 QNoteView::~QNoteView() {
     delete scene;
@@ -26,6 +31,7 @@ void QNoteView::hideEvent(QHideEvent *event){
     QGraphicsView::hideEvent(event);
     isShown = false;
     stopTiempo();
+
 }
 
 void QNoteView::showEvent(QShowEvent *event) {
@@ -238,6 +244,10 @@ void QNoteView::moverNotas() {
     counter->setPlainText(QString::number(msCounter * BASE_TIEMPO_MS) + QString(" ms / ") + QString::number(posMinAMostrar * BASE_TIEMPO_MS) + QString(" ms"));
     scene->update(counter->boundingRect());
     msCounter++;
+    qDebug()<<msCounter;
+    if(msCounter==tam){
+        emit puntajeSignal();
+    }
 
 }
 void QNoteView:: mandarSignal(int i){
@@ -264,17 +274,20 @@ void QNoteView::moverNota(nota & refNota) {
 bool QNoteView::tocarNota(int nroNota, int nroCuerda) {
     bool ret = false;
     int i = 0;
-    qDebug()<<"funcion tocar nota";
     for (i=0; i<noteArray.size(); i++) {
-        qDebug()<<"noteArray[i].nro ="<<noteArray[i].nro<<"nroNota ="<<nroNota;
+       qDebug()<<"ARRAY C:"<<noteArray[i].cuerda<<"N:"<<noteArray[i].nro<<"LLEGA C:"<<nroCuerda<<"N:"<<nroNota;
         if (noteArray[i].nro == nroNota && noteArray[i].cuerda == nroCuerda) {
             ret = true;
             break;
         }
     }
-    if (noteArray[i-1].estado == 3) {
-        noteArray[i-1].estado = 4;
-        qDebug()<<"ESTOY EN ESTADO 4";
+        //qDebug()<<"tamano"<<noteArray.size()<<"indice"<<(i-1);
+        //sino se va de rango no se xq
+        if(noteArray.size() && i>0){
+        if (noteArray[i-1].estado == 3) {
+            noteArray[i-1].estado = 4;
+            qDebug()<<"ESTOY EN ESTADO 4";
+         }
     }
     return ret;
 }
@@ -336,7 +349,6 @@ void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal, int dur
                 aux.fueDibujada = false;
                 aux.estado = 0;
                 aux.noteColor = QColor(COLOR_DEFAULT);
-                qDebug()<<noteArray.size();
                 noteArray.append(aux);
             }
         }

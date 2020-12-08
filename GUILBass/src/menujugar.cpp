@@ -41,7 +41,7 @@ void MenuJugar::on_PBpreGrabada_clicked()
         hide();
         wJugar.setWindowTitle("Jugar");
         wJugar.setPuerto(puerto);
-        wJugar.setPuertoMidi(puertoMidi);
+        //wJugar.setPuertoMidi(puertoMidi);
         wJugar.exec();
         close();
     }

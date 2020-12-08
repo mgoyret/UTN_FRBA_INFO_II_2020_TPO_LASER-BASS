@@ -33,7 +33,7 @@
 
 #define SONG_FILE_NAME_ "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
-#define TIMER_TIME_ 100
+#define TIMER_TIME_ 500
 #define PUNTOCSIMPLE 10;
 
 
@@ -63,7 +63,7 @@ public:
     explicit Jugar(QWidget *parent = nullptr, QString nombre = "");
     ~Jugar();
     void setPuerto( QSerialPort* );
-    inline void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
+  // inline void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
     void procesarNota( QByteArray );
     uint8_t tramaOk(unsigned char* );
     uint8_t tramaInfo( unsigned char* );
@@ -74,8 +74,8 @@ public:
 private slots:
     void on_datosRecibidos();
     void monitoreoPuntos();
+    void timer_handler(void);
     void slotPuntaje();
-
 private:
     Ui::Jugar *ui;
     uint8_t notaTocada;
@@ -88,11 +88,10 @@ private:
     QSerialPort *puerto;
     QStringList listaNota;
     void iniciarTimer(int);
-    void timer_handler(void);
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //funcion para el line_edit Puntos
     QByteArray bufferSerie;
-    ClaseMIDI *puertoMidi;
+    ClaseMIDI puertoMidi;
     QNoteView mostrar;
     void validarDatos();
     void procesarNotaATocar(QByteArray);

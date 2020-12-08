@@ -7,6 +7,9 @@ Tocar::Tocar(QWidget *parent) :
 {
     ui->setupUi(this);
     bufferSerie.clear();
+    qDebug() << puertoMidi.abrirPuerto(0);
+       qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
+       qDebug() << puertoMidi.inicializarGS();
 }
 
 Tocar::~Tocar()
@@ -110,8 +113,8 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     qDebug() << (uint8_t)nota;
     mostrarNota(nota);
     if (nota < 0) {
-        qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {
-        qDebug() << puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
     }
 }

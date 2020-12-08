@@ -14,8 +14,8 @@
 #define DENOM_MARGEN_BARRA_PRESENTE 5
 #define ANCHO_LINEAS 2
 #define RADIO_NUMEROS 10
-#define BASE_TIEMPO_MS 100
-#define DELAY_NOTA 5
+#define BASE_TIEMPO_MS 500
+#define DELAY_NOTA 100
 #define PX_POR_UPD 2
 #define COLOR_DEFAULT Qt::gray
 
@@ -52,7 +52,7 @@ public:
     void agregarNota(int nroNota, int nroCuerda, int posTemporal, int duracion = 0);
     bool tocarNota(int nroNota, int nroCuerda);
     bool soltarNota(int nroNota, int nroCuerda);
-
+    int tam;
     void startTiempo();
     void stopTiempo();
     inline int getCuerdaMostrar(void) {return mostrar.cuerda;};
@@ -60,6 +60,7 @@ public:
     inline int getEstadoMostrar(void) {return mostrar.estado;};
 signals:
     void monitoreoSignal();
+    void puntajeSignal();
 private:
     QList<nota> noteArray;
     QGraphicsScene * scene;

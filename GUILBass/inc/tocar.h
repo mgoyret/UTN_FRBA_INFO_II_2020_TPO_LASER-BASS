@@ -60,7 +60,7 @@ public:
     explicit Tocar(QWidget *parent = nullptr);
     ~Tocar();
     void setPuerto( QSerialPort* );
-    inline void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
+    //inline void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
     void procesarNota( QByteArray );
     uint8_t tramaOk( QByteArray );
     uint8_t tramaInfo( QByteArray );
@@ -77,7 +77,7 @@ private:
     Ui::Tocar *ui;
     char notaTocada;
     QSerialPort *puerto;
-    ClaseMIDI *puertoMidi;
+    ClaseMIDI puertoMidi;
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //void setColor(const char * estado);
     QByteArray bufferSerie;
