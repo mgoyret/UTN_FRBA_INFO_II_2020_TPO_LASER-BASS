@@ -4,14 +4,14 @@
 extern __RW uint8_t traste[4];
 extern __RW uint8_t ldrs[4];
 /**
-\fn 		void setPinsel(uint8_t puerto, uint8_t pin, uint8_t funcion)
-\brief 	    Define la funcion del pin
-\details 	Cada pin tiene cuatro funciones para elegir
-\details 	Cada puerto tiene asignado 2 PINSEL
-\param 	    puerto	puerto del pin
-\param 	    pin
-\param  	funcion funcion elegida para el pin
-\return 	void
+*	\fn 		void setPinsel(uint8_t puerto, uint8_t pin, uint8_t funcion)
+*	\brief 	    Define la funcion del pin
+*	\details 	Cada pin tiene cuatro funciones para elegir
+*	\details 	Cada puerto tiene asignado 2 PINSEL
+*	\param 	    puerto	puerto del pin
+*	\param 	    pin
+*	\param  	funcion funcion elegida para el pin
+*	\return 	void
 */
 void setPinsel(uint8_t puerto, uint8_t pin, uint8_t funcion)
 {

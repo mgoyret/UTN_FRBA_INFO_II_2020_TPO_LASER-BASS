@@ -274,6 +274,7 @@ void Jugar::LeerArchivo(void){
 
 void Jugar::slotPuntaje()
 {
+    ui->graphicsView_2->stopTiempo();
     QString nombreCancion = "";
     puntaje estructuraPuntajes;
     DialogPuntajes dPuntajes(this, puntos);
@@ -281,6 +282,9 @@ void Jugar::slotPuntaje()
     estructuraPuntajes.iniciales = dPuntajes.getName();
     estructuraPuntajes.puntaje = puntos;
     dPuntajes.close();
-    puntajes.agregarPuntaje(nombreCancion, estructuraPuntajes);   
+    puntajes.agregarPuntaje(nombreCancion, estructuraPuntajes);
+    puntajes.guardarPuntajes();
+    puntajes.guardarArchivo();
+    hide();//cierro ventana jugar
 }
 
