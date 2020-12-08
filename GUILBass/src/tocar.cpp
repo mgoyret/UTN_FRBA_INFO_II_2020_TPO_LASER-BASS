@@ -10,7 +10,7 @@ Tocar::Tocar(QWidget *parent) :
     qDebug() << puertoMidi.abrirPuerto(0);
     qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
     qDebug() << puertoMidi.inicializarGS();
-    puertoMidi.enviarProgramChange(0, 30);
+    puertoMidi.enviarProgramChange(0, 27);
     puertoMidi.enviarNoteOn(0, 64, 127);
 }
 
@@ -23,80 +23,6 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
 {
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
-}
-
-
-/*
-void Tocar::procesarNota( QByteArray datos )
-{
-    uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-
-    unsigned char data[2];
-
-
->>>>>>> 0815a8f08106157474b996d1038d90c70d3deec7
-void Tocar::procesarNota( QByteArray data )
-{
-    uint8_t nota; // nota == ultimos 4 bits de byte 1 y primeros 4 bits de byte 2
-
-    if( tramaOk(data) )
-    {
-        #ifdef DEBUG
-        qDebug()<<"Trama correcta";
-        #endif
-        nota = tramaInfo(data); //relleno "nota" con lo alcarado arriba en su declaracion (ver comentario)
-
-        //  notaTocada podra tomar valores del 0 al 56. Entre 1 y 28 corresponde a los note on
-        //  y entre el 29 y 56 corresponde a los noteoff
-        if( (nota<1) || (nota>NOTA_MAX*2) ) //es porque hubo error, ya que no puede llegar nada <1 o >56
-            notaTocada = SIN_NOTA;
-        else
-            notaTocada = nota;
-    }
-    #ifdef DEBUG
-    else
-        qDebug()<<"trama incorrecta";
-    #endif
-}*/
-
-/**
-*	\fn         void tramaOk(QByteArray datos)
-*	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
-*	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
-*	\author     Marcos Goyret
-*/
-
-
-uint8_t Tocar::tramaOk( QByteArray data)
-
-{
-    uint8_t res = ERROR;
-
-    if( INICIO_TRAMA_OK_ && FIN_TRAMA_OK_ )
-        res = EXITO;
-
-    return res;
-}
-
-/**
-*	\fn         void tramaInfo(QByteArray datos)
-*	\brief      Obtiene la informacion de la nota tocada
-*	\details    En el mensaje recibido por puerto serie, la info. de la nota esta en los ultimos 4 bits del primer
-*               byte, y en los primeros 4 bits del segundo byte
-*	\author     Marcos Goyret
-*/
-
-uint8_t Tocar::tramaInfo( QByteArray data)
-{
-    uint8_t res=0;
-
-    res = ( (((uint8_t)data[0])&ULTIMA_MITAD_)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD_)>>4 );
-
-    #ifdef DEBUG
-    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2_<<4) << " + " << BIT2_MITAD1_;
-    #endif
-
-    return res;
 }
 
 
@@ -190,7 +116,7 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     qDebug() << (uint8_t)nota;
     mostrarNota(nota);
     if (nota < 0) {
-        qDebug() << puertoMidi.enviarNoteOff(0, /*32 + */(uint8_t)std::abs(nota)/* * 2*/);
+        qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {
         qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
     }

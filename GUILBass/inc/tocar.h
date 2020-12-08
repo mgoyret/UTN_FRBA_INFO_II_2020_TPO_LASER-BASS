@@ -68,7 +68,6 @@ public:
 
 private slots:
     void on_datosRecibidos();
-    void puertoSerieRcv_handler();
 
 
 private:

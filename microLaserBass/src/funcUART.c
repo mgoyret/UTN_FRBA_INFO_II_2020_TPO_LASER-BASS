@@ -57,7 +57,6 @@ void mandarnota(uint8_t tipo,uint8_t cuerda,uint8_t traste){
 	 * |         |
 	 *  ---------
 	 * */
-<<<<<<< HEAD
 	if(traste==0)
 	{
 		nota=7*cuerda +1;
@@ -68,15 +67,6 @@ void mandarnota(uint8_t tipo,uint8_t cuerda,uint8_t traste){
 	if(tipo == NOTEOFF)
 	{
 		nota=-nota;
-=======
-        if (traste==0){
-		nota=7*cuerda+1;
-	}else{
-		nota=7*cuerda +7-traste+1;
-	}
-	if(tipo == NOTEOFF){
-		nota= -nota;
->>>>>>> 0815a8f08106157474b996d1038d90c70d3deec7
 	}
 	aux|=(10<<4);//los primeros bit 1010
 	aux|=(nota >> 4);

@@ -1,6 +1,16 @@
 #include "inc/grabar.h"
 #include "ui_grabar.h"
 
+/**
+\fn 		Grabar( QWidget* )
+\brief 	    Define la funcion del pin
+\details 	Cada pin tiene cuatro funciones para elegir
+\details 	Cada puerto tiene asignado 2 PINSEL
+\param 	    puerto	puerto del pin
+\param 	    pin
+\param  	funcion funcion elegida para el pin
+\return 	void
+*/
 Grabar::Grabar(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Grabar)
