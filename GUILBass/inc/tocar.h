@@ -70,10 +70,7 @@ public:
 
 private slots:
     void on_datosRecibidos();
-<<<<<<< HEAD
 
-=======
->>>>>>> 1b2b0e9b8e45a89ac002efa50df0f028c2ddca2b
 
 private:
     Ui::Tocar *ui;

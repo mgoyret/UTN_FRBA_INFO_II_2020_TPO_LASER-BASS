@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
  //   ui->PBJugar->setDisabled(true);
  //   ui->PBTocar->setDisabled(true);
     puerto = new QSerialPort;
+    setWindowIcon(QIcon("../GUILBass/utn.ico"));
+    setWindowTitle("Menu Principal");
 }
 
 MainWindow::~MainWindow()
@@ -36,18 +38,18 @@ void MainWindow::on_PBJugar_clicked()
     MenuJugar wMenuJugar(this);
     wMenuJugar.setPuerto(puerto);
     wMenuJugar.setWindowTitle("Maneras de jugar");
-    hide();
+    //hide();
     wMenuJugar.exec();
-    show();
+    //show();
 }
 
 void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
     wtocar.setPuerto(puerto);
-    hide();
+    //hide();
     wtocar.exec();
-    show();
+    //show();
 }
 
 void MainWindow::on_PBActualizar_clicked()

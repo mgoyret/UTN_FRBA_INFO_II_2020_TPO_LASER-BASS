@@ -25,50 +25,6 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
 }
 
-
-
-/**
-*	\fn         void tramaOk(QByteArray datos)
-*	\brief      Verifica que lo recibido por puerto serie sea una nota enviada por el microprosesador
-*	\details    Verifica especificamente los primeros y ultimos 4 bits de lo recibido por puerto serie
-*	\author     Marcos Goyret
-*/
-
-
-uint8_t Tocar::tramaOk( QByteArray data)
-
-{
-    uint8_t res = ERROR;
-
-    if( INICIO_TRAMA_OK_ && FIN_TRAMA_OK_ )
-        res = EXITO;
-
-    return res;
-}
-
-/**
-*	\fn         void tramaInfo(QByteArray datos)
-*	\brief      Obtiene la informacion de la nota tocada
-*	\details    En el mensaje recibido por puerto serie, la info. de la nota esta en los ultimos 4 bits del primer
-*               byte, y en los primeros 4 bits del segundo byte
-*	\author     Marcos Goyret
-*/
-
-uint8_t Tocar::tramaInfo( QByteArray data)
-{
-    uint8_t res=0;
-
-    res = ( (((uint8_t)data[0])&ULTIMA_MITAD_)<<4 ) + ( (((uint8_t)data[1])&PRIMER_MITAD_)>>4 );
-
-    #ifdef DEBUG
-    qDebug()<< "info: " << res << " = " << (BIT1_MITAD2_<<4) << " + " << BIT2_MITAD1_;
-    #endif
-
-    return res;
-}
-
-
->>>>>>> 1b2b0e9b8e45a89ac002efa50df0f028c2ddca2b
 void Tocar::setNotaCorrecta(void)
 {
     if(notaTocada >= 1 && notaTocada <= 28){
