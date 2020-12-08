@@ -14,36 +14,45 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
     nombreCancion=nombreCancion.prepend("../media/");
     qDebug()<< "el nombre es:"<<nombreCancion;
       LeerArchivo();
+      int i;
+      for(i=0;i<listaNota.size();i++){
+          qDebug()<<"lista["<<i<<"] ="<<listaNota[i].toInt();
+      }
+       qDebug()<<"size de lista"<<listaNota.size();
       //cargar archivo
       puntajes.cargarDesdeArchivo();
-      int i=0;
+      //arranco desde 1 xq la posicion 0 es imposible menos Tom Cruise
+      i=1;
       int cuerda,nota,cant=0,duracion=0;
-      //lista
-      qDebug()<<"size de lista"<<listaNota.size();
+
+
+
       while(i<listaNota.size()-1){
-          /*1----7 Cuerda 1
-          8----14   Cuerda 2
-          15---21   Cuerda 3
-          22---28   Cuerda 4*/
-          //las cuerdas van d e0 a 3 y las notas de 0 a 6
-        cuerda =std::abs((listaNota[i].toInt()/4)-1);
-        nota= std::abs((listaNota[i].toInt()-7*cuerda)-1);
-        //el array de notas tiene q ser igual al del archivo xq sino es posible perder info
-         while(listaNota[i]!=listaNota[i+1]){
-            cant++;
-            i++;
-         }
-        if(!cant){
-           duracion=0;
-        }else{
-            duracion=cant;
-            i-=cant;
-            cant=0;
+
+        cuerda =(listaNota[i].toInt()-1)/7;
+        nota=(std::abs(listaNota[i].toInt())-7*cuerda-1);
+       // qDebug()<<i<<"cuerda"<<cuerda<<"notaa"<<nota;
+        if(listaNota[i].toInt()>0){
+             int notaAux=-(listaNota[i+1+cant].toInt());
+             int notaCapa=listaNota[i].toInt();
+             while(notaCapa!=(notaAux) && (i+cant+1)<listaNota.size()-1){
+                cant++;
+                notaAux=-(listaNota[i+1+cant].toInt());
+             }
+
+            if(!cant){
+               duracion=0;
+            }else{
+                duracion=cant;
+                cant=0;
+            }
+            ui->graphicsView_2->agregarNota(nota,cuerda,i,duracion);
         }
-        ui->graphicsView_2->agregarNota(nota,cuerda,i,duracion);
         i++;
       }
-      connect(puerto, SIGNAL(monitoreoSignal()), this, SLOT(monitoreoPuntos()));
+
+      connect(ui->graphicsView_2, SIGNAL(monitoreoSignal()), this, SLOT(monitoreoPuntos()));
+
       //despues hay q apagarlo
       ui->graphicsView_2->startTiempo();
       ui->graphicsView->setColorNotaApagada(Qt::black);
@@ -51,6 +60,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
       ui->graphicsView->setColorCuerdaPrendida(Qt::darkRed);
       ui->graphicsView->setColorCuerdaApagada(Qt::black);
       ui->Puntos->setPalette(Qt::white);
+      qDebug()<<"contruimos";
 }
 
 
@@ -70,8 +80,9 @@ void Jugar::timer_handler()
         if(timerNota[i]== 1)
         {
             i=-i;
-            mostrarNota(-i);
+            mostrarNota(i);
             ui->Puntos->setPalette(Qt::white);
+            timerNota[i]=0;
         }
     }
 }
@@ -123,6 +134,7 @@ void Jugar::setPuerto(QSerialPort *puertoExt)
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this,  SLOT(on_datosRecibidos() ));
 }
+
 void Jugar::mostrarNota(char nota) {
 
     int cuerdaYNota = notaACuerdaYNota(std::abs(nota));
@@ -134,7 +146,7 @@ void Jugar::mostrarNota(char nota) {
         ui->graphicsView->setCuerdaApagada(cuerdaYNota >> 8);
     }
 
-    qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
+   // qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
 }
 int Jugar::notaACuerdaYNota(uint8_t nota) {
     int ret = 0, cuerda = 0, notaConv = 0;
@@ -147,7 +159,7 @@ int Jugar::notaACuerdaYNota(uint8_t nota) {
         cuerda = nota / 7;
         notaConv = 0xff;
     }
-    qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
+   // qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
     ret |= notaConv;
     ret |= cuerda << 8;
     return ret;
@@ -180,7 +192,7 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
     if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
-    qDebug() << (uint8_t)nota;
+   // qDebug()<<"la nota es:"<<(uint8_t) nota;
     if (nota < 0) {
         qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
         nota=-nota;
@@ -235,59 +247,6 @@ uint8_t Jugar::tramaInfo( unsigned char* data)
 
     return res;
 }
-/*
-void Jugar::setNotaCorrecta(void)
-{
-    if(notaTocada >= 1 && notaTocada <= 28){
-        //prendo la nota en verde
-
-        QGuitarView aux;
-
-        if(aux.setNotaPrendida(notaTocada)){
-
-            aux.setColorNotaPrendida(QColor::fromRgb(0,255,0));
-            //aux.setColorCuerdaPrendida(QColor::fromRgb(0,255,0));
-        }
-    }
-
-    if(notaTocada >= 29 && notaTocada <= 56){
-        //apago la nota
-
-        QGuitarView aux;
-
-        if(aux.setNotaApagada(notaTocada)){
-
-            aux.setColorNotaApagada(QColor::fromRgb(255));
-            //aux.setColorCuerdaApagada(QColor c);
-        }
-    }
-}
-void Jugar::setNotaIncorrecta(void)
-{
-    if(notaTocada >= 1 && notaTocada <= 28){
-        //prendo la nota en rojo
-
-        QGuitarView aux;
-
-        if(aux.setNotaPrendida(notaTocada)){
-
-            aux.setColorNotaPrendida(QColor::fromRgb(255,0,0));
-            //aux.setColorCuerdaPrendida(QColor::fromRgb(255,0,0));
-        }
-    }
-
-    if(notaTocada >= 29 && notaTocada <= 56){
-        //apago la nota
-
-        QGuitarView aux;
-
-        if(aux.setNotaApagada(notaTocada)){
-
-            aux.setColorNotaApagada(QColor::fromRgb(255));
-            //aux.setColorCuerdaApagada(QColor c);
-        }
-    }
-}*/
 void Jugar::LeerArchivo(void){
     int i = 0;
     QFile cancion(nombreCancion);
@@ -299,24 +258,23 @@ void Jugar::LeerArchivo(void){
     //while (!in.atEnd()) //La funcion !in.atEnd() no me funcionaba bien, asi que quizas haya que reemplazarla por otra
      while(!aux.isNull())
      {
-        qDebug()<<"estalapalabra"<<aux;
+        //qDebug()<<"estalapalabra"<<aux;
          listaNota +=aux.split(',');
-         qDebug()<<listaNota.size();
+        // qDebug()<<listaNota.size();
         //listaNota = line.split(QLatin1Char(',')); //guarda lo separado por las comas en posiciones distintas de un array
         //saco el numero de la posicion de la lista
         int tam=(int)listaNota.size();
         listaNota.swapItemsAt(tam-1,tam-2);
         listaNota.removeLast();
         i++;
-        qDebug()<<listaNota.size();
         aux = in.readLine();
-
     }
     /*
     for(i=0;i<listaNota.size();i++){
         qDebug()<< "lista[" << i << "] =" <<listaNota[i];
     }*/
     cancion.close();
+   qDebug()<<"cerramos leer archivo";
     }
 }
 

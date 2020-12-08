@@ -264,14 +264,17 @@ void QNoteView::moverNota(nota & refNota) {
 bool QNoteView::tocarNota(int nroNota, int nroCuerda) {
     bool ret = false;
     int i = 0;
+    qDebug()<<"funcion tocar nota";
     for (i=0; i<noteArray.size(); i++) {
+        qDebug()<<"noteArray[i].nro ="<<noteArray[i].nro<<"nroNota ="<<nroNota;
         if (noteArray[i].nro == nroNota && noteArray[i].cuerda == nroCuerda) {
             ret = true;
             break;
         }
     }
-    if (noteArray[i].estado == 3) {
-        noteArray[i].estado = 4;
+    if (noteArray[i-1].estado == 3) {
+        noteArray[i-1].estado = 4;
+        qDebug()<<"ESTOY EN ESTADO 4";
     }
     return ret;
 }
@@ -287,6 +290,7 @@ bool QNoteView::soltarNota(int nroNota, int nroCuerda) {
     }
     if (ret && noteArray[i].estado == 2) {
         noteArray[i].estado = 5;
+        qDebug()<<"ESTOY EN ESTADO 5";
     }
     return ret;
 }
@@ -332,10 +336,12 @@ void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal, int dur
                 aux.fueDibujada = false;
                 aux.estado = 0;
                 aux.noteColor = QColor(COLOR_DEFAULT);
+                qDebug()<<noteArray.size();
                 noteArray.append(aux);
             }
         }
     }
-   // qDebug()<<"alejo"<<noteArray[posTemporal].nro<<noteArray[posTemporal].cuerda<<noteArray[posTemporal].duracion;
+   // if(noteArray.size()>0)
+       // qDebug()<<"pos"<<noteArray[noteArray.size()-1].pos<<"nota"<<noteArray[noteArray.size()-1].nro<<"cuerda"<<noteArray[noteArray.size()-1].cuerda<<"duracion"<<noteArray[noteArray.size()-1].duracion;
 }
 

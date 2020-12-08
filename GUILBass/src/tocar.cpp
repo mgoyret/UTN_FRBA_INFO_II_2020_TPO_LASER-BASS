@@ -11,7 +11,6 @@ Tocar::Tocar(QWidget *parent) :
     qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
     qDebug() << puertoMidi.inicializarGS();
     puertoMidi.enviarProgramChange(0, 30);
-    puertoMidi.enviarNoteOn(0, 64, 127);
 }
 
 Tocar::~Tocar()
