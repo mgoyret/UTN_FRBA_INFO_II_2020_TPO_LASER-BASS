@@ -158,12 +158,42 @@ void Grabar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     notaTocada = nota;
     qDebug() << (uint8_t)nota;
-    //mostrarNota(nota);
+    mostrarNota(nota);
     if (nota < 0) {
         qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {
         qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
     }
+}
+
+void Grabar::mostrarNota(char nota) {
+    int cuerdaYNota = notaACuerdaYNota(std::abs(nota));
+    if (nota > 0) {
+        if ((cuerdaYNota & 0x000000ff) != 0xff) ui->graphicsView->setNotaPrendida(cuerdaYNota & 0x000000ff);
+        ui->graphicsView->setCuerdaPrendida(cuerdaYNota >> 8);
+    } else {
+        if ((cuerdaYNota & 0x000000ff) != 0xff) ui->graphicsView->setNotaApagada(cuerdaYNota & 0x000000ff);
+        ui->graphicsView->setCuerdaApagada(cuerdaYNota >> 8);
+    }
+
+    qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
+}
+
+int Grabar::notaACuerdaYNota(uint8_t nota) {
+    int ret = 0, cuerda = 0, notaConv = 0;
+    nota--;
+    notaConv = nota % 7;
+    if (notaConv) {
+        cuerda = nota / 7;
+        notaConv = (6 - notaConv) + (6 * cuerda);
+    } else {
+        cuerda = nota / 7;
+        notaConv = 0xff;
+    }
+    qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
+    ret |= notaConv;
+    ret |= cuerda << 8;
+    return ret;
 }
 
 uint8_t Grabar::checkName( void )

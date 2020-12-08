@@ -95,6 +95,8 @@ public:
     void validarDatos(void);
     uint8_t checkName( void );
     void procesarNotaATocar(QByteArray dato);
+    void mostrarNota(char nota);
+    int notaACuerdaYNota(uint8_t nota);
 
 
 private slots:
