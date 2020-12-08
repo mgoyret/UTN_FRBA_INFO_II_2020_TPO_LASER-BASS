@@ -177,6 +177,7 @@ void Jugar::validarDatos() {
         datoAProcesar.append(bufferSerie[1]);
         bufferSerie.remove(0, 2);
         procesarNotaATocar(datoAProcesar);
+        datoAProcesar.clear();
     } else if (bufferSerie.at(0) & 0x0a) {
         bufferSerie.remove(0,1);
     } else {
