@@ -5,7 +5,11 @@
 #include <QMessageBox>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QColorDialog>
 #include <clasemidi.h>
+#include <dialogpreferencias.h>
+#include "../inc/tocar.h"
+#include "../inc/menujugar.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,14 +29,14 @@ private slots:
 
     void on_PBTocar_clicked();
 
-    void on_PBActualizar_clicked();
-
-    void on_PBConectar_clicked();
+    void on_actionPreferencias_triggered();
 
 private:
     Ui::MainWindow *ui;
     QSerialPort *puerto;
     ClaseMIDI *puertoMidi;
-    void enumerarPuertos();
+    void configurarPuertoSerie(QString portName);
+    void configurarPuertoMidi(QString portName);
+    bool verificarConfiguracionPuertos();
 };
 #endif // MAINWINDOW_H

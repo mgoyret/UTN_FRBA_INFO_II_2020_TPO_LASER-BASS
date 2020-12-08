@@ -41,7 +41,7 @@
 //////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
 #define PRIMER_MITAD    0xF0  // 240 = 11110000
 #define ULTIMA_MITAD    0x0F  // 15  = 00001111
-#define INICIO_TRAMA    0x0A  // 10  = 1010 que es el inicio de trama que esta en el primer byte
+#define INICIO_TRAMA    0xA0  // 10 0  = 1010 0000 que es el inicio de trama que esta en el primer byte
 #define FIN_TRAMA       0x05  // 13  = 0101 que es fin de trama
 #define INICIO_TRAMA_OK ( ( ( ((uint8_t)(data[0])) & PRIMER_MITAD ) >>4) == (uint8_t)INICIO_TRAMA )
 #define FIN_TRAMA_OK    ( ( ((uint8_t)(data[1])) & ULTIMA_MITAD ) == (uint8_t)FIN_TRAMA )

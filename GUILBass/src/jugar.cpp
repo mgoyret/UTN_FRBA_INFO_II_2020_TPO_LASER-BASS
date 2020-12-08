@@ -171,18 +171,16 @@ void Jugar::validarDatos() {
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {
-    if (!(bufferSerie[0] & 0x50)) {
-        if (cant == 1) break;
-        datoAProcesar.append(bufferSerie[0]);
-        datoAProcesar.append(bufferSerie[1]);
-        bufferSerie.remove(0, 2);
-        procesarNotaATocar(datoAProcesar);
-        datoAProcesar.clear();
-    } else if (bufferSerie.at(0) & 0x0a) {
-        bufferSerie.remove(0,1);
-    } else {
-        bufferSerie.remove(0, 1);
-    }
+        if (!(bufferSerie[0] & 0x50) && !(bufferSerie[1] & 0x0A) ) {
+            if (cant == 1) break;
+            datoAProcesar.append(bufferSerie.at(0));
+            datoAProcesar.append(bufferSerie.at(1));
+            bufferSerie.remove(0, 2);
+            procesarNotaATocar(datoAProcesar);
+            datoAProcesar.clear();
+        } else {
+            bufferSerie.remove(0, 1);
+        }
         cant = bufferSerie.size();
     }
 }

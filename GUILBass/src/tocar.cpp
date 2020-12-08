@@ -23,31 +23,10 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
     conection = connect(puerto, SIGNAL(readyRead()), this, SLOT(on_datosRecibidos()));
 }
 
-void Tocar::setNotaCorrecta(void)
+void Tocar::setPuertoMidi(ClaseMIDI *puertoExt)
 {
-    if(notaTocada >= 1 && notaTocada <= 28){
-        //prendo la nota
-
-        QGuitarView aux;
-
-        if(aux.setNotaPrendida(notaTocada)){
-
-            aux.setColorNotaPrendida(QColor::fromRgb(0,255,0));
-            //aux.setColorCuerdaPrendida(QColor::fromRgb(0,255,0));
-        }
-    }
-
-    if(notaTocada >= -28 && notaTocada <= -1){
-        //apago la nota
-
-        QGuitarView aux;
-
-        if(aux.setNotaApagada(notaTocada)){
-
-            aux.setColorNotaApagada(QColor::fromRgb(255));
-            //aux.setColorCuerdaApagada(QColor c);
-        }
-    }
+    puertoMidi = puertoExt;
+    puertoMidi->enviarProgramChange(0, 33);
 }
 
 void Tocar::mostrarNota(char nota) {
@@ -90,7 +69,7 @@ void Tocar::validarDatos() {
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {
-        if (!(bufferSerie[0] & 0x50)) {
+        if (!(bufferSerie[0] & 0x50) && !(bufferSerie[1] & 0x0A) ) {
             if (cant == 1) break;
             datoAProcesar.append(bufferSerie[0]);
             datoAProcesar.append(bufferSerie[1]);
