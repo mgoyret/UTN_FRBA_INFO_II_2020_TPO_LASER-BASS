@@ -17,6 +17,7 @@ DialogJugar::DialogJugar(QWidget *parent) :
         if( (nombre != ".") && (nombre != "..") )
             ui->CBcanciones->addItem(lista.at(i));
     }
+
 }
 
 DialogJugar::~DialogJugar()

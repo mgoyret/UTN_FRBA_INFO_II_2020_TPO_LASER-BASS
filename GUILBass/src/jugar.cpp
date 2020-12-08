@@ -6,14 +6,21 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
     ui(new Ui::Jugar)
 {
     ui->setupUi(this);
+    bufferSerie.clear();
+    qDebug() << puertoMidi.abrirPuerto(0);
+    qDebug() << puertoMidi.getNombreSalida(0) << "\n" << puertoMidi.getNombresSalidas();
+    qDebug() << puertoMidi.inicializarGS();
     nombreCancion = nombre;
+    nombreCancion=nombreCancion.prepend("../media/");
+    qDebug()<< "el nombre es:"<<nombreCancion;
       LeerArchivo();
       //cargar archivo
-
       puntajes.cargarDesdeArchivo();
       int i=0;
       int cuerda,nota,cant=0,duracion=0;
-      while(i<listaNota.size()){
+      //lista
+      qDebug()<<"size de lista"<<listaNota.size();
+      while(i<listaNota.size()-1){
           /*1----7 Cuerda 1
           8----14   Cuerda 2
           15---21   Cuerda 3
@@ -22,7 +29,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
         cuerda =std::abs((listaNota[i].toInt()/4)-1);
         nota= std::abs((listaNota[i].toInt()-7*cuerda)-1);
         //el array de notas tiene q ser igual al del archivo xq sino es posible perder info
-         while(listaNota[i]==listaNota[i+1]){
+         while(listaNota[i]!=listaNota[i+1]){
             cant++;
             i++;
          }
@@ -40,12 +47,33 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
       //despues hay q apagarlo
       ui->graphicsView_2->startTiempo();
       ui->graphicsView->setColorNotaApagada(Qt::black);
+      ui->graphicsView->setColorNotaPrendida(Qt::darkRed);
+      ui->graphicsView->setColorCuerdaPrendida(Qt::darkRed);
+      ui->graphicsView->setColorCuerdaApagada(Qt::black);
+      ui->Puntos->setPalette(Qt::white);
 }
 
 
 Jugar::~Jugar()
 {
     delete ui;
+}
+void Jugar::iniciarTimer(int nota)
+{
+    timerNota[nota]=1;
+    QTimer::singleShot(TIMER_TIME_, this, SLOT(timer_handler()));
+}
+void Jugar::timer_handler()
+{
+    int i;
+    for(i=0;i<29;i++){
+        if(timerNota[i]== 1)
+        {
+            i=-i;
+            mostrarNota(-i);
+            ui->Puntos->setPalette(Qt::white);
+        }
+    }
 }
 void Jugar::monitoreoPuntos() {
 
@@ -65,17 +93,27 @@ void Jugar::monitoreoPuntos() {
    // 0->no me importa 4->no me importa transitorio en el, 3->espero nota asi q no me importa
   // 5-> poner amarillo es medio punto -1-> rojo  1-> verde
    if(ui->graphicsView_2->getEstadoMostrar()==-1){
-       ui->graphicsView->setColorNotaApagada(Qt::red);
        //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
        ui->Puntos->setPalette(Qt::red);
    }else if(ui->graphicsView_2->getEstadoMostrar()==1) {
-       ui->graphicsView->setColorNotaApagada(Qt::green);
        //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
        ui->Puntos->setPalette(Qt::green);
        puntos+=PUNTOCSIMPLE;
        ui->Puntos->setText(QString::number(puntos));
+       iniciarTimer(nota);
    }else if(ui->graphicsView_2->getEstadoMostrar()==2) {
+       pesoPunto+=1;
+       ui->Puntos->setText(QString::number(puntos));
        ui->Puntos->setPalette(Qt::blue);
+       puntos=puntos+pesoPunto*(int)PUNTOCSIMPLE;
+       ui->Puntos->setText(QString::number(puntos));
+       iniciarTimer(nota);
+   }else if(ui->graphicsView_2->getEstadoMostrar()==5) {
+       ui->Puntos->setPalette(Qt::darkYellow);
+       //esto lo dejo en dark yellow para poder diferenciar entre estados
+       //despues se puede poner red
+       pesoPunto=0;
+       iniciarTimer(nota);
    }
    mostrarNota(nota);
    //muestro qguitarview y puntos
@@ -123,10 +161,10 @@ void Jugar::validarDatos() {
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {
-        if (bufferSerie[0] & 0xa0) {
+        if (bufferSerie[0] & 0x50) {
             if (cant == 1) break;
-            datoAProcesar.append(bufferSerie[0]);
-            datoAProcesar.append(bufferSerie[1]);
+            datoAProcesar.append(bufferSerie.at(0));
+            datoAProcesar.append(bufferSerie.at(1));
             bufferSerie.remove(0, 2);
             procesarNotaATocar(datoAProcesar);
             datoAProcesar.clear();
@@ -143,14 +181,23 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     qDebug() << (uint8_t)nota;
-    //set color guitar
     if (nota < 0) {
         qDebug() << puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        nota=-nota;
+        ui->graphicsView_2->soltarNota(nota/7,nota-7*(nota/7)-1);
     } else {
         qDebug() << puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        ui->graphicsView_2->tocarNota(nota/7,nota-7*(nota/7)-1);
     }
 }
-
+/*void Tocar::procesarNota(QByteArray data) {
+    uint8_t nota;
+    if(tramaOk(data)){
+        nota = TramaInfo(data);
+        if((nota<1) || (nota>NOTE_MAX*2))
+            NOT
+    }
+}*/
 
 
 /**
@@ -242,62 +289,34 @@ void Jugar::setNotaIncorrecta(void)
     }
 }*/
 void Jugar::LeerArchivo(void){
-    QString line;
     int i = 0;
     QFile cancion(nombreCancion);
-    if(!cancion.open(QIODevice::ReadOnly)){
-
+    if(cancion.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream in(&cancion);
 
-    while (!in.atEnd()) //La funcion !in.atEnd() no me funcionaba bien, asi que quizas haya que reemplazarla por otra
-    {
-        line = in.readLine(); //posicion,nota
-        listaNota = line.split(QLatin1Char(',')); //guarda lo separado por las comas en posiciones distintas de un array
+        QString aux = in.readLine();
+        //while (aux.size()>0)
+    //while (!in.atEnd()) //La funcion !in.atEnd() no me funcionaba bien, asi que quizas haya que reemplazarla por otra
+     while(!aux.isNull())
+     {
+        qDebug()<<"estalapalabra"<<aux;
+         listaNota +=aux.split(',');
+         qDebug()<<listaNota.size();
+        //listaNota = line.split(QLatin1Char(',')); //guarda lo separado por las comas en posiciones distintas de un array
         //saco el numero de la posicion de la lista
-        listaNota.removeAt(i);
+        int tam=(int)listaNota.size();
+        listaNota.swapItemsAt(tam-1,tam-2);
+        listaNota.removeLast();
         i++;
+        qDebug()<<listaNota.size();
+        aux = in.readLine();
+
     }
+    /*
+    for(i=0;i<listaNota.size();i++){
+        qDebug()<< "lista[" << i << "] =" <<listaNota[i];
+    }*/
     cancion.close();
     }
 }
-/*
- void Jugar::LeerArchivo(void){
-    QString line;
-    QStringList list;
-    int i = 0;
 
-    QFile cancion(SONG_FILE_NAME_);
-
-
-    if(!cancion.open(QIODevice::ReadOnly)){
-
-    QTextStream in(&cancion);
-
-    while (i < posicion && !in.atEnd()) //La funcion !in.atEnd() no me funcionaba bien, asi que quizas haya que reemplazarla por otra
-    {
-        line = in.readLine(); //posicion,nota
-        list = line.split(QLatin1Char(',')); //guarda lo separado por las comas en posiciones distintas de un array
-
-        i++;
-    }
-    //En el paso anterior se va a leer el archivo linea por lina hasta llegar a la que corresponde a la posicion de la nota recibida,
-    //por lo que una vez que se sale del while, list[1] va a tener los datos en esa posicion
-
-    //Comparo list[1] (nota) con el dato recibido
-    if(list[1].toInt() == (int) notaTocada){
-        setNotaCorrecta(); //la nota se prende en color verde
-        //Sumo puntaje
-        //ui->Puntos->setText(Puntaje);
-    }else{
-        setNotaIncorrecta(); //la nota se prende en color rojo
-        //Resto puntaje
-        //ui->Puntos->setText(Puntaje);
-    }
-    cancion.close();
-    }
-    Ejemplo uso QStringList
-      QStringList str = {"Hola", "todo", "bien"};
-      ui->textEdit->setText(str[2]);
-
- }
-*/

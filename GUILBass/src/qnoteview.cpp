@@ -189,7 +189,6 @@ void QNoteView::moverNotas() {
                         noteArray[i].linePtr2->setPen(pen);
                         noteArray[i].linePtr2->setLine(noteArray[i].circlePtr->x() + RADIO_NUMEROS, noteArray[i].linePtr->y(), noteArray[i].linePtr->x() + PX_POR_UPD * noteArray[i].duracion, noteArray[i].linePtr->y());
                         scene->update(noteArray[i].linePtr2->boundingRect());
-                        //
                     }
                     if (noteArray[i].pos + noteArray[i].duracion < msCounter && noteArray[i].estado == 2) {
                         QPen pen = noteArray[i].linePtr->pen();
@@ -208,9 +207,9 @@ void QNoteView::moverNotas() {
                     }
                     if (noteArray[i].estado == 5) {
                         QPen pen = noteArray[i].linePtr->pen();
-                        pen.setColor(Qt::red);
+                        pen.setColor(Qt::darkYellow);
                         noteArray[i].linePtr->setPen(pen);
-                        noteArray[i].noteColor = QColor(Qt::red);
+                        noteArray[i].noteColor = QColor(Qt::darkYellow);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         noteArray[i].estado = -1;
                         //--------Mandar signal--------------------
@@ -337,5 +336,6 @@ void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal, int dur
             }
         }
     }
+   // qDebug()<<"alejo"<<noteArray[posTemporal].nro<<noteArray[posTemporal].cuerda<<noteArray[posTemporal].duracion;
 }
 

@@ -72,7 +72,6 @@ private:
     void moverNota(nota &);
 private slots:
     void moverNotas();
-
 protected:
     void showEvent(QShowEvent *event) override;
     void paintEvent(QPaintEvent *event) override;

@@ -5,6 +5,7 @@
 #include <QSerialPort>
 #include <QDebug>
 #include <QFile>
+#include <QTimer>
 #include <QTextStream>
 #include "qguitarview.h"
 #include "dialogjugar.h"
@@ -21,8 +22,6 @@
 
 #define ON_      1
 #define OFF_     0
-
-#define TIMER1_  1
 
 #define SIN_NOTA_    0
 #define NOTA1_       '1'   //aca va el numero que represente a lo que llega por puerto serie al llegar la nota de valor mas chico
@@ -76,12 +75,16 @@ private slots:
 private:
     Ui::Jugar *ui;
     uint8_t notaTocada;
+    int pesoPunto=0;
     int posicion = 0;
     int puntos=0;
+    QString timerNota;
     ParserPuntaje puntajes;
     QString nombreCancion;
     QSerialPort *puerto;
     QStringList listaNota;
+    void iniciarTimer(int);
+    void timer_handler(void);
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //funcion para el line_edit Puntos
     QByteArray bufferSerie;

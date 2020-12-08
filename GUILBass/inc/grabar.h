@@ -101,7 +101,7 @@ private slots:
     void on_PBrec_clicked( void );
     void on_PBfinRec_clicked( void );
     void timer_handler( void );
-    void puertoSerieRcv_handler( void );
+    void on_datosRecibidos( void );
     void on_PBnombre_clicked();
     void on_lineEditNombre_textChanged(const QString &arg1);
 
