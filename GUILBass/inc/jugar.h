@@ -63,7 +63,7 @@ public:
     explicit Jugar(QWidget *parent = nullptr, QString nombre = "");
     ~Jugar();
     void setPuerto( QSerialPort* );
-  // inline void setPuertoMidi(ClaseMIDI* puertoExt){puertoMidi=puertoExt;}
+    void setPuertoMidi(ClaseMIDI* puertoExt);
     void procesarNota( QByteArray );
     uint8_t tramaOk(unsigned char* );
     uint8_t tramaInfo( unsigned char* );

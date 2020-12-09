@@ -129,6 +129,11 @@ void Jugar::setPuerto(QSerialPort *puertoExt)
     puerto = puertoExt;
     conection = connect(puerto, SIGNAL(readyRead()), this,  SLOT(on_datosRecibidos() ));
 }
+void Jugar::setPuertoMidi(ClaseMIDI *puertoExt)
+{
+    puertoMidi = puertoExt;
+    puertoMidi->enviarProgramChange(0, 33);
+}
 
 void Jugar::mostrarNota(char nota) {
 
