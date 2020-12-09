@@ -68,7 +68,7 @@ Jugar::~Jugar()
 void Jugar::iniciarTimer(int nota)
 {
     timerNota[nota]=1;
-    QTimer::singleShot(TIMER_TIME, this, SLOT(timer_handler()));
+    QTimer::singleShot(TIME_JUGAR, this, SLOT(timer_handler()));
 }
 void Jugar::timer_handler(void)
 {
@@ -141,7 +141,6 @@ int Jugar::setPuntosMax(void)
             while(i<listaNota.size()-1){
 
                 cuerda =(listaNota[i].toInt()-1)/7;
-                nota=(std::abs(listaNota[i].toInt())-7*cuerda-1);
                // qDebug()<<i<<"cuerda"<<cuerda<<"notaa"<<nota;
                 if(listaNota[i].toInt()>0){
                      int notaAux=-(listaNota[i+1+cant].toInt());
@@ -157,7 +156,7 @@ int Jugar::setPuntosMax(void)
                     }else{
                         duracion=cant;
                         cant=0;
-                        res+=PUNTOCLARGA*duracion;
+                        res+=PUNTOCLARGA*duracion+PUNTOCSIMPLE;
                     }
 
                 }
@@ -229,7 +228,7 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
         nota=-nota;
         int cuerda=(nota-1)/7;
         qDebug() <<"MANDAR SOLTAR:C"<<cuerda<<"N"<<(nota-7*(cuerda)-1);
-        ui->graphicsView_2->soltarNota(cuerda,nota-7*(cuerda)-1);
+        ui->graphicsView_2->soltarNota(nota-7*(cuerda)-1,cuerda);
     } else {
         puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
         int cuerda=(nota-1)/7;

@@ -16,11 +16,6 @@ QNoteView::QNoteView(QWidget *parent) : QGraphicsView(parent){
     this->setStyleSheet("border:0px; background:transparent");
 
 }
-/*void QNoteView::llamoPuntaje()
-{
-    qDebug()<<"entro";
-
-}*/
 
 QNoteView::~QNoteView() {
     delete scene;
@@ -196,7 +191,7 @@ void QNoteView::moverNotas() {
                         noteArray[i].linePtr2->setLine(noteArray[i].circlePtr->x() + RADIO_NUMEROS, noteArray[i].linePtr->y(), noteArray[i].linePtr->x() + PX_POR_UPD * noteArray[i].duracion, noteArray[i].linePtr->y());
                         scene->update(noteArray[i].linePtr2->boundingRect());
                     }
-                    if (noteArray[i].pos + noteArray[i].duracion < msCounter && noteArray[i].estado == 2) {
+                    if ((noteArray[i].pos + noteArray[i].duracion +1) < msCounter && noteArray[i].estado == 2) {
                         QPen pen = noteArray[i].linePtr->pen();
                         pen.setColor(Qt::green);
                         noteArray[i].linePtr->setPen(pen);
@@ -273,63 +268,49 @@ void QNoteView::moverNota(nota & refNota) {
 
 bool QNoteView::tocarNota(int nroNota, int nroCuerda) {
     bool ret = false;
-    int i;
+    int p=0;
 
-    for (i=0; i<noteArray.size(); i++) {
+    for (p=0; p<noteArray.size(); p++) {
         //qDebug()<<"POS"<<noteArray[i].pos<< "ARRAY C:"<<noteArray[i].cuerda<<"N:"<<noteArray[i].nro<<"LLEGA C:"<<nroCuerda<<"N:"<<nroNota;
-         if (noteArray[i].nro == nroNota && noteArray[i].cuerda == nroCuerda) {
+         if (noteArray[ p].nro == nroNota && noteArray[ p].cuerda == nroCuerda) {
              ret = true;
             break;
         }
     }
         //qDebug()<<"tamano"<<noteArray.size()<<"indice"<<(i-1);
         //sino se va de rango no se xq
-        if(noteArray.size() && i>-1 && i<noteArray.size()){
-        if (noteArray[i].estado == 3) {
-            noteArray[i].estado = 4;
-            qDebug()<<"ESTOY EN ESTADO 4";
-         }
+   // if(noteArray.size() && i>-1 && i<noteArray.size())
+     if(ret){
+        if (noteArray[ p].estado == 3) {
+            noteArray[ p].estado = 4;
+            //qDebug()<<"ESTOY EN ESTADO 4";
+        }
     }
     return ret;
 }
 
 bool QNoteView::soltarNota(int nroNota, int nroCuerda) {
     bool ret = false;
-    int i = 0;
-    for (i=0; i<noteArray.size(); i++) {
-        if (noteArray[i].nro == nroNota && noteArray[i].cuerda == nroCuerda && noteArray[i].duracion > 0) {
-            ret = true;
+    int j=0;
+
+    for (j=0; j<noteArray.size(); j++) {
+        qDebug()<<"LLEGA C:"<<nroCuerda<<"N:"<<nroNota<<"POS"<<noteArray[j].pos<< "ARRAY C:"<<noteArray[j].cuerda<<"N:"<<noteArray[j].nro;
+         if (noteArray[j].nro == nroNota && noteArray[j].cuerda == nroCuerda) {
+             ret = true;
             break;
         }
     }
-
-    if (ret && noteArray[i].estado == 2) {
-        noteArray[i].estado = 5;
-        qDebug()<<"ESTOY EN ESTADO 5";
+        //sino se va de rango no se xq
+   // if(noteArray.size() && i>-1 && i<noteArray.size())
+     if(ret && j<noteArray.size()){
+          qDebug()<<"POS"<<noteArray[j].pos<<"estado"<<(int)(noteArray[j].estado);
+        if (noteArray[j].estado == 2) {
+            noteArray[j].estado = 5;
+            qDebug()<<"ESTOY EN ESTADO 5";
+        }
     }
     return ret;
 }
-/*
-void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal){
-    nota aux;
-
-    if (posTemporal > msCounter) {
-        if (nroNota > -1 && nroNota < 7) {
-            if (nroCuerda > -1 && nroCuerda < 3) {
-                aux.nro = nroNota;
-                aux.cuerda = nroCuerda;
-                aux.pos = posTemporal;
-                aux.textPtr = new QGraphicsTextItem(QString::number(nroNota));
-                aux.circlePtr = new QGraphicsEllipseItem(0, 0, RADIO_NUMEROS * 2, RADIO_NUMEROS * 2);
-                aux.fueDibujada = false;
-                aux.tocada = false;
-                aux.noteColor = QColor(COLOR_DEFAULT);
-                noteArray.append(aux);
-            }
-        }
-    }
-}
-*/
 void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal, int duracion) {
     nota aux;
 

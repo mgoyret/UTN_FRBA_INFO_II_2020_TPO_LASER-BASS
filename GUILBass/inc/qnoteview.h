@@ -11,11 +11,11 @@
 #include <QDebug>
 #include "qguitarview.h"
 #define ALTO_EXTRA_BARRA_PRESENTE 10
-#define DENOM_MARGEN_BARRA_PRESENTE 5
+#define DENOM_MARGEN_BARRA_PRESENTE 2
 #define ANCHO_LINEAS 2
 #define RADIO_NUMEROS 10
-#define BASE_TIEMPO_MS 500
-#define DELAY_NOTA 30
+#define BASE_TIEMPO_MS 200
+#define DELAY_NOTA 10
 //cant de piclies q se corre mientras mas chico mas lento va
 #define PX_POR_UPD 2
 #define COLOR_DEFAULT Qt::gray
