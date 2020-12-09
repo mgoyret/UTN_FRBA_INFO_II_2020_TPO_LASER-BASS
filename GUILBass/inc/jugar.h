@@ -34,7 +34,8 @@
 #define SONG_FILE_NAME_ "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
 #define TIMER_TIME 100
-#define PUNTOCSIMPLE 10;
+#define PUNTOCSIMPLE 10
+#define PUNTOCLARGA 15
 
 
 //////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
@@ -91,12 +92,13 @@ private:
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
     //funcion para el line_edit Puntos
     QByteArray bufferSerie;
-    ClaseMIDI puertoMidi;
+    ClaseMIDI *puertoMidi;
     QNoteView mostrar;
     void validarDatos();
     void procesarNotaATocar(QByteArray);
      void mostrarNota(char nota);
      int notaACuerdaYNota(uint8_t nota) ;
+     int setPuntosMax(void);
 
 };
 

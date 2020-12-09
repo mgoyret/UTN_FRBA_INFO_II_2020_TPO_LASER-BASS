@@ -302,6 +302,7 @@ bool QNoteView::soltarNota(int nroNota, int nroCuerda) {
             break;
         }
     }
+
     if (ret && noteArray[i].estado == 2) {
         noteArray[i].estado = 5;
         qDebug()<<"ESTOY EN ESTADO 5";
@@ -354,7 +355,7 @@ void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal, int dur
             }
         }
     }
-    if(noteArray.size()>0)
-       qDebug()<<"pos"<<noteArray[noteArray.size()-1].pos<<"nota"<<noteArray[noteArray.size()-1].nro<<"cuerda"<<noteArray[noteArray.size()-1].cuerda<<"duracion"<<noteArray[noteArray.size()-1].duracion;
+    //if(noteArray.size()>0)
+      // qDebug()<<"pos"<<noteArray[noteArray.size()-1].pos<<"nota"<<noteArray[noteArray.size()-1].nro<<"cuerda"<<noteArray[noteArray.size()-1].cuerda<<"duracion"<<noteArray[noteArray.size()-1].duracion;
 }
 

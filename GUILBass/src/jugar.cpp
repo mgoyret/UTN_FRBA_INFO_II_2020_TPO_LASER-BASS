@@ -110,17 +110,15 @@ void Jugar::monitoreoPuntos() {
        ui->Puntos->setText(QString::number(puntos));
        iniciarTimer(nota);
    }else if(ui->graphicsView_2->getEstadoMostrar()==2) {
-       pesoPunto+=1;
        ui->Puntos->setText(QString::number(puntos));
        ui->Puntos->setPalette(Qt::blue);
-       puntos=puntos+pesoPunto*(int)PUNTOCSIMPLE;
+       puntos+=PUNTOCLARGA;
        ui->Puntos->setText(QString::number(puntos));
        iniciarTimer(nota);
    }else if(ui->graphicsView_2->getEstadoMostrar()==5) {
        ui->Puntos->setPalette(Qt::darkYellow);
        //esto lo dejo en dark yellow para poder diferenciar entre estados
        //despues se puede poner red
-       pesoPunto=0;
        iniciarTimer(nota);
    }
 }
@@ -134,7 +132,39 @@ void Jugar::setPuertoMidi(ClaseMIDI *puertoExt)
     puertoMidi = puertoExt;
     puertoMidi->enviarProgramChange(0, 33);
 }
+int Jugar::setPuntosMax(void)
+{
+            int res=0;
+            //arranco desde 1 xq la posicion 0 es imposible menos Tom Cruise
+            int i=1;
+            int cuerda,nota,cant=0,duracion=0;
+            while(i<listaNota.size()-1){
 
+                cuerda =(listaNota[i].toInt()-1)/7;
+                nota=(std::abs(listaNota[i].toInt())-7*cuerda-1);
+               // qDebug()<<i<<"cuerda"<<cuerda<<"notaa"<<nota;
+                if(listaNota[i].toInt()>0){
+                     int notaAux=-(listaNota[i+1+cant].toInt());
+                     int notaCapa=listaNota[i].toInt();
+                     while(notaCapa!=(notaAux) && (i+cant+1)<listaNota.size()-1){
+                        cant++;
+                        notaAux=-(listaNota[i+1+cant].toInt());
+                     }
+
+                    if(!cant){
+                       duracion=0;
+                       res+=PUNTOCSIMPLE;
+                    }else{
+                        duracion=cant;
+                        cant=0;
+                        res+=PUNTOCLARGA*duracion;
+                    }
+
+                }
+                i++;
+              }
+    return res;
+}
 void Jugar::mostrarNota(char nota) {
 
     int cuerdaYNota = notaACuerdaYNota(std::abs(nota));
@@ -195,13 +225,13 @@ void Jugar::procesarNotaATocar(QByteArray dato) {
    // qDebug()<<"la nota es:"<<(uint8_t) nota;
     mostrarNota(nota);
     if (nota < 0) {
-        puertoMidi.enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
         nota=-nota;
         int cuerda=(nota-1)/7;
-       // qDebug() <<"C"<<cuerda<<"N"<<(nota-7*(cuerda)-1,cuerda);
+        qDebug() <<"MANDAR SOLTAR:C"<<cuerda<<"N"<<(nota-7*(cuerda)-1);
         ui->graphicsView_2->soltarNota(cuerda,nota-7*(cuerda)-1);
     } else {
-        puertoMidi.enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
         int cuerda=(nota-1)/7;
        // qDebug() <<"C"<<cuerda<<"N"<<(nota-7*(cuerda)-1);
         ui->graphicsView_2->tocarNota(nota-7*(cuerda)-1,cuerda);
@@ -245,7 +275,9 @@ void Jugar::slotPuntaje()
     ui->graphicsView_2->stopTiempo();
     QString nombreCancion = "";
     puntaje estructuraPuntajes;
-    DialogPuntajes dPuntajes(this, puntos);
+    int puntosMax=setPuntosMax();
+    qDebug()<<"puntaje maximo"<<puntosMax;
+    DialogPuntajes dPuntajes(this, puntos,puntosMax);
     dPuntajes.exec();
     estructuraPuntajes.iniciales = dPuntajes.getName();
     estructuraPuntajes.puntaje = puntos;
