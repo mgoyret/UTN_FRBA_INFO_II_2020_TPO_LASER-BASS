@@ -205,10 +205,12 @@ int Grabar::notaACuerdaYNota(uint8_t nota) {
 uint8_t Grabar::checkName( void )
 {
     uint8_t res = TRUE;
+    QString aux2Name = auxName;
+    aux2Name.append(".csv"); // los archivos guardados tienen esta terminacion, asique debo compararla tambien
     QStringList lista = QDir("../media").entryList();
     for(uint8_t i=0; i<lista.size(); i++)
     {
-        if( lista.at(i) == auxName )
+        if( lista.at(i) == aux2Name )
             res = FALSE;
         //qDebug() << lista.at(i);
     }
@@ -265,7 +267,7 @@ void Grabar::timer_handler( void )
     {
         guardarNota();
         notaTocada = SIN_NOTA;
-        iniciarTimer();
+        iniciarTimer(); //timer periodico
     }
 }
 
