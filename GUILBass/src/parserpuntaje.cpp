@@ -105,7 +105,9 @@ void ParserPuntaje::cargarDesdeArchivo() {
     if (jDocPuntajes != nullptr) delete jDocPuntajes;
 
     if(arch.exists()) {
+        qDebug()<<"Archivo de puntajes encontrado";
         if (arch.open(QIODevice::ReadOnly)) {
+            qDebug()<<"Archivo de puntajes abierto";
             rawTextData = arch.readAll();
             arch.close();
             jDoc = QJsonDocument::fromJson(rawTextData);
@@ -116,12 +118,14 @@ void ParserPuntaje::cargarDesdeArchivo() {
                 jDocPuntajes = new QJsonDocument(jDoc);
             }
         } else {
+            qDebug()<<"ERROR al abrir archivo de puntajes";
             jDoc.setArray(QJsonArray());
             jDocPuntajes = new QJsonDocument(jDoc);
         }
     } else {
         //si no hay archivo, creo un array vacío y lo pongo de base para el
         //document
+        qDebug()<<"Archivo de puntajes NO encontrado";
         jDoc.setArray(QJsonArray());
         jDocPuntajes = new QJsonDocument(jDoc);
     }

@@ -9,12 +9,13 @@ DialogPuntajes::DialogPuntajes(QWidget *parent, int puntos, int puntosMax) :
 
     ui->labelNombre->setText("Ingese 3 letras");
     ui->labelMensaje->setText("");
+    ui->labelPuntos->setText("Puntos: " + QString::number(puntos) + " / " + QString::number(puntosMax));
 
-    if ( puntos>=0 && puntos<puntosMax/3)
+    if ( (puntos>=0) && (puntos<(puntosMax/3)))
         ui->labelMensaje->setText("Hoy no es tu dia, sigue practicando!");
-    if ( puntos>0 && puntos<(puntosMax*2/3))
+    if ( (puntos>=(puntosMax/3)) && (puntos<(puntosMax*2/3)))
         ui->labelMensaje->setText("Bien jugado, pero hay mejores formas\nde rascarce la oreja...");
-    if ( puntos>(puntosMax*2/3))
+    if ( puntos>=(puntosMax*2/3))
         ui->labelMensaje->setText("EXCELENTE! ya podes tocar para el duko");
 }
 
