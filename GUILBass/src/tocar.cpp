@@ -11,6 +11,9 @@ Tocar::Tocar(QWidget *parent) :
 
 Tocar::~Tocar()
 {
+    for(int i=1;i<29;i++)
+        puertoMidi->enviarNoteOff(0, 32 + (uint8_t)i* 2);
+    qDebug()<<"allnoteOFF";
     delete ui;
 }
 
@@ -87,7 +90,7 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
-    qDebug() << (uint8_t)nota;
+    //qDebug() <<"la nota es"<<(int)nota;
     mostrarNota(nota);
     if (nota < 0) {
         qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);

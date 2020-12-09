@@ -27,9 +27,9 @@
 #define TAT3  10
 #define TAC3  11
 //timers
-#define TIMETAC 2000 //poner tiempo en mseg para cada uno
-#define TIMETAT  20
-#define TIMETDCA 20
+#define TIMETAC 1000 //poner tiempo en mseg para cada uno
+#define TIMETAT  50
+#define TIMETDCA 50
 //---PROTOTIPODEFUNCIONES-----------------
 
 

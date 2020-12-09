@@ -10,14 +10,18 @@
 #include <QTimer>
 #include <QDebug>
 #include "qguitarview.h"
-#define ALTO_EXTRA_BARRA_PRESENTE 10
-#define DENOM_MARGEN_BARRA_PRESENTE 10
-#define ANCHO_LINEAS 2
-#define RADIO_NUMEROS 10
+#define ALTO_EXTRA_BARRA_PRESENTE 9
+#define DENOM_MARGEN_BARRA_PRESENTE 5
+#define ANCHO_LINEAS 1
+#define RADIO_NUMEROS 9
 #define BASE_TIEMPO_MS 100
-#define DELAY_NOTA 10
+#define DELAY_NOTA 15
+//las notas futuras no suenan pero con este define se puede mover la linea
+//para q la linea de presente este mas adelante y por lo tanto el usuario
+//pueda toque un toqeucin antes de esta linea sea correcto
+#define DEFASAJE 9
 //cant de piclies q se corre mientras mas chico mas lento va
-#define PX_POR_UPD 2
+#define PX_POR_UPD 4
 #define COLOR_DEFAULT Qt::gray
 
 typedef struct {
