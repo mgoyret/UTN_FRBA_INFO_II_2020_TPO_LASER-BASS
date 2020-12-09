@@ -42,7 +42,7 @@
 #define STRING_KEY_ARRAY_PUNTAJES "puntajes"
 #define STRING_KEY_JUGADOR "jugador"
 #define STRING_KEY_PUNTAJE_JUGADOR "puntaje"
-#define STRING_ARCHIVO_NOMBRE "asd.tema"
+#define STRING_ARCHIVO_NOMBRE "../puntajes/archivoPuntajes.tema"
 #define CARACT_MAX_PUNT_TABLA 5
 
 typedef struct {
