@@ -94,6 +94,7 @@ void QNoteView::moverNotas() {
         //si esta variable es menor que la posicion maxima que entra en la view, la tengo que mostrar;
         posMaxAMostrar = msCounter + (this->viewport()->width() - (int)((float)this->viewport()->width() / (float)DENOM_MARGEN_BARRA_PRESENTE)) / PX_POR_UPD;
         posMinAMostrar = msCounter - (int)((float)this->viewport()->width() / (float)DENOM_MARGEN_BARRA_PRESENTE) / PX_POR_UPD;
+       // qDebug()<<"PMINMOSTRAR"<<posMinAMostrar<<"mscounter"<<msCounter<<"ancho"<<(int)((float)this->viewport()->width());
         for (int i=noteArray.size()-1; i>=0; i--) {
             if (noteArray[i].pos < posMaxAMostrar && !noteArray[i].fueDibujada) {
 

@@ -137,10 +137,9 @@ int Jugar::setPuntosMax(void)
             int res=0;
             //arranco desde 1 xq la posicion 0 es imposible menos Tom Cruise
             int i=1;
-            int cuerda,nota,cant=0,duracion=0;
+            int cant=0,duracion=0;
             while(i<listaNota.size()-1){
 
-                cuerda =(listaNota[i].toInt()-1)/7;
                // qDebug()<<i<<"cuerda"<<cuerda<<"notaa"<<nota;
                 if(listaNota[i].toInt()>0){
                      int notaAux=-(listaNota[i+1+cant].toInt());
