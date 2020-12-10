@@ -122,8 +122,8 @@ void Jugar::monitoreoPuntos() {
        ui->Puntos->setText(QString::number(puntos));
        iniciarTimer(nota);
    }else if(ui->graphicsView_2->getEstadoMostrar()==5) {
-       ui->Puntos->setPalette(Qt::darkYellow);
-       //esto lo dejo en dark yellow para poder diferenciar entre estados
+       ui->Puntos->setPalette(Qt::yellow);
+       //esto lo dejo en yellow para poder diferenciar entre estados
        //despues se puede poner red
        iniciarTimer(nota);
    }
@@ -159,7 +159,7 @@ int Jugar::setPuntosMax(void)
                        duracion=0;
                        res+=PUNTOCSIMPLE;
                     }else{
-                        duracion=cant-2;
+                        duracion=cant+1;
                         qDebug()<<duracion;
                         cant=0;
                         res+=PUNTOCLARGA*duracion+PUNTOCSIMPLE;

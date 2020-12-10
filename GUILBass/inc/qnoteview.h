@@ -29,6 +29,7 @@ typedef struct {
     int cuerda;  //cuerda donde va
     int pos;  //posicion en unidades de base de tiempo
     int duracion;  //para saber si es larga o corta;
+    int delayTocado;//solo se usa para las largas para saber cuando se tocaron para despues finalizarlas
     char estado; //determina el estado de la nota:
                  //-1 : Se paso y no se toco
                  //0 : Esta en el futuro

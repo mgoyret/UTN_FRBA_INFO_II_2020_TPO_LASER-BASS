@@ -13,7 +13,7 @@
 #include <Regs_LPC176x.h>
 
 //Defines
-#define BUFFER_TX_SIZE	90
+#define BUFFER_TX_SIZE	200
 #define BUFFER_RX_SIZE	5
 #define NOTEON  1
 #define NOTEOFF 0

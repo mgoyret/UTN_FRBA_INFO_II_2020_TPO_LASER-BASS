@@ -166,7 +166,6 @@ void Grabar::procesarNotaATocar(QByteArray dato) {
     if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
-    //notaTocada = nota;
     notaTocada.append(nota);
     //qDebug() << (uint8_t)nota;
     mostrarNota(nota);
