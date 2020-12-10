@@ -30,6 +30,8 @@
 #define TIMETAC 1000 //poner tiempo en mseg para cada uno
 #define TIMETAT  50
 #define TIMETDCA 50
+//otros
+#define SIN_TRASTE 0
 //---PROTOTIPODEFUNCIONES-----------------
 
 

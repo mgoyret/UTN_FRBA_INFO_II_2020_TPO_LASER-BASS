@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<proyecto>
+    <general>
+        <nombre>MdEmicroTpo</nombre>
+        <autores>Alejo</autores>
+        <creacion>10-12-2020 02:48:05</creacion>
+        <modificacion>10-12-2020 01:40:08</modificacion>
+        <carpeta>D:/Documentos/utn/2doAno/TPO/ProyectoGIT/LASER-BASS-TPO-INFO-II-2020/MDE</carpeta>
+    </general>
+    <configuracion>
+        <hardware/>
+        <target/>
+    </configuracion>
+    <recursos>
+        <archivosC/>
+        <archivosH/>
+    </recursos>
+    <maquinas>
+        <maquina0>
+            <nombre>MdEGral</nombre>
+            <estadoInicial>
+                <pos_x>-1110</pos_x>
+                <pos_y>-639.5</pos_y>
+                <idAcciones></idAcciones>
+                <idProxEstado>estado0</idProxEstado>
+                <midPos>-1083.4,-619.2</midPos>
+                <textPos>0,-25</textPos>
+            </estadoInicial>
+            <estado0>
+                <diagrama>
+                    <nombre>INICIO</nombre>
+                    <color>#e0ffff</color>
+                    <pos_x>-1015</pos_x>
+                    <pos_y>-567</pos_y>
+                    <ancho>110</ancho>
+                    <alto>65</alto>
+                </diagrama>
+                <transiciones>
+                    <tr0>
+                        <idEvento>traste == SIN_TRASTE &amp;&amp; ldr == ON</idEvento>
+                        <idAcciones>iniciarTDCA()</idAcciones>
+                        <idProxEstado>estado1</idProxEstado>
+                        <midPos>-854.5,-599.1</midPos>
+                        <textPos>-74.563,-40</textPos>
+                    </tr0>
+                    <tr1>
+                        <idEvento>traste != SIN_TRASTE &amp;&amp; ldr == ON</idEvento>
+                        <idAcciones>iniciarTAT(),lastTraste = traste,noteonCCT()</idAcciones>
+                        <idProxEstado>estado3</idProxEstado>
+                        <midPos>-942,-376</midPos>
+                        <textPos>-131,-70</textPos>
+                    </tr1>
+                </transiciones>
+            </estado0>
+            <estado1>
+                <diagrama>
+                    <nombre>DETECTANDO</nombre>
+                    <color>#e0ffff</color>
+                    <pos_x>-681</pos_x>
+                    <pos_y>-573</pos_y>
+                    <ancho>110</ancho>
+                    <alto>65</alto>
+                </diagrama>
+                <transiciones>
+                    <tr0>
+                        <idEvento>ldr == OFF</idEvento>
+                        <idAcciones>apagarTimers()</idAcciones>
+                        <idProxEstado>estado0</idProxEstado>
+                        <midPos>-850,-516</midPos>
+                        <textPos>-62,-46</textPos>
+                    </tr0>
+                    <tr1>
+                        <idEvento>TDCA &amp;&amp; ldr == ON &amp;&amp; traste == SIN_TRASTE</idEvento>
+                        <idAcciones>iniciarTAC(),noteonCA()</idAcciones>
+                        <idProxEstado>estado2</idProxEstado>
+                        <midPos>-511.6,-607.4</midPos>
+                        <textPos>-115.063,-67</textPos>
+                    </tr1>
+                    <tr2>
+                        <idEvento>traste != SIN_TRASTE &amp;&amp; ldr == ON</idEvento>
+                        <idAcciones>iniciarTAT(),iniciarTAC(),lastTraste = traste,noteonCCT()</idAcciones>
+                        <idProxEstado>estado3</idProxEstado>
+                        <midPos>-660.6,-463.2</midPos>
+                        <textPos>-128,-37</textPos>
+                    </tr2>
+                </transiciones>
+            </estado1>
+            <estado2>
+                <diagrama>
+                    <nombre>TOCA_CAIRE</nombre>
+                    <color>#e0ffff</color>
+                    <pos_x>-342</pos_x>
+                    <pos_y>-574</pos_y>
+                    <ancho>110</ancho>
+                    <alto>65</alto>
+                </diagrama>
+                <transiciones>
+                    <tr0>
+                        <idEvento>traste == SIN_TRASTE &amp;&amp; !TAC &amp;&amp; ldr == ON</idEvento>
+                        <idAcciones>iniciarTAC()</idAcciones>
+                        <idProxEstado>estado2</idProxEstado>
+                        <midPos>-152,-638</midPos>
+                        <textPos>-130.531,-36</textPos>
+                    </tr0>
+                    <tr1>
+                        <idEvento>traste != SIN_TRASTE &amp;&amp; ldr == ON &amp;&amp; !TAC</idEvento>
+                        <idAcciones>noteonCCT(),iniciarTAT(),iniciarTAC(),noteoffCA(),lastTraste = traste</idAcciones>
+                        <idProxEstado>estado3</idProxEstado>
+                        <midPos>-334,-382</midPos>
+                        <textPos>-179,-121</textPos>
+                    </tr1>
+                    <tr2>
+                        <idEvento>TAC</idEvento>
+                        <idAcciones>noteoffCA(),apagarTimers()</idAcciones>
+                        <idProxEstado>estado0</idProxEstado>
+                        <midPos>-654,-774</midPos>
+                        <textPos>-54,-18</textPos>
+                    </tr2>
+                </transiciones>
+            </estado2>
+            <estado3>
+                <diagrama>
+                    <nombre>TOCA_TRASTE</nombre>
+                    <color>#e0ffff</color>
+                    <pos_x>-677</pos_x>
+                    <pos_y>-317</pos_y>
+                    <ancho>110</ancho>
+                    <alto>65</alto>
+                </diagrama>
+                <transiciones>
+                    <tr0>
+                        <idEvento>TAT || TAC</idEvento>
+                        <idAcciones>noteoffCCT(),apagarTimers()</idAcciones>
+                        <idProxEstado>estado0</idProxEstado>
+                        <midPos>-1138,-344</midPos>
+                        <textPos>15.25,-1</textPos>
+                    </tr0>
+                    <tr1>
+                        <idEvento>ldr == ON &amp;&amp; !TAT &amp;&amp; !TAC</idEvento>
+                        <idAcciones>iniciarTAC()</idAcciones>
+                        <idProxEstado>estado3</idProxEstado>
+                        <midPos>-635,-183</midPos>
+                        <textPos>-109.188,0</textPos>
+                    </tr1>
+                    <tr2>
+                        <idEvento>traste != SIN_TRASTE &amp;&amp; traste != lastTraste &amp;&amp; !TAT &amp;&amp; !TAC</idEvento>
+                        <idAcciones>iniciarTAT(),noteoffCCLT(),lastTraste = traste,noteonCCT()</idAcciones>
+                        <idProxEstado>estado3</idProxEstado>
+                        <midPos>-460,-270</midPos>
+                        <textPos>-49.0313,-41</textPos>
+                    </tr2>
+                    <tr3>
+                        <idEvento>!TAT &amp;&amp; !TAC &amp;&amp; traste == lastTraste</idEvento>
+                        <idAcciones>iniciarTAT()</idAcciones>
+                        <idProxEstado>estado3</idProxEstado>
+                        <midPos>-828,-235</midPos>
+                        <textPos>-158.438,-24</textPos>
+                    </tr3>
+                </transiciones>
+            </estado3>
+        </maquina0>
+    </maquinas>
+    <eventos>
+        <ev0>TAT</ev0>
+        <ev1>TAC</ev1>
+        <ev2>TDCA</ev2>
+    </eventos>
+    <acciones>
+        <acc0>iniciarTDCA()</acc0>
+        <acc1>iniciarTAT()</acc1>
+        <acc2>iniciarTAC()</acc2>
+        <acc3>noteonCA()</acc3>
+        <acc4>noteonCCT()</acc4>
+        <acc5>noteoffCA()</acc5>
+        <acc6>noteoffCCT()</acc6>
+        <acc7>noteoffCCLT()</acc7>
+        <acc8>apagarTimers()</acc8>
+    </acciones>
+    <variables>
+        <var0>cuerda</var0>
+        <var1>traste</var1>
+        <var2>lastTraste</var2>
+        <var3>ldr</var3>
+    </variables>
+    <constantes>
+        <cons0>TRUE,X</cons0>
+        <cons1>FALSE,X</cons1>
+    </constantes>
+</proyecto>
