@@ -49,7 +49,8 @@ void Grabar::inicializar( void )
     offset->note=SIN_NOTA;
     recBuf.note_st = offset;
     recBuf.total_cntr = 1;
-    notaTocada = SIN_NOTA;
+    notaTocada.clear();
+    notaTocada.append(SIN_NOTA);
 }
 
 /**
@@ -76,10 +77,11 @@ void Grabar::guardarNota( void )
         aux[i].note = recBuf.note_st[i].note;
         aux[i].cntr = i;
     }
-    aux[i].note = notaTocada;
+    aux[i].note = notaTocada.at(0);
+    notaTocada.remove(0,1);
     aux[i].cntr = i;
     #ifdef DEBUG
-    if(notaTocada != SIN_NOTA)
+    if(notaTocada.at(0) != SIN_NOTA)
         qDebug()<<"guardando: aux[" << i << "].note = [" << aux[i].note<<"]\n";
     #endif
 
@@ -87,6 +89,7 @@ void Grabar::guardarNota( void )
     recBuf.note_st = aux;
     recBuf.total_cntr++;
 }
+
 
 /**
 *	\fn 		uint8_t guardarCancion ( void )
@@ -163,13 +166,16 @@ void Grabar::procesarNotaATocar(QByteArray dato) {
     if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
-    notaTocada = nota;
-    qDebug() << (uint8_t)nota;
+    //notaTocada = nota;
+    notaTocada.append(nota);
+    //qDebug() << (uint8_t)nota;
     mostrarNota(nota);
     if (nota < 0) {
-        qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        //qDebug() <<
     } else {
-        qDebug() << puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        //qDebug() <<
     }
 }
 
@@ -189,7 +195,9 @@ void Grabar::mostrarNota(char nota) {
         ui->graphicsView->setCuerdaApagada(cuerdaYNota >> 8);
     }
 
-    qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
+#ifdef DEBUG
+    //qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
+#endif
 }
 
 
@@ -210,7 +218,9 @@ int Grabar::notaACuerdaYNota(uint8_t nota) {
         cuerda = nota / 7;
         notaConv = 0xff;
     }
+#ifdef DEBUG
     qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
+#endif
     ret |= notaConv;
     ret |= cuerda << 8;
     return ret;
@@ -283,7 +293,7 @@ void Grabar::on_PBfinRec_clicked()
     ui->lineEditNombre->setEnabled(true);
     ui->PBnombre->setEnabled(true);
 }
-
+//////////////////////////////////// timer handler
 /**
 *	\fn         void timer_250ms_handler(void)
 *	\brief      Handler del timer periodico
@@ -293,9 +303,14 @@ void Grabar::timer_handler( void )
 {
     if(grabacion == ON)
     {
-        guardarNota();
-        notaTocada = SIN_NOTA;
-        iniciarTimer(); //timer periodico
+        while(notaTocada.size() > 0)
+        {
+
+            guardarNota();
+            iniciarTimer(); //timer periodico
+        }
+        notaTocada.clear();
+        notaTocada.append(SIN_NOTA);
     }
 }
 

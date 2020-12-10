@@ -22,11 +22,11 @@
 #define ON      1
 #define OFF     0
 
-#define SIN_NOTA    0
+#define SIN_NOTA    (char)0
 
 #define SONG_FILE_NAME "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
 
-#define TIMER_TIME 100
+#define TIMER_TIME 50
 
 
 //////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
@@ -90,7 +90,7 @@ private:
     Ui::Grabar  *ui;
     uint8_t     grabacion; //flag para saber cuando cortar loop de timers en cuyos handlers se realiza el proceso de grabado
     uint8_t     status;
-    char        notaTocada;
+    QByteArray  notaTocada;
     QFile       songFile;
     QString     songName, auxName;
     songBuffer  recBuf;
