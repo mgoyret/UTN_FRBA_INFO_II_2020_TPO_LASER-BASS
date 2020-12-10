@@ -169,8 +169,9 @@ void QNoteView::moverNotas() {
                         scene->update(noteArray[i].circlePtr->boundingRect());
                         scene->update(noteArray[i].linePtr->boundingRect());
                     }
-                    if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos < msCounter && noteArray[i].estado == 4) {
+                    if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos <= msCounter && noteArray[i].estado == 4) {
                         noteArray[i].estado = 2;
+                        noteArray[i].delayTocado=msCounter-noteArray[i].pos;
                         //--------Mandar signal--------------------
                         mandarSignal(i);
                          //---------------------------------------------------------------
@@ -179,10 +180,10 @@ void QNoteView::moverNotas() {
                         noteArray[i].noteColor = QColor(Qt::blue);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         scene->addItem(noteArray[i].linePtr2);
-                    } else if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos < msCounter && noteArray[i].estado == 0) {
+                    } else if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos <= msCounter && noteArray[i].estado == 0) {
                         noteArray[i].estado = 3;
                     }
-                    if (noteArray[i].pos + noteArray[i].duracion > msCounter && noteArray[i].estado == 2) {
+                    if ((noteArray[i].pos + noteArray[i].duracion +noteArray[i].delayTocado) > msCounter && noteArray[i].estado == 2) {
                         QPen pen = noteArray[i].linePtr->pen();
                         pen.setColor(Qt::blue);
                         //--------Mandar signal--------------------
@@ -192,7 +193,7 @@ void QNoteView::moverNotas() {
                         noteArray[i].linePtr2->setLine(noteArray[i].circlePtr->x() + RADIO_NUMEROS, noteArray[i].linePtr->y(), noteArray[i].linePtr->x() + PX_POR_UPD * noteArray[i].duracion, noteArray[i].linePtr->y());
                         scene->update(noteArray[i].linePtr2->boundingRect());
                     }
-                    if ((noteArray[i].pos + noteArray[i].duracion +1) < msCounter && noteArray[i].estado == 2) {
+                    if ((noteArray[i].pos + noteArray[i].duracion + noteArray[i].delayTocado)<= msCounter && noteArray[i].estado == 2) {
                         QPen pen = noteArray[i].linePtr->pen();
                         pen.setColor(Qt::green);
                         noteArray[i].linePtr->setPen(pen);
@@ -209,14 +210,15 @@ void QNoteView::moverNotas() {
                     }
                     if (noteArray[i].estado == 5) {
                         QPen pen = noteArray[i].linePtr->pen();
-                        pen.setColor(Qt::darkYellow);
+                        pen.setColor(Qt::yellow);
                         noteArray[i].linePtr->setPen(pen);
-                        noteArray[i].noteColor = QColor(Qt::darkYellow);
+                        noteArray[i].noteColor = QColor(Qt::yellow);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
-                        noteArray[i].estado = -1;
                         //--------Mandar signal--------------------
                         mandarSignal(i);
                          //---------------------------------------------------------------
+                        //para mi este note aray de abajo no es necesario
+                        noteArray[i].estado = -1;
                         delete noteArray[i].linePtr2;
                         noteArray[i].linePtr2 = nullptr;
                         scene->update(noteArray[i].circlePtr->boundingRect());
@@ -295,7 +297,7 @@ bool QNoteView::soltarNota(int nroNota, int nroCuerda) {
     int j=0;
 
     for (j=0; j<noteArray.size(); j++) {
-        qDebug()<<"LLEGA C:"<<nroCuerda<<"N:"<<nroNota<<"POS"<<noteArray[j].pos<< "ARRAY C:"<<noteArray[j].cuerda<<"N:"<<noteArray[j].nro;
+       // qDebug()<<"LLEGA C:"<<nroCuerda<<"N:"<<nroNota<<"POS"<<noteArray[j].pos<< "ARRAY C:"<<noteArray[j].cuerda<<"N:"<<noteArray[j].nro;
          if (noteArray[j].nro == nroNota && noteArray[j].cuerda == nroCuerda) {
              ret = true;
             break;
@@ -322,6 +324,7 @@ void QNoteView::agregarNota(int nroNota, int nroCuerda, int posTemporal, int dur
                 aux.cuerda = nroCuerda;
                 aux.pos = posTemporal;
                 aux.duracion = duracion;
+                qDebug()<<"duracion"<<aux.duracion;
                 aux.textPtr = new QGraphicsTextItem(QString::number(nroNota));
                 aux.circlePtr = new QGraphicsEllipseItem(0, 0, RADIO_NUMEROS * 2, RADIO_NUMEROS * 2);
                 if (duracion > 0) {

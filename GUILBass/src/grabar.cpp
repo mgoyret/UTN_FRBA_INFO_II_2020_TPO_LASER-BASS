@@ -163,7 +163,7 @@ void Grabar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     notaTocada = nota;
-    qDebug() << (uint8_t)nota;
+    qDebug() <<"la nota es"<<(int)nota;
     mostrarNota(nota);
     if (nota < 0) {
         qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
