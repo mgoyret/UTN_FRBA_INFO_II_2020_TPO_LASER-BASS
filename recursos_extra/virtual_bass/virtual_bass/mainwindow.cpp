@@ -102,14 +102,7 @@ void MainWindow::append_send()
 }
 
 
-void MainWindow::enviarNota(uint8_t nota)
-{
-    noteOn(nota);
-    noteOff(nota);
-}
-
-
-void MainWindow::noteOn(uint8_t nota)
+void MainWindow::noteOn(char nota)
 {
     data1=0;
     data1 |= INICIO_TRAMA;
@@ -123,548 +116,300 @@ void MainWindow::noteOn(uint8_t nota)
 }
 
 //se podria desarrollar con puntero a funcion, haciendo todos los defines correspondientes timer_handler[i]
-void MainWindow::noteOff(uint8_t nota)
-{
-    switch (nota) {
-    case 1: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_1())); break;
-    case 2: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_2())); break;
-    case 3: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_3())); break;
-    case 4: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_4())); break;
-    case 5: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_5())); break;
-    case 6: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_6())); break;
-    case 7: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_7())); break;
-    case 8: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_8())); break;
-    case 9: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_9())); break;
-    case 10: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_10())); break;
-    case 11: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_11())); break;
-    case 12: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_12())); break;
-    case 13: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_13())); break;
-    case 14: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_14())); break;
-    case 15: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_15())); break;
-    case 16: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_16())); break;
-    case 17: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_17())); break;
-    case 18: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_18())); break;
-    case 19: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_19())); break;
-    case 20: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_20())); break;
-    case 21: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_21())); break;
-    case 22: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_22())); break;
-    case 23: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_23())); break;
-    case 24: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_24())); break;
-    case 25: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_25())); break;
-    case 26: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_26())); break;
-    case 27: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_27())); break;
-    case 28: QTimer::singleShot(TIMER_NOTE_OFF, this, SLOT(timer_handler_28())); break;
-    }
-}
-
-
-/////////////////////// SLOTS DE BOTONES
-
-void MainWindow::on_note_1_clicked()
-{
-    enviarNota(1);
-}
-
-void MainWindow::on_note_2_clicked()
-{
-    enviarNota(2);
-}
-
-void MainWindow::on_note_3_clicked()
-{
-    enviarNota(3);
-}
-
-void MainWindow::on_note_4_clicked()
-{
-    enviarNota(4);
-}
-
-void MainWindow::on_note_5_clicked()
-{
-    enviarNota(5);
-}
-
-void MainWindow::on_note_6_clicked()
-{
-    enviarNota(6);
-}
-
-void MainWindow::on_note_7_clicked()
-{
-    enviarNota(7);
-}
-
-void MainWindow::on_note_8_clicked()
-{
-    enviarNota(8);
-}
-
-void MainWindow::on_note_9_clicked()
-{
-    enviarNota(9);
-}
-
-void MainWindow::on_note_10_clicked()
-{
-    enviarNota(10);
-}
-
-void MainWindow::on_note_11_clicked()
-{
-    enviarNota(11);
-}
-
-void MainWindow::on_note_12_clicked()
-{
-    enviarNota(12);
-}
-
-void MainWindow::on_note_13_clicked()
-{
-    enviarNota(13);
-}
-
-void MainWindow::on_note_14_clicked()
-{
-    enviarNota(14);
-}
-
-void MainWindow::on_note_15_clicked()
-{
-    enviarNota(15);
-}
-
-void MainWindow::on_note_16_clicked()
-{
-    enviarNota(16);
-}
-
-void MainWindow::on_note_17_clicked()
-{
-    enviarNota(17);
-}
-
-void MainWindow::on_note_18_clicked()
-{
-    enviarNota(18);
-}
-
-void MainWindow::on_note_19_clicked()
-{
-    enviarNota(19);
-}
-
-void MainWindow::on_note_20_clicked()
-{
-    enviarNota(20);
-}
-
-void MainWindow::on_note_21_clicked()
-{
-    enviarNota(21);
-}
-
-void MainWindow::on_note_22_clicked()
-{
-    enviarNota(22);
-}
-
-void MainWindow::on_note_23_clicked()
-{
-    enviarNota(23);
-}
-
-void MainWindow::on_note_24_clicked()
-{
-    enviarNota(24);
-}
-
-void MainWindow::on_note_25_clicked()
-{
-    enviarNota(25);
-}
-
-void MainWindow::on_note_26_clicked()
-{
-    enviarNota(26);
-}
-
-void MainWindow::on_note_27_clicked()
-{
-    enviarNota(27);
-}
-
-void MainWindow::on_note_28_clicked()
-{
-    enviarNota(28);
-}
-
-////////////////////// HANDLERS PARA NOTEOFF
-
-void MainWindow::timer_handler_1()
+void MainWindow::noteOff(char nota)
 {
     data1=0;
     data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA1)>>4 )&LOW_BITS;
+    data1 |= ( ((char)(-nota))>>4 )&LOW_BITS;
 
     data2=0;
     data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA1)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_2()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA2)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA2)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_3()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA3)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA3)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_4()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA4)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA4)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_5()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA5)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA5)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_6()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA6)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA6)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_7()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA7)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA7)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_8()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA8)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA8)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_9()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA9)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA9)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_10()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA10)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA10)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_11()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA11)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA11)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_12()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA12)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA12)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_13()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA13)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA13)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_14()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA14)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA14)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_15()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA15)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA15)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_16()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA16)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA16)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_17()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA17)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA17)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_18()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA18)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA18)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
-}
-
-void MainWindow::timer_handler_19()
-{
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA19)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA19)&LOW_BITS )<<4)&BIG_BITS;
+    data2 |= ( (((char)(-nota))&LOW_BITS )<<4)&BIG_BITS;
 
     append_send();
 }
 
 
-void MainWindow::timer_handler_20()
+void MainWindow::on_note_1_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA20)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA20)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA1);
 }
 
-void MainWindow::timer_handler_21()
+void MainWindow::on_note_2_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA21)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA21)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA2);
 }
 
-void MainWindow::timer_handler_22()
+void MainWindow::on_note_3_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA22)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA22)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA3);
 }
 
-void MainWindow::timer_handler_23()
+void MainWindow::on_note_4_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA23)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA23)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA4);
 }
 
-void MainWindow::timer_handler_24()
+void MainWindow::on_note_5_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA24)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA24)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA5);
 }
 
-void MainWindow::timer_handler_25()
+void MainWindow::on_note_6_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA25)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA25)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA6);
 }
 
-void MainWindow::timer_handler_26()
+void MainWindow::on_note_7_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA26)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA26)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA7);
 }
 
-void MainWindow::timer_handler_27()
+void MainWindow::on_note_8_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA27)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA27)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA8);
 }
 
-void MainWindow::timer_handler_28()
+void MainWindow::on_note_9_pressed()
 {
-    data1=0;
-    data1 |= INICIO_TRAMA;
-    data1 |= ( ((char)NOTA28)>>4 )&LOW_BITS;
-
-    data2=0;
-    data2 |= FIN_TRAMA;
-    data2 |= ( (((char)NOTA28)&LOW_BITS )<<4)&BIG_BITS;
-
-    append_send();
+    noteOn(NOTA9);
 }
 
+void MainWindow::on_note_10_pressed()
+{
+    noteOn(NOTA10);
+}
+
+void MainWindow::on_note_11_pressed()
+{
+    noteOn(NOTA11);
+}
+
+void MainWindow::on_note_12_pressed()
+{
+    noteOn(NOTA12);
+}
+
+void MainWindow::on_note_13_pressed()
+{
+    noteOn(NOTA13);
+}
+
+void MainWindow::on_note_14_pressed()
+{
+    noteOn(NOTA14);
+}
+
+void MainWindow::on_note_15_pressed()
+{
+    noteOn(NOTA15);
+}
+
+void MainWindow::on_note_16_pressed()
+{
+    noteOn(NOTA16);
+}
+
+void MainWindow::on_note_17_pressed()
+{
+    noteOn(NOTA17);
+}
+
+void MainWindow::on_note_18_pressed()
+{
+    noteOn(NOTA18);
+}
+
+void MainWindow::on_note_19_pressed()
+{
+    noteOn(NOTA19);
+}
+
+void MainWindow::on_note_20_pressed()
+{
+    noteOn(NOTA20);
+}
+
+void MainWindow::on_note_21_pressed()
+{
+    noteOn(NOTA21);
+}
+
+void MainWindow::on_note_22_pressed()
+{
+    noteOn(NOTA22);
+}
+
+void MainWindow::on_note_23_pressed()
+{
+    noteOn(NOTA23);
+}
+
+void MainWindow::on_note_24_pressed()
+{
+    noteOn(NOTA24);
+}
+
+void MainWindow::on_note_25_pressed()
+{
+    noteOn(NOTA25);
+}
+
+void MainWindow::on_note_26_pressed()
+{
+    noteOn(NOTA26);
+}
+
+void MainWindow::on_note_27_pressed()
+{
+    noteOn(NOTA27);
+}
+
+void MainWindow::on_note_28_pressed()
+{
+    noteOn(NOTA28);
+}
+
+
+
+
+void MainWindow::on_note_1_released()
+{
+    noteOff(NOTA1);
+}
+
+void MainWindow::on_note_2_released()
+{
+    noteOff(NOTA2);
+}
+
+void MainWindow::on_note_3_released()
+{
+    noteOff(NOTA3);
+}
+
+void MainWindow::on_note_4_released()
+{
+    noteOff(NOTA4);
+}
+
+void MainWindow::on_note_5_released()
+{
+    noteOff(NOTA5);
+}
+
+void MainWindow::on_note_6_released()
+{
+    noteOff(NOTA6);
+}
+
+void MainWindow::on_note_7_released()
+{
+    noteOff(NOTA7);
+}
+
+void MainWindow::on_note_8_released()
+{
+    noteOff(NOTA8);
+}
+
+void MainWindow::on_note_9_released()
+{
+    noteOff(NOTA9);
+}
+
+void MainWindow::on_note_10_released()
+{
+    noteOff(NOTA10);
+}
+
+void MainWindow::on_note_11_released()
+{
+    noteOff(NOTA11);
+}
+
+void MainWindow::on_note_12_released()
+{
+    noteOff(NOTA12);
+}
+
+void MainWindow::on_note_13_released()
+{
+    noteOff(NOTA13);
+}
+
+void MainWindow::on_note_14_released()
+{
+    noteOff(NOTA14);
+}
+
+void MainWindow::on_note_15_released()
+{
+    noteOff(NOTA15);
+}
+
+void MainWindow::on_note_16_released()
+{
+    noteOff(NOTA16);
+}
+
+void MainWindow::on_note_17_released()
+{
+    noteOff(NOTA17);
+}
+
+void MainWindow::on_note_18_released()
+{
+    noteOff(NOTA18);
+}
+
+void MainWindow::on_note_19_released()
+{
+    noteOff(NOTA19);
+}
+
+void MainWindow::on_note_20_released()
+{
+    noteOff(NOTA20);
+}
+
+void MainWindow::on_note_21_released()
+{
+    noteOff(NOTA21);
+}
+
+void MainWindow::on_note_22_released()
+{
+    noteOff(NOTA22);
+}
+
+void MainWindow::on_note_23_released()
+{
+    noteOff(NOTA23);
+}
+
+void MainWindow::on_note_24_released()
+{
+    noteOff(NOTA24);
+}
+
+void MainWindow::on_note_25_released()
+{
+    noteOff(NOTA25);
+}
+
+void MainWindow::on_note_26_released()
+{
+    noteOff(NOTA26);
+}
+
+void MainWindow::on_note_27_released()
+{
+    noteOff(NOTA27);
+}
+
+void MainWindow::on_note_28_released()
+{
+    noteOff(NOTA28);
+}
 

@@ -48,8 +48,8 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
         }
         i++;
       }
-      connect(ui->graphicsView_2, SIGNAL(puntajeSignal()), this, SLOT(slotPuntaje()));
-      connect(ui->graphicsView_2, SIGNAL(monitoreoSignal()), this, SLOT(monitoreoPuntos()));
+      conection1 = connect(ui->graphicsView_2, SIGNAL(puntajeSignal()), this, SLOT(slotPuntaje()));
+      conection2 = connect(ui->graphicsView_2, SIGNAL(monitoreoSignal()), this, SLOT(monitoreoPuntos()));
       //despues hay q apagarlo
       ui->graphicsView_2->startTiempo();
       ui->graphicsView->setColorNotaApagada(Qt::black);
@@ -57,12 +57,16 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
       ui->graphicsView->setColorCuerdaPrendida(Qt::magenta);
       ui->graphicsView->setColorCuerdaApagada(Qt::black);
       ui->Puntos->setPalette(Qt::white);
-      qDebug()<<"contruimos";
+      qDebug()<< "contruimos";
 }
 
 
 Jugar::~Jugar()
 {
+    disconnect(conection);
+    disconnect(conection1);
+    disconnect(conection2);
+
     for(int i=1;i<29;i++)
         puertoMidi->enviarNoteOff(0, 32 + (uint8_t)i* 2);
     delete ui;

@@ -11,6 +11,7 @@ Tocar::Tocar(QWidget *parent) :
 
 Tocar::~Tocar()
 {
+    disconnect(conection);
     for(int i=1;i<29;i++)
         puertoMidi->enviarNoteOff(0, 32 + (uint8_t)i* 2);
     //qDebug()<<"allnoteOFF";

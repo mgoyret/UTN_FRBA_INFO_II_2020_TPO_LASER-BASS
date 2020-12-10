@@ -20,36 +20,36 @@
 
 #define TIMER_NOTE_OFF 500
 
-typedef enum noteOffEnum{
-    NOTA28 = -28,
-    NOTA27 = -27,
-    NOTA26,
-    NOTA25,
-    NOTA24,
-    NOTA23,
-    NOTA22,
-    NOTA21,
-    NOTA20,
-    NOTA19,
-    NOTA18,
-    NOTA17,
-    NOTA16,
-    NOTA15,
-    NOTA14,
-    NOTA13,
-    NOTA12,
-    NOTA11,
-    NOTA10,
-    NOTA9,
-    NOTA8,
-    NOTA7,
-    NOTA6,
-    NOTA5,
-    NOTA4,
-    NOTA3,
+typedef enum noteEnum{
+    NOTA1 = 1,
     NOTA2,
-    NOTA1,
-}noteOffEnum;
+    NOTA3,
+    NOTA4,
+    NOTA5,
+    NOTA6,
+    NOTA7,
+    NOTA8,
+    NOTA9,
+    NOTA10,
+    NOTA11,
+    NOTA12,
+    NOTA13,
+    NOTA14,
+    NOTA15,
+    NOTA16,
+    NOTA17,
+    NOTA18,
+    NOTA19,
+    NOTA20,
+    NOTA21,
+    NOTA22,
+    NOTA23,
+    NOTA24,
+    NOTA25,
+    NOTA26,
+    NOTA27,
+    NOTA28,
+}noteEnum;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -63,9 +63,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void enviarNota(uint8_t nota); //desde la nota 16, se envia big=1 para que ponga data1=1
-    void noteOn(uint8_t nota);
-    void noteOff(uint8_t nota);
+    void noteOn(char nota);
+    void noteOff(char nota);
     void append_send();
     void debug(QByteArray datos);
 
@@ -75,67 +74,63 @@ private slots:
     void on_conectarButton_clicked();
     //void on_datosRecibidos(); //no voy a recibir nada por puerto serie
 
-    //BOTONES
-    void on_note_1_clicked();
-    void on_note_2_clicked();
-    void on_note_3_clicked();
-    void on_note_4_clicked();
-    void on_note_5_clicked();
-    void on_note_6_clicked();
-    void on_note_7_clicked();
-    void on_note_8_clicked();
-    void on_note_9_clicked();
-    void on_note_10_clicked();
-    void on_note_11_clicked();
-    void on_note_12_clicked();
-    void on_note_13_clicked();
-    void on_note_14_clicked();
-    void on_note_15_clicked();
-    void on_note_16_clicked();
-    void on_note_17_clicked();
-    void on_note_18_clicked();
-    void on_note_19_clicked();
-    void on_note_20_clicked();
-    void on_note_21_clicked();
-    void on_note_22_clicked();
-    void on_note_23_clicked();
-    void on_note_24_clicked();
-    void on_note_25_clicked();
-    void on_note_26_clicked();
-    void on_note_27_clicked();
-    void on_note_28_clicked();
+    void on_note_1_pressed();
+    void on_note_2_pressed();
+    void on_note_3_pressed();
+    void on_note_4_pressed();
+    void on_note_5_pressed();
+    void on_note_6_pressed();
+    void on_note_7_pressed();
+    void on_note_8_pressed();
+    void on_note_9_pressed();
+    void on_note_10_pressed();
+    void on_note_11_pressed();
+    void on_note_12_pressed();
+    void on_note_13_pressed();
+    void on_note_14_pressed();
+    void on_note_15_pressed();
+    void on_note_16_pressed();
+    void on_note_17_pressed();
+    void on_note_18_pressed();
+    void on_note_19_pressed();
+    void on_note_20_pressed();
+    void on_note_21_pressed();
+    void on_note_22_pressed();
+    void on_note_23_pressed();
+    void on_note_24_pressed();
+    void on_note_25_pressed();
+    void on_note_26_pressed();
+    void on_note_27_pressed();
+    void on_note_28_pressed();
 
-    // NOTEOFF
-    void timer_handler_1();
-    void timer_handler_2();
-    void timer_handler_3();
-    void timer_handler_4();
-    void timer_handler_5();
-    void timer_handler_6();
-    void timer_handler_7();
-    void timer_handler_8();
-    void timer_handler_9();
-    void timer_handler_10();
-    void timer_handler_11();
-    void timer_handler_12();
-    void timer_handler_13();
-    void timer_handler_14();
-    void timer_handler_15();
-    void timer_handler_16();
-    void timer_handler_17();
-    void timer_handler_18();
-    void timer_handler_19();
-    void timer_handler_20();
-    void timer_handler_21();
-    void timer_handler_22();
-    void timer_handler_23();
-    void timer_handler_24();
-    void timer_handler_25();
-    void timer_handler_26();
-    void timer_handler_27();
-    void timer_handler_28();
-
-
+    void on_note_1_released();
+    void on_note_2_released();
+    void on_note_3_released();
+    void on_note_4_released();
+    void on_note_5_released();
+    void on_note_6_released();
+    void on_note_7_released();
+    void on_note_8_released();
+    void on_note_9_released();
+    void on_note_10_released();
+    void on_note_11_released();
+    void on_note_12_released();
+    void on_note_13_released();
+    void on_note_14_released();
+    void on_note_15_released();
+    void on_note_16_released();
+    void on_note_17_released();
+    void on_note_18_released();
+    void on_note_19_released();
+    void on_note_20_released();
+    void on_note_21_released();
+    void on_note_22_released();
+    void on_note_23_released();
+    void on_note_24_released();
+    void on_note_25_released();
+    void on_note_26_released();
+    void on_note_27_released();
+    void on_note_28_released();
 
 private:
     Ui::MainWindow *ui;
