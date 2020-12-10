@@ -11,6 +11,7 @@ Tocar::Tocar(QWidget *parent) :
 
 Tocar::~Tocar()
 {
+    disconnect(conection);
     delete ui;
 }
 

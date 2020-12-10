@@ -90,15 +90,17 @@ private:
     QStringList listaNota;
     void iniciarTimer(int);
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()
+    QMetaObject::Connection conection1;
+    QMetaObject::Connection conection2;
     //funcion para el line_edit Puntos
     QByteArray bufferSerie;
     ClaseMIDI *puertoMidi;
     QNoteView mostrar;
     void validarDatos();
     void procesarNotaATocar(QByteArray);
-     void mostrarNota(char nota);
-     int notaACuerdaYNota(uint8_t nota) ;
-     int setPuntosMax(void);
+    void mostrarNota(char nota);
+    int notaACuerdaYNota(uint8_t nota) ;
+    int setPuntosMax(void);
 
 };
 

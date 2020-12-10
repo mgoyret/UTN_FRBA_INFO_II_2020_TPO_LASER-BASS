@@ -19,11 +19,7 @@ Grabar::Grabar(QWidget *parent) :
 */
 Grabar::~Grabar()
 {
-    /* Desconecta el vinculo signal slot del puerto serie que cree en set_puerto()   */
-    disconnect(conection);
-    puerto->disconnect();
-    if(puerto->isOpen())
-        puerto->close();
+    disconnect(conection); //Desconecta el vinculo signal slot del puerto serie que cree en set_puerto()
     delete ui;
 }
 
@@ -139,7 +135,7 @@ void Grabar::validarDatos() {
     QByteArray datoAProcesar;
     datoAProcesar.clear();
     while (cant > 1) {          //chequeos de inicio y fin de trama
-        if ( !(bufferSerie[0] & 0x50) && !(bufferSerie[1] & 0x0A) ) {
+        if ( !(bufferSerie[0] & 0x50)  && !(bufferSerie[1] & 0x0A) ) {
             if (cant == 1) break;
             datoAProcesar.append(bufferSerie.at(0));
             datoAProcesar.append(bufferSerie.at(1));
