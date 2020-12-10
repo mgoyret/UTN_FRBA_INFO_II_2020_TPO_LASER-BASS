@@ -49,7 +49,7 @@ void QNoteView::showEvent(QShowEvent *event) {
     for (int i=0; i<4; i++) {
         scene->addLine(0, (vh / 5) * (i + 1), vw, (vh / 5) * (i + 1), linePen);
     }
-    scene->addLine(vw - (vw / DENOM_MARGEN_BARRA_PRESENTE), (vh/5) - ALTO_EXTRA_BARRA_PRESENTE, vw - (vw / DENOM_MARGEN_BARRA_PRESENTE), ((4 * vh)/5) + ALTO_EXTRA_BARRA_PRESENTE, linePen);
+    scene->addLine(vw - (vw / DENOM_MARGEN_BARRA_PRESENTE)+DEFASAJE, (vh/5) - ALTO_EXTRA_BARRA_PRESENTE, vw - (vw / DENOM_MARGEN_BARRA_PRESENTE)+DEFASAJE, ((4 * vh)/5) + ALTO_EXTRA_BARRA_PRESENTE, linePen);
 
     //Seteo la escena
     this->setScene(scene);

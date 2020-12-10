@@ -12,6 +12,9 @@ Tocar::Tocar(QWidget *parent) :
 Tocar::~Tocar()
 {
     disconnect(conection);
+    for(int i=1;i<29;i++)
+        puertoMidi->enviarNoteOff(0, 32 + (uint8_t)i* 2);
+    //qDebug()<<"allnoteOFF";
     delete ui;
 }
 
@@ -37,7 +40,7 @@ void Tocar::mostrarNota(char nota) {
         ui->graphicsView->setCuerdaApagada(cuerdaYNota >> 8);
     }
 
-    qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
+    //qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
 }
 
 int Tocar::notaACuerdaYNota(uint8_t nota) {
@@ -51,7 +54,7 @@ int Tocar::notaACuerdaYNota(uint8_t nota) {
         cuerda = nota / 7;
         notaConv = 0xff;
     }
-    qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
+   // qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
     ret |= notaConv;
     ret |= cuerda << 8;
     return ret;
@@ -88,7 +91,7 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
-    qDebug() << (uint8_t)nota;
+    qDebug() <<"la nota es"<<(int)nota;
     mostrarNota(nota);
     if (nota < 0) {
         qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);

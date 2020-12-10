@@ -20,6 +20,8 @@ Grabar::Grabar(QWidget *parent) :
 Grabar::~Grabar()
 {
     disconnect(conection); //Desconecta el vinculo signal slot del puerto serie que cree en set_puerto()
+    for(int i=1;i<29;i++)
+        puertoMidi->enviarNoteOff(0, 32 + (uint8_t)i* 2);
     delete ui;
 }
 

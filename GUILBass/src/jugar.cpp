@@ -53,8 +53,8 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
       //despues hay q apagarlo
       ui->graphicsView_2->startTiempo();
       ui->graphicsView->setColorNotaApagada(Qt::black);
-      ui->graphicsView->setColorNotaPrendida(Qt::white);
-      ui->graphicsView->setColorCuerdaPrendida(Qt::white);
+      ui->graphicsView->setColorNotaPrendida(Qt::red);
+      ui->graphicsView->setColorCuerdaPrendida(Qt::magenta);
       ui->graphicsView->setColorCuerdaApagada(Qt::black);
       ui->Puntos->setPalette(Qt::white);
       qDebug()<< "contruimos";
@@ -67,6 +67,8 @@ Jugar::~Jugar()
     disconnect(conection1);
     disconnect(conection2);
 
+    for(int i=1;i<29;i++)
+        puertoMidi->enviarNoteOff(0, 32 + (uint8_t)i* 2);
     delete ui;
 }
 void Jugar::iniciarTimer(int nota)
@@ -157,7 +159,8 @@ int Jugar::setPuntosMax(void)
                        duracion=0;
                        res+=PUNTOCSIMPLE;
                     }else{
-                        duracion=cant;
+                        duracion=cant-2;
+                        qDebug()<<duracion;
                         cant=0;
                         res+=PUNTOCLARGA*duracion+PUNTOCSIMPLE;
                     }
@@ -274,6 +277,10 @@ void Jugar::LeerArchivo(void){
 
 void Jugar::slotPuntaje()
 {
+   /* int i;
+    for(i=1;i<29;i++){
+    puertoMidi->enviarNoteOff(0, 32 + (uint8_t)i* 2);
+    }*/
     ui->graphicsView_2->stopTiempo();
     QString nombreCancion = "";
     puntaje estructuraPuntajes;
