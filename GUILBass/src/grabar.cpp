@@ -97,7 +97,7 @@ void Grabar::guardarNota( void )
 uint8_t Grabar::guardarCancion( void )
 {
     uint64_t i;
-    uint8_t res = ERROR;
+    uint8_t res = FALSE;
 
     #ifdef DEBUG
     qDebug()<<"total notas: " << recBuf.total_cntr;
@@ -122,7 +122,7 @@ uint8_t Grabar::guardarCancion( void )
             out << recBuf.note_st[i].cntr << "," << (int)(recBuf.note_st[i].note) << "\n";
         }
         songFile.close();
-        res = EXITO;
+        res = TRUE;
     }
     return res;
 }
@@ -173,6 +173,12 @@ void Grabar::procesarNotaATocar(QByteArray dato) {
     }
 }
 
+/**
+*	\fn         void mostrarNota( char nota )
+*	\brief      Visualiza las notas tocadas
+*	\details    Enciende la nota tocada, en el grafico de la guitarra en pantalla
+*   \param      nota: char que contiene el numero de nota tocada
+*/
 void Grabar::mostrarNota(char nota) {
     int cuerdaYNota = notaACuerdaYNota(std::abs(nota));
     if (nota > 0) {
@@ -186,6 +192,13 @@ void Grabar::mostrarNota(char nota) {
     qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
 }
 
+
+/**
+*	\fn         void notaACuerdaYNota( uint8_t nota )
+*	\brief      Descompone el numero de la nota tocada
+*	\details    A partir del numero de nota, obtiene el numero de cuerda y el numero de traste
+*   \param      nota: char que contiene el numero de nota tocada
+*/
 int Grabar::notaACuerdaYNota(uint8_t nota) {
     int ret = 0, cuerda = 0, notaConv = 0;
     nota--;
@@ -203,6 +216,12 @@ int Grabar::notaACuerdaYNota(uint8_t nota) {
     return ret;
 }
 
+
+/**
+*	\fn         void checkName( void )
+*	\brief      Chequea que el nombre de la cancion no este en uso
+*	\details    Compara el nombre escrito, con los nombres de las canciones en la carpeta "media"
+*/
 uint8_t Grabar::checkName( void )
 {
     uint8_t res = TRUE;
@@ -220,23 +239,31 @@ uint8_t Grabar::checkName( void )
 
 /////////////////////////     PRIVATE SLOTS      //////////////////////////////////////////////////////
 
-//boton iniciar grabacion
+/**
+*	\fn         void on_PBrec_clicked( void )
+*	\brief      Boton iniciar grabacion
+*	\details    Inicia un timer periodico que graba la cancion tocada
+*/
 void Grabar::on_PBrec_clicked()
 {
     ui->PBrec->setEnabled(false);
     ui->PBfinRec->setEnabled(true);
 
-    grabacion = ON;
-    inicializar();
-    iniciarTimer();
+    grabacion = ON; //flag para ejecucion peridodica del timer
+    inicializar();  // inicializa variables
+    iniciarTimer(); //timer periodico
 }
 
-//boton finalizar grabacion
+/**
+*	\fn         void on_PBfinRec_clicked( void )
+*	\brief      Boton finalizar grabacion
+*	\details    Finaliza grabacion, y guarda o descarta la grabacion
+*/
 void Grabar::on_PBfinRec_clicked()
 {
     QMessageBox::StandardButton opcion;
     ui->PBfinRec->setEnabled(false);
-    grabacion = OFF;
+    grabacion = OFF; //el timer no se ejecutara la siguiente vez
 
     //Pregunto si descartar grabacion o guardar
     opcion = QMessageBox::question(this, "Fin de la grabacion", "guardar?");
@@ -259,8 +286,8 @@ void Grabar::on_PBfinRec_clicked()
 
 /**
 *	\fn         void timer_250ms_handler(void)
-*	\brief      handler del timer periodico
-*	\details    ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
+*	\brief      Handler del timer periodico
+*	\details    Ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
 */
 void Grabar::timer_handler( void )
 {
@@ -282,6 +309,11 @@ void Grabar::on_datosRecibidos() {
     validarDatos();
 }
 
+/**
+*	\fn         void on_PBnombre_clicked( void )
+*	\brief      Selecciona el nombre escrito para guardar la nueva cancion
+*	\details    Asigna el nombre elegido a la variable miemrbro songName, que sera el nombre del archivo de la cancion
+*/
 void Grabar::on_PBnombre_clicked()
 {
     if( ui->lineEditNombre->text() != "" )
@@ -300,6 +332,11 @@ void Grabar::on_PBnombre_clicked()
     }
 }
 
+/**
+*	\fn         void on_lineEditNombre_textChanged( void )
+*	\brief      Actualiza el nombre escrito para la cancion a grabar
+*	\details    Guarda el nombre escrito en una variable auxiliar, que sera chequeada al presionar "PB_nombre"
+*/
 void Grabar::on_lineEditNombre_textChanged(const QString &arg1)
 {
     auxName = arg1;
