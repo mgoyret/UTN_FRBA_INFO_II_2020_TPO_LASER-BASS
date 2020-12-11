@@ -66,8 +66,19 @@ void Grabar::iniciarTimer()
 /**
 *	\fn         void guardarNota(void)
 *	\brief      buffer de cancion que se guardara
-*	\details    Guarda la nota actual almacenada en el array secuencial de estructuras notas y tiempos
+*	\details    Guarda la nota actual almacenada en el array secuencial de estructuras notas y tiempos. Cada un
+*                   tiempo TIMER_TIME ms, se graba una posicion
 */
+void Grabar::timer_handler( void )
+{
+    if(grabacion == ON)
+    {
+        guardarNota();
+        iniciarTimer(); //timer periodico
+        if(notaTocada.size()==0)
+            notaTocada.append(SIN_NOTA);
+    }
+}
 void Grabar::guardarNota( void )
 {
     uint64_t i=0;
@@ -298,20 +309,7 @@ void Grabar::on_PBfinRec_clicked()
 *	\brief      Handler del timer periodico
 *	\details    Ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
 */
-void Grabar::timer_handler( void )
-{
-    if(grabacion == ON)
-    {
-        while(notaTocada.size() > 0)
-        {
 
-            guardarNota();
-            iniciarTimer(); //timer periodico
-        }
-        notaTocada.clear();
-        notaTocada.append(SIN_NOTA);
-    }
-}
 
 /**
 *	\fn         void on_datosRecibidos( void )
