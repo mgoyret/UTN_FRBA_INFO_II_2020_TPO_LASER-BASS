@@ -130,6 +130,7 @@ void MainWindow::noteOff(char nota)
 }
 
 
+
 void MainWindow::on_note_1_pressed()
 {
     noteOn(NOTA1);
@@ -269,9 +270,6 @@ void MainWindow::on_note_28_pressed()
 {
     noteOn(NOTA28);
 }
-
-
-
 
 void MainWindow::on_note_1_released()
 {
@@ -413,3 +411,59 @@ void MainWindow::on_note_28_released()
     noteOff(NOTA28);
 }
 
+/////////////////////////////////////////////////////////////////////
+void MainWindow::on_nota_aire_pressed()
+{
+    noteOn(NOTA1);
+    noteOn(NOTA8);
+    noteOn(NOTA15);
+    noteOn(NOTA22);
+
+    //QTimer::singleShot(10, this, SLOT(timer_handler_10()));
+    //QTimer::singleShot(15, this, SLOT(timer_handler_15()));
+    //QTimer::singleShot(20, this, SLOT(timer_handler_20()));
+}
+
+
+void MainWindow::timer_handler_10()
+{
+    noteOn(NOTA8);
+}
+
+void MainWindow::timer_handler_15()
+{
+    noteOn(NOTA15);
+}
+
+void MainWindow::timer_handler_20()
+{
+    noteOn(NOTA22);
+}
+
+
+void MainWindow::on_nota_aire_released()
+{
+    noteOff(NOTA1);
+    noteOff(NOTA8);
+    noteOff(NOTA15);
+    noteOff(NOTA22);
+
+    //QTimer::singleShot(10, this, SLOT(timer_handler_10_off()));
+    //QTimer::singleShot(15, this, SLOT(timer_handler_15_off()));
+    //QTimer::singleShot(20, this, SLOT(timer_handler_20_off()));
+}
+
+void MainWindow::timer_handler_10_off()
+{
+    noteOff(NOTA8);
+}
+
+void MainWindow::timer_handler_15_off()
+{
+    noteOff(NOTA15);
+}
+
+void MainWindow::timer_handler_20_off()
+{
+    noteOff(NOTA22);
+}

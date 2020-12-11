@@ -73,6 +73,13 @@ private slots:
     void on_ActualizarButton_clicked();
     void on_conectarButton_clicked();
     //void on_datosRecibidos(); //no voy a recibir nada por puerto serie
+    void on_nota_aire_pressed();
+    void timer_handler_10( void );
+    void timer_handler_15( void );
+    void timer_handler_20( void );
+    void timer_handler_10_off( void );
+    void timer_handler_15_off( void );
+    void timer_handler_20_off( void );
 
     void on_note_1_pressed();
     void on_note_2_pressed();
@@ -131,6 +138,8 @@ private slots:
     void on_note_26_released();
     void on_note_27_released();
     void on_note_28_released();
+
+    void on_nota_aire_released();
 
 private:
     Ui::MainWindow *ui;

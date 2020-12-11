@@ -138,12 +138,12 @@ uint8_t Grabar::guardarCancion( void )
 void Grabar::validarDatos() {
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
-    datoAProcesar.clear();
     while (cant > 1) {          //chequeos de inicio y fin de trama
         if ( !(bufferSerie[0] & 0x50)  && !(bufferSerie[1] & 0x0A) ) {
             if (cant == 1) break;
-            datoAProcesar.append(bufferSerie.at(0));
-            datoAProcesar.append(bufferSerie.at(1));
+            datoAProcesar.clear();
+            datoAProcesar.append(bufferSerie[0]);
+            datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
             procesarNotaATocar(datoAProcesar);
         } else if (bufferSerie.at(0) & 0x0a) {

@@ -250,6 +250,19 @@
       </item>
      </layout>
     </widget>
+    <widget class="QPushButton" name="nota_aire">
+     <property name="geometry">
+      <rect>
+       <x>669</x>
+       <y>30</y>
+       <width>91</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>4 al aire</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="conexionGroupBox">
     <property name="geometry">

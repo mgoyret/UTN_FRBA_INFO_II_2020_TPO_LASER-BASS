@@ -68,10 +68,10 @@ void Tocar::on_datosRecibidos() {
 void Tocar::validarDatos() {
     int cant = bufferSerie.size();
     QByteArray datoAProcesar;
-    datoAProcesar.clear();
     while (cant > 1) {
         if (!(bufferSerie[0] & 0x50) && !(bufferSerie[1] & 0x0A) ) {
             if (cant == 1) break;
+            datoAProcesar.clear();
             datoAProcesar.append(bufferSerie[0]);
             datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
