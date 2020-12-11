@@ -1,19 +1,28 @@
+/**
+ * \file            funciones.h
+ * \brief           TPO Informatica 2
+ * \author          Grupo 7
+ * \date            December, 2020
+ */
 #ifndef FUNCIONES_H_
 #define FUNCIONES_H_
 
-#include <driversGenerales.h>
+//Headers
+#include <driversCuerdasyTrastes.h>
 #include <driversPLL.h>
-#include <driversSystick.h>
 #include <funcUART.h>
 #include <funcMaqTimer.h>
-//solo para la prueba
-#include <string.h>
-//!< Definicion de Estados
+
+//!< Definicion de Estados de MdeGeneral
 #define	INICIO		    0
+//corresponde a la deteccion de la cuerda al aire
 #define	DETECTANDO		1
 #define	TOCA_CAIRE		2
 #define	TOCA_TRASTE		3
-//eventos timers
+//Definicion de eventos de Maq de timers
+//TDCA(Timers de Deteccion de Cuerda al Aire)
+//TAC(Timers de Apagado de Cuerda)
+//TAT(Timers de Apagado de Traste)
 #define TDCA0 0
 #define TAT0  1
 #define TAC0  2
@@ -26,29 +35,18 @@
 #define TDCA3 9
 #define TAT3  10
 #define TAC3  11
-//timers
-#define TIMETAC 1000 //poner tiempo en mseg para cada uno
+//tiempo de timers (mseg)
+#define TIMETAC 1000
 #define TIMETAT  100
 #define TIMETDCA 100
-//otros
+//OTROS DEFINES
 #define SIN_TRASTE 0
-//---PROTOTIPODEFUNCIONES-----------------
+//---PROTOTIPOS DE FUNCIONES-----------------
 
-
-// Declaracion de la Maquina de MEstados
 void maquina_MdEGral(uint8_t cuerda);
-/*
-void maquina_Cserie(void);*/
 void inicializacion(void);
-//LEDS PRUEBA (ESTO SE SACA DESPUES)
-void ApagarLedBlue(void);
-void PrenderLedBlue(void);
-void PrenderLedRed(void);
-void ApagarLedRed(void);
-void PrenderLedGreen(void);
-void ApagarLedGreen(void);
-void enviarString(char * palabra);
-//LECTURA HW
+
+//LECTURA ENTRADAS
 uint8_t getTrastes(uint8_t cuerda);
 uint8_t getLdrs(uint8_t cuerda);
 //TIMERS

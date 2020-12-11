@@ -7,11 +7,15 @@
 
 #ifndef FUNCMAQTIMER_H_
 #define FUNCMAQTIMER_H_
+
+//HEADERS
+#include <driversGPIO.h>
+#include <driversSystick.h>
+//DEFINES
 #define SEG 1000
 #define MSEG 1
 #define NULL ((void*)0)
-#include <driversGenerales.h>
-#include <driversSystick.h>
+//PROTOTIPODEFUNCIONES
 void timerStart(uint8_t event, uint32_t time, Timer_Handler handler ,uint8_t base );
 void timerStop( uint8_t event );
 

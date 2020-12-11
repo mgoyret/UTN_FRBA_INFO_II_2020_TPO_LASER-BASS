@@ -6,7 +6,7 @@
  */
 #ifndef DRIVERSYSTICK_H_
 #define DRIVERSYSTICK_H_
-#include <driversGenerales.h>
+#include <driversCuerdasyTrastes.h>
 #include <Regs_LPC176x.h>
 typedef void (*Timer_Handler)(void);
 #define N_TIMERS 12

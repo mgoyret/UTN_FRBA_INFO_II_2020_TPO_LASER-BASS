@@ -1,11 +1,11 @@
-/*
- * drivers.h
- *
- *  Created on: 21 Sep 2020
- *      Author: alejo
+/**
+ * \file            driversGPIO.h
+ * \brief           TPO Informatica 2
+ * \author          Grupo 7
+ * \date            December, 2020
  */
-#ifndef DRIVERSGENERALES_H_
-#define DRIVERSGENERALES_H_
+#ifndef DRIVERSGPIO_H_
+#define DRIVERSGPIO_H_
 #include <Regs_LPC176x.h>
 //-----esto no es obligatorio pero facilita la programacion y uso de registros------------
 //volatile para que no me fije una variable en una parte que no se modifica pero
@@ -17,21 +17,7 @@
 typedef	unsigned int		uint32_t;
 typedef	short unsigned int	uint16_t;
 typedef	unsigned char		uint8_t;
-//define registros
-//UL le decis que tome al direccion como unsigned long podria funcionar igual
-/*#define PINSEL ((__RW uint32_t*) 0x4002C000UL)
-#define PINMODE ((__RW uint32_t*) 0x4002C040UL)
-#define PINMODE_OD ((__RW uint32_t*) 0x4002C068UL)
-#define GPIO ((__RW uint32_t*) 0x2009C000UL)*/
-//define puerto y pines
-#define LEDSTICK 0,22
-#define LED_RED  2,3
-#define LED_GREEN 2,2
-#define LED_BLUE  2,1//correcto
-#define SW1 2,10//EINT0
-#define SW2 0,18
-#define SW3 0,11
-#define SW4 2,13//EINT3
+
 //expansiones
 #define EXP0  2,7
 #define EXP1  1,29
@@ -73,15 +59,7 @@ typedef	unsigned char		uint8_t;
 #define OFF 0
 #define TRUE 	1
 #define FALSE	0
-#define NO_TRASTE 0
-#define NO_LDR 0
-#define SI_LDR 1
-// SWTraste
-#define MAX_REBOTES 8
-//Declaracion de estados
-#define 	ESPERO	    0
-#define 	CHEQUEO	    1
-#define 	CHEQUEADO	2
+
 //GneralsInit
 void setPinsel(uint8_t puerto, uint8_t pin, uint8_t funcion);
 void setPinMode(uint8_t puerto, uint8_t pin, uint8_t mode);
@@ -92,13 +70,7 @@ void setDir(uint8_t puerto,uint8_t pin,uint8_t estado);
 void setPin(uint8_t puerto, uint8_t pin, uint8_t estado);
 uint8_t getPin(uint8_t puerto, uint8_t pin);
 
-//inicializacion gpio
-void init_gpio(void);
-// drivers entradas
-uint8_t barridoTrastes(int cuerda);
-void SWTrastes(uint8_t,uint8_t);
-void driverTrastes(void);
-void driverLdrs(void);
-#endif /* DRIVERSGENERALES_H_ */
+
+#endif /* DRIVERSGPIO_H_ */
 
 

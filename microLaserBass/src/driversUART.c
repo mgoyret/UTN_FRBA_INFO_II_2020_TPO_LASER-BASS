@@ -1,8 +1,8 @@
-/*
- * driversUART.c
- *
- *  Created on: 8 Nov 2020
- *      Author: alejo
+/**
+ * \file            driversUART.c
+ * \brief           TPO Informatica 2
+ * \author          Grupo 7
+ * \date            December, 2020
  */
 
 #include "driversUART.h"
@@ -10,29 +10,26 @@
 
 // Flag de TX en curso
 extern __RW uint8_t txEnCurso;
-// NOTA -------------------------------------------------
-// Estas variables corresponden a las funciones Primitivas de la com. Serie
-// Luego de implementar PopTx() y PushRx() corresponde removerlas de este módulo
-
 // Índices de Transmisión
 extern __RW uint8_t tx_in, tx_out;
-// Índices de Recepción
-extern __RW uint8_t rx_in, rx_out;
 // Buffer de Transmisión
 extern __RW uint8_t bufferTx[BUFFER_TX_SIZE];
-// Buffer de Recepción
-extern __RW uint8_t bufferRx[BUFFER_RX_SIZE];
-// --------------------------------------------------------
 
-// no se q onda xq arriba dice q hay q mover los buffer asi que no se entoces habria
-//q correr pushtx y poptx
+
+/**
+ *\fn     void UART0_IRQHandler (void)
+ *\brief  handler de UART
+ *\details
+ *\param  void
+ *\return void
+*/
 void UART0_IRQHandler (void)
 {
 	uint8_t iir, dato;
 	do {
 		//Para limpiar los flags de IIR hay que leerlo, una vez que lo leí se resetea.
 		iir = U0IIR;
-		//THRE (Interrupción por TX)
+		//THRE (Interrupción por TX) --THR disponible -> b1=1
 		if (iir & 0x02) {
 			dato=PopTx();
 			if(dato>0){
@@ -42,15 +39,18 @@ void UART0_IRQHandler (void)
 				txEnCurso = 0;
 			}
 		}
-		//Data Ready (Interrupción por RX)
-		if ( iir & 0x04 ) {
-			dato = U0RBR;
-			PushRx(dato);
-		}
 	} while(!(iir & 0x01));	/* me fijo si cuando entre a la ISR habia otra
 						    int. pendiente de atencion: b0=0 */
 }
-
+/**
+*\fn     void UART0_StartTx(void)
+*\brief  Pongo dato para transmitir en U0THR
+*\details Esto lo hago porque la interrupcion se
+*\details hace cuando se manda el dato , entonces si no
+*\details pongo ningun dato en U0THR no va interrupir nunca
+*\param  void
+*\return void
+*/
 void UART0_StartTx(void)
 {
 	uint8_t dato;
@@ -61,7 +61,13 @@ void UART0_StartTx(void)
 	// transmito el dato
 	U0THR = dato;
 }
-
+/**
+*\fn     void InitUART0 (void)
+*\brief  Inicializo el UART0
+*\details Esto lo hago porque la interrupcion se
+*\param  void
+*\return void
+*/
 void InitUART0 (void)
 {
 	//1.- Registro PCONP - bit 3 en 1 habilita la UART0
@@ -86,6 +92,13 @@ void InitUART0 (void)
 	ISER0 |= (1<<5);
 }
 
+/**
+ *\fn     uint8_t PopTx(void)
+ *\brief  Saco el dato a enviar en el buffer
+ *\details ademas inicia la transmision TX sino hay niguna en transcurso
+ *\param  dato dato a enviar
+ *\return void
+*/
 uint8_t PopTx(void)
 {
 	int aux=0;
@@ -96,11 +109,3 @@ uint8_t PopTx(void)
 	}
 	return aux;
 }
-
-void PushRx(uint8_t dato)
-{
-	bufferRx[rx_in]=dato;
-	rx_in++;
-	rx_in%=BUFFER_RX_SIZE;
-}
-

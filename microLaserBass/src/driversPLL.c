@@ -1,10 +1,9 @@
-/*
- * driversPLL.c
- *
- *  Created on: 17 Oct 2020
- *      Author: alejo
+/**
+ * \file            driversPLL.c
+ * \brief           TPO Informatica 2
+ * \author          Grupo 7
+ * \date            December, 2020
  */
-
 #include <driversPLL.h>
 
 //------------------PLL-------------------------------------

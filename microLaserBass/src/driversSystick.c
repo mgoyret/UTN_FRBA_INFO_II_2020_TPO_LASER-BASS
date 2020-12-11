@@ -1,16 +1,25 @@
 
 #include <driversSystick.h>
 
-//buffers de maquinaria de timers
+//BUFFER MAQUINARIA DE TIMERtiempo
+//cuenta del timer
 extern __RW 	uint32_t TMR_Run[ N_TIMERS ];
+//cuando se cumple el tiempo esta en 1
 extern __RW 	uint8_t  TMR_Events[ N_TIMERS ];
+//handler asociado al timer
 extern void 	   (* TMR_Handlers [N_TIMERS]) (void);
-//__RW  	uint8_t TMR_StandBy[ N_TIMERS ]; por ahora no lo uso
+//base de tiempo
 extern __RW  	uint8_t TMR_Base[ N_TIMERS ];
-//buffer para  que el handler identifique el evento
-extern __RW  uint8_t handlerEvent;
 
 
+
+/**
+\fn     void SysTick_Handler(void)
+\brief 	Handler del systick
+\details Va entrar cada x tiempo
+\param  void
+\return void
+*/
 void SysTick_Handler(void)
 {
 	__RW uint32_t dummy;
@@ -24,11 +33,20 @@ void SysTick_Handler(void)
   }
   analizarTimers();
 }
-
+/**
+\fn     void init_systick(void)
+\brief 	Inicializa el systick
+\details Va entrar cada x tiempo
+\param  void
+\return void
+*/
 void init_systick(void){
   STRELOAD=(STCALIB/N)-1;
+  //habilita el systick
   ENABLE=1;
+  //habilita la interrupcion
   TICKINT=1;
+  //selecciono el CPU clock  como fuente del systick
   CLKSOURCE=1;
 }
 /**
@@ -46,25 +64,6 @@ void analizarTimers ( void ){
 		}else if(TMR_Run[i]==1){
 			TMR_Run[i]=TMR_Run[i]-1;
 			 TMR_Events[i]=1;
-		}
-	}
-}
-// ESTO NO SE si iria en primitivas en realidad,analizar timer va en drivers pero no se si timerevent
-//me fije e irian los 2 en drivers eso hicieron el proyecto de adc
-/**
-\fn void TimerEvent( void )
-\brief 	Chequeo de timers vencidos
-\details 	Llama a los callbacks de los timers vencidos. Debe
-\details 	llamarse desde el lazo principal del programa
-\return 	void
-*/
-void timerEvent (void) {
-    int i;
-	for(i=0;i<N_TIMERS;i++){
-		if(TMR_Run[i]==0 && TMR_Events[i]==1){
-			TMR_Events[i]=0;
-			handlerEvent=i;
-			TMR_Handlers[i]();
 		}
 	}
 }

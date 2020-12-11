@@ -11,18 +11,28 @@ __RW uint8_t  traste[4];
 //BUFFER LDRS
 //LDR1 es 0 .... y LDR es 3
 __RW uint8_t ldrs[4];
-//buffer para  que el handler identifique el evento
+//Buffer con el cual el handler identifica el evento que lo llamo
+//Con este flag se evita hacer 9 handler que son similares
 __RW  uint8_t handlerEvent;
 
+//Flag con el cual la MdE sabe si el timer se disparo
+static uint8_t timer[N_TIMERS]={};
 
-static uint8_t timer[N_TIMERS]={};//son 12 timers
 
-
-
+/**
+*	\fn 		void maquina_MdEGral(uint8_t cuerda)
+*	\brief 	    Maquiana de estado del microcpntrolador
+*	\details 	Hay una instancia por cada cuerda
+*	\param 	    cuerda	cuerda a la que corresponde la isntancia de la MdE
+*	\return 	void
+*/
 void maquina_MdEGral(uint8_t cuerda)
  {
+		//Estado actual de las instancias
 		static uint8_t estado[] = {INICIO,INICIO,INICIO,INICIO};
+		//Valor del ultimo traste tocado
 		static uint8_t lastTraste[] = {SIN_TRASTE,SIN_TRASTE,SIN_TRASTE,SIN_TRASTE};
+
 		switch(estado[cuerda])
 		{
 			case INICIO:
@@ -49,13 +59,12 @@ void maquina_MdEGral(uint8_t cuerda)
 				if( getLdrs(cuerda) == OFF )
 				{
 					estado[cuerda] = INICIO;
-					//apagar los timers y los mismo para los otros casos cuando vuelvo a incio
 					apagarTimers(cuerda);
 				}
 
 				if( getLdrs(cuerda)==ON && getTrastes(cuerda)==SIN_TRASTE && timer[TDCA0+cuerda*3])
 				{
-					timer[TDCA0+cuerda*3] = 0;
+					timer[TDCA0+cuerda*3] = FALSE;
 					IniciarTimer(TAC0+cuerda*3);
 					mandarnota(NOTEON,cuerda,CUERDAAIRE);
 					estado[cuerda] = TOCA_CAIRE;
@@ -93,7 +102,7 @@ void maquina_MdEGral(uint8_t cuerda)
 
 				if( timer[TAC0+cuerda*3])
 				{
-					timer[TAC0+cuerda*3] = 0;
+					timer[TAC0+cuerda*3] = FALSE;
 					mandarnota(NOTEOFF,cuerda,CUERDAAIRE);
 					apagarTimers(cuerda);
 					estado[cuerda] = INICIO;
@@ -129,8 +138,8 @@ void maquina_MdEGral(uint8_t cuerda)
 				}
 				if( timer[TAT0+cuerda*3] || timer[TAC0+cuerda*3])
 				{
-					timer[TAC0+cuerda*3] = 0;
-					timer[TAT0+cuerda*3] = 0;
+					timer[TAC0+cuerda*3] = FALSE;
+					timer[TAT0+cuerda*3] = FALSE;
 					mandarnota(NOTEOFF,cuerda,lastTraste[cuerda]);
 					apagarTimers(cuerda);
 					estado[cuerda] = INICIO;
@@ -146,9 +155,16 @@ void maquina_MdEGral(uint8_t cuerda)
 
 
 
-
+/**
+*	\fn 		void inicializacion(void)
+*	\brief 	    Incializa registros y pines
+*	\details
+*	\param 	    void
+*	\return 	void
+*/
 void inicializacion(void){
 	 init_gpio();
+	 // hay que poneslo xq utilizamos systick
      init_PLL();
      InitUART0();
 	 init_systick();
@@ -160,7 +176,15 @@ void inicializacion(void){
 
 
 
-//----------------Entradas-------------------------------
+//----------------CUERDAS Y TRASTES-------------------------------
+
+/**
+*	\fn 		uint8_t getTrastes(uint8_t cuerda)
+*	\brief 	    devuelve el traste actual de la cuerda
+*	\details
+*	\param 	    cuerda
+*	\return 	uint8_t traste tocado
+*/
 uint8_t getTrastes(uint8_t cuerda){
 	uint8_t aux = NO_TRASTE;
 
@@ -169,8 +193,17 @@ uint8_t getTrastes(uint8_t cuerda){
 	}
 	return aux;
 }
+/**
+*	\fn 		uint8_t getTrastes(uint8_t cuerda)
+*	\brief 	    devuelve estado del ldr
+*	\details	Si al ldr le llega el haz devuelve NO_LDR y sino
+*	\details    devuelve un SI_LDR esto es asi xq se toca cuerda
+*	\details    cuando se corta el haz
+*	\param 	    cuerda
+*	\return 	uint8_t si al ldr le llega el haz o no
+*/
 uint8_t getLdrs(uint8_t cuerda){
-//LABURO AL REVEZ CQ A MI ME INTERESE CUANDO SE CORTA EL HAZ
+	// CQ A MI ME INTERESE CUANDO SE CORTA EL HAZ
 	uint8_t aux = NO_LDR;
 
 	if(ldrs[cuerda]== NO_LDR){
@@ -180,7 +213,16 @@ uint8_t getLdrs(uint8_t cuerda){
 }
 
 
-//----TIMERS----(esto porai habria que pasarlo a maq de timers pero habria q pasar las varaibles tmb)
+//-----------------TIMERS--------------------
+
+
+/**
+*	\fn 		void apagarTimers(uint8_t cuerda)
+*	\brief 	    apaga todos los timers de la cuerda indicada
+*	\details
+*	\param 	    cuerda
+*	\return 	void
+*/
 void apagarTimers(uint8_t cuerda){
 	uint8_t i;
 	for(i=cuerda*3;i<(3+cuerda*3);i++){
@@ -189,6 +231,13 @@ void apagarTimers(uint8_t cuerda){
 	}
 }
 
+/**
+*	\fn 		void IniciarTimer(uint8_t evento)
+*	\brief 	    inicia un timer
+*	\details
+*	\param 	    evento correspondiente al timer q se quiere iniciar
+*	\return 	void
+*/
 void IniciarTimer(uint8_t evento)
 {
 	if(evento==TAC0 || evento==TAC1 || evento==TAC2 || evento==TAC3){
@@ -201,14 +250,33 @@ void IniciarTimer(uint8_t evento)
     	timerStart(evento,TIMETDCA,funcTDCA,MSEG);
     }
 }
-//use una variable globlal xq me pararecio q quedaba mas prolijo
-// sino se puede usar una funcion por cada evento
+/**
+*	\fn 		void funcTAC(void)
+*	\brief 	    handler de los TAC(Timers de Apagado de Cuerda)
+*	\details
+*	\param 	    void
+*	\return 	void
+*/
 void funcTAC(void){
 	timer[handlerEvent]=1;
 }
+/**
+*	\fn 		void funcTAT(void)
+*	\brief 	    handler de los TAT(Timers de Apagado de Traste)
+*	\details
+*	\param 	    void
+*	\return 	void
+*/
 void funcTAT(void){
 	timer[handlerEvent]=1;
 }
+/**
+*	\fn 		void funcTDCA(void)
+*	\brief 	    handler de los TDCA(Timers de Deteccion de Cuerda al Aire)
+*	\details
+*	\param 	    void
+*	\return 	void
+*/
 void funcTDCA(void){
 	timer[handlerEvent]=1;
 }

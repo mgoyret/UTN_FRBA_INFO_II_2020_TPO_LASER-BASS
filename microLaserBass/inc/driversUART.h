@@ -1,21 +1,21 @@
-/*
- * driversUART.h
- *
- *  Created on: 8 Nov 2020
- *      Author: alejo
+/**
+ * \file            driversUART.h
+ * \brief           TPO Informatica 2
+ * \author          Grupo 7
+ * \date            December, 2020
  */
+
+#include <driversGPIO.h>
 #include <funcUART.h>
-#include <driversGenerales.h>
 #include <Regs_LPC176x.h>
-//estas 2 ultimas las pongo solo por un para de registro que estan en estas
-/*#include "driversPLL.h"
-#include "driversSystick.h"*/
+
+
 #ifndef DRIVERSUART_H_
 #define DRIVERSUART_H_
-//defines puertos
+//DEFINES PUERTOS
 #define TXUART0 0,2
 #define RXUART0 0,3
-// prototipos de funciones
+//PROTOTIPOS DE FUNCIONES
 void InitUART0(void);
 void UART0_StartTx(void);
 uint8_t PopTx(void);

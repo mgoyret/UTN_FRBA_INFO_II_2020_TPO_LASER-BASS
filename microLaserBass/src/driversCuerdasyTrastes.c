@@ -1,121 +1,28 @@
+/**
+ * \file            driversCuerdasyTrastes.c
+ * \brief           TPO Informatica 2
+ * \author          Grupo 7
+ * \date            December, 2020
+ */
 
-#include <driversGenerales.h>
-//buffers de las cuerdas y los trastes
+#include <driversCuerdasyTrastes.h>
+
+//BUFFER TRASTES
 extern __RW uint8_t traste[4];
+//BUFFER LDRS
 extern __RW uint8_t ldrs[4];
-/**
-*	\fn 		void setPinsel(uint8_t puerto, uint8_t pin, uint8_t funcion)
-*	\brief 	    Define la funcion del pin
-*	\details 	Cada pin tiene cuatro funciones para elegir
-*	\details 	Cada puerto tiene asignado 2 PINSEL
-*	\param 	    puerto	puerto del pin
-*	\param 	    pin
-*	\param  	funcion funcion elegida para el pin
-*	\return 	void
-*/
-void setPinsel(uint8_t puerto, uint8_t pin, uint8_t funcion)
-{
-	uint8_t offset = 0 ;
 
-    if(pin >= 16)
-    {
-        pin = pin - 16;
-        offset = 1 ;
-    }
-    PINSEL[2*puerto + offset] &= ( ~( 3 << (2*pin) ) );
-    PINSEL[2*puerto +offset] |=  ( funcion << (2*pin) );
-
-}
-/**
-\fn 		void setPinMode(uint8_t puerto, uint8_t pin, uint8_t mode)
-\brief 	    Define el tipo de entrada asociada
-\details 	Cada pin tiene cuatro tipo de entrada para elegir
-\details 	Cada puerto tiene asignado 2 PINMODE
-\param 	    puerto	puerto del pin
-\param 	    pin
-\param  	mode 	modo de la entrada elegido para el pin
-\return 	void
-*/
-void setPinMode(uint8_t puerto, uint8_t pin, uint8_t mode){
-	uint8_t offset = 0 ;
-
-	if(pin >= 16)
-	{
-		pin = pin - 16;
-		offset = 1 ;
-	}
-	PINMODE[2*puerto + offset] &= ( ~( 3 << (2*pin) ) );
-	PINMODE[2*puerto +offset] |=( mode << (2*pin) );
-}
-/**
-\fn 		void setPinMode(uint8_t puerto, uint8_t pin, uint8_t mode)
-\brief 	    Define el tipo de salida asociada
-\details 	Cada pin tiene cuatro tipo de entrada para elegir
-\details 	Cada puerto tiene asignado un PINMODE_OD
-\param 	    puerto	puerto del pin
-\param 	    pin
-\param  	mode 	modo de la salida elegido para el pin
-\return 	void
-*/
-void setPinMode_OD(uint8_t puerto, uint8_t pin, uint8_t mode){
-	PINMODE_OD[puerto] &= ( ~( 1 << pin));
-	PINMODE_OD[puerto] |=( mode << (pin) );
-}
-/**
-\fn 		uint8_t getPin(uint8_t puerto, uint8_t pin)
-\brief 	    Leo el estado del pin
-\param 	    puerto	puerto del pin
-\param 	    pin
-\return 	uint8_t devuelve el estado del pin
-*/
-uint8_t getPin(uint8_t puerto, uint8_t pin)
-{
-
-	return (uint8_t) ( (GPIO_BASE[8*puerto + 5] >> pin) & 1 );
-}
 
 /**
-\fn 		void setPin(uint8_t puerto, uint8_t pin, uint8_t estado)
-\brief 	    Define el estado del pin
-\param 	    puerto	puerto del pin
-\param 	    pin
-\return 	void
-*/
-void setPin(uint8_t puerto, uint8_t pin, uint8_t estado)
-{
-    if(estado == ON)
-    {
-        //accedo al puerto y me desplaza a FIOxPIN
-    	GPIO_BASE[puerto*8 + 5] |= (1 << pin) ;
-    }
-    else
-    {
-        int aux = ~(1 << pin) ;
-        GPIO_BASE[puerto*8 + 5]&=   aux  ;
-    }
-
-}
-/**
-\fn 		void setDir(uint8_t puerto,uint8_t pin,uint8_t estado)
-\brief 	    Define la direccion del pin (entrada o salida)
-\param 	    puerto	puerto del pin
-\param 	    pin
-\return 	void
-*/
-void setDir(uint8_t puerto,uint8_t pin,uint8_t estado)
-{
-	GPIO_BASE[puerto*8]&= ~(1 << pin);
-	GPIO_BASE[puerto*8]|= estado << pin;
-}
-/**
-\fn 		void init_gpio(void)
-\brief 	    Inicializo todas las entradas y salidas
-\param 	    void
-\return 	void
+*\fn 		void init_gpio(void)
+*\brief 	    Inicializo todas las entradas y salidas GPIO
+*\details
+*\param 	    void
+*\return 	void
 */
 void init_gpio(void)
 {
-	//placainterconexion (la EXP0 Y EXP1 no las usamos)
+	//Funcion que usan de los pines
 	setPinsel(LDR1,PINSEL_GPIO);
 	setPinsel(LDR2,PINSEL_GPIO);
 	setPinsel(LDR3,PINSEL_GPIO);
@@ -130,29 +37,29 @@ void init_gpio(void)
 	setPinsel(C2,PINSEL_GPIO);
 	setPinsel(C3,PINSEL_GPIO);
 	setPinsel(C4,PINSEL_GPIO);
-	//fiodir - LDRS
+	//Direccion de los LDRS
 	setDir(LDR1,IN);
 	setDir(LDR2,IN);
 	setDir(LDR3,IN);
 	setDir(LDR4,IN);
-	//fiodir - Trastes
+	//Direccion de los trastes de la matriz
 	setDir(EXP6,IN);
 	setDir(EXP7,IN);
 	setDir(EXP8,IN);
 	setDir(EXP9,IN);
 	setDir(EXP10,IN);
 	setDir(EXP11,IN);
-	//fiodir - Cuerdas
+	//Direccion de las cuerdas de la matriz
 	setDir(C1,OUT);
 	setDir(C2,OUT);
 	setDir(C3,OUT);
 	setDir(C4,OUT);
-	//modO de las curdas
+	//Modo de las cuerdas de la matriz
 	setPinMode_OD (C1,MS_NORMAL);
 	setPinMode_OD (C2,MS_NORMAL);
 	setPinMode_OD (C3,MS_NORMAL);
 	setPinMode_OD (C4,MS_NORMAL);
-    //modo de las cuerdas y los trastes
+    //modo de los LDRS y los trastes de la matriz
 	setPinMode(LDR1,ME_PULLDOWN);
 	setPinMode(LDR2,ME_PULLDOWN);
 	setPinMode(LDR3,ME_PULLDOWN);
@@ -164,22 +71,7 @@ void init_gpio(void)
 	setPinMode(EXP10,ME_PULLUP);
 	setPinMode(EXP11,ME_PULLUP);
 
-
-	//Esto se saca despues era para la prueba q hice con los leds
-
-	//pinsel para gpio
-	setPinsel(LED_RED,PINSEL_GPIO);
-	setPinsel(LED_BLUE,PINSEL_GPIO);
-	setPinsel(LED_GREEN,PINSEL_GPIO);
-    //fiodir
-  	setDir(LED_RED,OUT);
-  	setDir(LED_BLUE,OUT);
-  	setDir(LED_GREEN,OUT);
-  	//de las salidas, el tipo de salida setpinmode_od
-	setPinMode_OD (LED_RED,MS_NORMAL);
-  	setPinMode_OD (LED_BLUE,MS_NORMAL);
-  	setPinMode_OD (LED_GREEN,MS_NORMAL);
-  	//setea las cuerdas en ON
+  	//Setea las cuerdas en ON
   	setPin(C4,ON);
 	setPin(C3,ON);
 	setPin(C2,ON);
@@ -187,17 +79,18 @@ void init_gpio(void)
 }
 
 /**
-\fn 		uint8_t barridoTrastes(int cuerda)
-\brief 	    Lee la cuerda pedida
-\param 	    cuerda
-\return		uint8_t Devuelve el valor de la cuerda pedida
+*\fn 		uint8_t barridoTrastes(int cuerda)
+*\brief 	    Lee la cuerda pedida
+*\details
+*\param 	    cuerda
+*\return		uint8_t Devuelve el valor de la cuerda pedida
 */
 uint8_t barridoTrastes(int cuerda){
 
 	uint8_t aux=NO_TRASTE;
 
 	//Pone en OFF la cuerda que va a medir y
-		//Espera que se establezca la tension
+	//espera que se establezca la tension
 	if(cuerda==0){
 		setPin(C1,OFF);
 		while(getPin(C1)==ON);
