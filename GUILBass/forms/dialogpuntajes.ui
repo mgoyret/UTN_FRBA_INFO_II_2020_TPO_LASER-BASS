@@ -31,7 +31,11 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineNombre"/>
+     <widget class="QLineEdit" name="lineNombre">
+      <property name="maxLength">
+       <number>3</number>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

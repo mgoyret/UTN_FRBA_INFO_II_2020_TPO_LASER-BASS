@@ -9,7 +9,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
 
     bufferSerie.clear();
     nombreCancion = nombre;
-    nombreCancion=nombreCancion.prepend("../media/");
+    nombreCancion=nombreCancion.prepend(SONG_FOLDER_PATH_);
     LeerArchivo();
     ui->graphicsView_2->tam=listaNota.size();
     int i;
@@ -17,8 +17,6 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
         qDebug()<<"lista["<<i<<"] ="<<listaNota[i].toInt();
     }*/
      qDebug()<<"size de lista"<<listaNota.size();
-    //cargar archivo
-    puntajes.cargarDesdeArchivo();
     //arranco desde 1 xq la posicion 0 es imposible menos Tom Cruise
     i=1;
     int cuerda,nota,cant=0,duracion=0;
@@ -282,7 +280,9 @@ void Jugar::slotPuntaje()
     puertoMidi->enviarNoteOff(0, 32 + (uint8_t)i* 2);
     }*/
     ui->graphicsView_2->stopTiempo();
-    QString nombreCancion = "";
+    QString nCancion = nombreCancion;
+    nCancion.remove(SONG_FOLDER_PATH_);
+    nCancion.remove(".csv");
     puntaje estructuraPuntajes;
     int puntosMax=setPuntosMax();
     qDebug()<<"puntaje maximo"<<puntosMax;
@@ -291,9 +291,8 @@ void Jugar::slotPuntaje()
     estructuraPuntajes.iniciales = dPuntajes.getName();
     estructuraPuntajes.puntaje = puntos;
     dPuntajes.close();
-    puntajes.agregarPuntaje(nombreCancion, estructuraPuntajes);
+    puntajes.agregarPuntaje(nCancion, estructuraPuntajes);
     puntajes.guardarPuntajes();
-    puntajes.guardarArchivo();
     hide();//cierro ventana jugar
 }
 

@@ -1,2 +1,20 @@
 [
+    {
+        "cancion": "",
+        "puntajes": [
+            {
+                "jugador": "ASD",
+                "puntaje": 0
+            }
+        ]
+    },
+    {
+        "cancion": "cancion1.csv",
+        "puntajes": [
+            {
+                "jugador": "AAA",
+                "puntaje": 0
+            }
+        ]
+    }
 ]

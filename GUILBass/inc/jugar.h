@@ -32,6 +32,7 @@
 #define NOTA_MAX_    28
 
 #define SONG_FILE_NAME_ "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
+#define SONG_FOLDER_PATH_ "../media/"
 
 #define TIME_JUGAR 200
 #define PUNTOCSIMPLE 10

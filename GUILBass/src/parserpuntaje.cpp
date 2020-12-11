@@ -220,7 +220,10 @@ int ParserPuntaje::agregarPuntaje(QString cancion, puntaje & punt) {
                 return 0;
             }
         }
-
+        //si llegue aca es que no existe la cancion
+        agregarCancion(cancion);
+        return agregarPuntaje(cancion, punt);
+        //agrego la cancion y cargo el puntaje
     } else {
         //aca se llamo a la funcion sin cargar ningun archivo
         //DEBE devolver algun tipo de error
