@@ -15,13 +15,13 @@
 #define ANCHO_LINEAS 1
 #define RADIO_NUMEROS 9
 #define BASE_TIEMPO_MS 50
-#define DELAY_NOTA 20
+#define DELAY_NOTA 16
 //las notas futuras no suenan pero con este define se puede mover la linea
 //para q la linea de presente este mas adelante y por lo tanto el usuario
 //pueda toque un toqeucin antes de esta linea sea correcto
-#define DEFASAJE 11
+#define DEFASAJE 10
 //cant de piclies q se corre mientras mas chico mas lento va
-#define PX_POR_UPD 4
+#define PX_POR_UPD 3
 #define COLOR_DEFAULT Qt::gray
 
 typedef struct {

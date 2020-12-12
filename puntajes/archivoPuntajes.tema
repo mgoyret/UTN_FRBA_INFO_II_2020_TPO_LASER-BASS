@@ -9,11 +9,75 @@
         ]
     },
     {
+        "cancion": "PIPO",
+        "puntajes": [
+            {
+                "jugador": "",
+                "puntaje": 0
+            }
+        ]
+    },
+    {
+        "cancion": "TITO",
+        "puntajes": [
+            {
+                "jugador": "ALJ",
+                "puntaje": 1195
+            }
+        ]
+    },
+    {
+        "cancion": "cancion1",
+        "puntajes": [
+            {
+                "jugador": "",
+                "puntaje": 1530
+            },
+            {
+                "jugador": "ZAZ",
+                "puntaje": 1440
+            },
+            {
+                "jugador": "",
+                "puntaje": 1020
+            },
+            {
+                "jugador": "",
+                "puntaje": 855
+            },
+            {
+                "jugador": "",
+                "puntaje": 0
+            },
+            {
+                "jugador": "ALE",
+                "puntaje": 0
+            }
+        ]
+    },
+    {
         "cancion": "cancion1.csv",
         "puntajes": [
             {
                 "jugador": "AAA",
                 "puntaje": 0
+            }
+        ]
+    },
+    {
+        "cancion": "jose",
+        "puntajes": [
+            {
+                "jugador": "",
+                "puntaje": 1620
+            },
+            {
+                "jugador": "CAR",
+                "puntaje": 1260
+            },
+            {
+                "jugador": "",
+                "puntaje": 280
             }
         ]
     }
