@@ -4,5 +4,6 @@
     </qresource>
     <qresource prefix="/">
         <file>utn.ico</file>
+        <file>IconoProyectoInfo.ico</file>
     </qresource>
 </RCC>

@@ -59,23 +59,25 @@ public:
     int guardarPuntajes();
 
     QStringList getCanciones();
-    int getCantidadPuntajes(QString);
-    puntaje getPuntaje(QString, int);
+    int getCantidadPuntajes(QString cancion);
+    puntaje getPuntaje(QString cancion, int indice);
 
-    int agregarCancion(QString);
-    int borrarCancion(QString);
-    int agregarPuntaje(QString, puntaje &);
-    int borrarPuntaje(QString, puntaje &);
-    void limpiarPuntajes(QString);
+    int agregarCancion(QString cancion);
+    int borrarCancion(QString cancion);
+    int agregarPuntaje(QString cancion, puntaje & punt);
+    int borrarPuntaje(QString cancion, puntaje & punt);
+    void limpiarPuntajes(QString cancion);
 
-    QString getNombrePuntaje(puntaje &);
-    int getValorPuntaje(puntaje &);
+    QString getNombrePuntaje(puntaje & punt);
+    int getValorPuntaje(puntaje & punt);
+
+    bool existeCancion(QString cancion);
 
 private:
     QJsonDocument * jDocPuntajes;
-    bool verificarDocumentoJson(QJsonDocument &);
-    void ordenarCancionesYPuntajes(QJsonDocument &, bool tambienPuntajes = false);
-    void ordenarPuntajes(QJsonArray &);
+    bool verificarDocumentoJson(QJsonDocument & jDoc);
+    void ordenarCancionesYPuntajes(QJsonDocument & jDoc, bool tambienPuntajes = false);
+    void ordenarPuntajes(QJsonArray & jArrayPuntajes);
     void cargarDesdeArchivo();
     int guardarArchivo();
 

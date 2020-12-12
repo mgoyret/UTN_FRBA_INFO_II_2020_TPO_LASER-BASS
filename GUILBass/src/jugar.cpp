@@ -9,7 +9,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
 
     bufferSerie.clear();
     nombreCancion = nombre;
-    nombreCancion=nombreCancion.prepend(SONG_FOLDER_PATH_);
+    nombreCancion=nombreCancion.prepend(SONG_FOLDER_PATH_).append(".csv");
     LeerArchivo();
     ui->graphicsView_2->tam=listaNota.size();
     int i;

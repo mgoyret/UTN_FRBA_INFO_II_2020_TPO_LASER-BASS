@@ -1,14 +1,5 @@
 [
     {
-        "cancion": "",
-        "puntajes": [
-            {
-                "jugador": "ASD",
-                "puntaje": 0
-            }
-        ]
-    },
-    {
         "cancion": "PIPO",
         "puntajes": [
             {
@@ -18,12 +9,42 @@
         ]
     },
     {
+        "cancion": "PruebaCompuestaHARD",
+        "puntajes": [
+        ]
+    },
+    {
+        "cancion": "Pruebanscompuesta",
+        "puntajes": [
+        ]
+    },
+    {
+        "cancion": "Pruebansimples",
+        "puntajes": [
+        ]
+    },
+    {
+        "cancion": "Pruebmaslarga",
+        "puntajes": [
+        ]
+    },
+    {
+        "cancion": "Rodolfo",
+        "puntajes": [
+        ]
+    },
+    {
         "cancion": "TITO",
         "puntajes": [
             {
                 "jugador": "ALJ",
                 "puntaje": 1195
             }
+        ]
+    },
+    {
+        "cancion": "TOTO",
+        "puntajes": [
         ]
     },
     {
@@ -52,33 +73,21 @@
             {
                 "jugador": "ALE",
                 "puntaje": 0
-            }
-        ]
-    },
-    {
-        "cancion": "cancion1.csv",
-        "puntajes": [
+            },
             {
-                "jugador": "AAA",
+                "jugador": "ABC",
                 "puntaje": 0
             }
         ]
     },
     {
-        "cancion": "jose",
+        "cancion": "prueba",
         "puntajes": [
-            {
-                "jugador": "",
-                "puntaje": 1620
-            },
-            {
-                "jugador": "CAR",
-                "puntaje": 1260
-            },
-            {
-                "jugador": "",
-                "puntaje": 280
-            }
+        ]
+    },
+    {
+        "cancion": "saliobien",
+        "puntajes": [
         ]
     }
 ]

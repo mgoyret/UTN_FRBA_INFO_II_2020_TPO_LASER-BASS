@@ -7,15 +7,23 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    DialogPreferencias pref(this);
+
     ui->setupUi(this);
+    setWindowIcon(QIcon(":/IconoProyectoInfo.ico"));
+    setWindowTitle("Menu Principal");
     //para probar si no tienen puerto serie virtual para conectarse
     //comenten las 2 dos lineas siguientes
     ui->PBJugar->setDisabled(true);
     ui->PBTocar->setDisabled(true);
-    puerto = new QSerialPort;
-    setWindowIcon(QIcon("../GUILBass/utn.ico"));
-    setWindowTitle("Menu Principal");
+    puerto = new QSerialPort();
     puertoMidi = new ClaseMIDI();
+    if (verificarConfiguracionPuertos()) {
+        configurarPuertoMidi(pref.getMidiPortPref());
+        configurarPuertoSerie(pref.getSerialPortPref());
+        ui->PBTocar->setDisabled(false);
+        ui->PBJugar->setDisabled(false);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -51,7 +59,7 @@ bool MainWindow::verificarConfiguracionPuertos() {
     return false;
 }
 
-void MainWindow::on_actionPreferencias_triggered()
+void MainWindow::on_actionConexion_triggered()
 {
     DialogPreferencias pref(this);
     QString serialPortName = pref.getSerialPortPref();

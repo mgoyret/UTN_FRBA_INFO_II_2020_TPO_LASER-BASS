@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDir>
 #include <QDebug>
+#include "parserpuntaje.h"
 
 namespace Ui {
 class DialogJugar;

@@ -29,7 +29,7 @@ private slots:
 
     void on_PBTocar_clicked();
 
-    void on_actionPreferencias_triggered();
+    void on_actionConexion_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -221,9 +221,7 @@ int ParserPuntaje::agregarPuntaje(QString cancion, puntaje & punt) {
             }
         }
         //si llegue aca es que no existe la cancion
-        agregarCancion(cancion);
-        return agregarPuntaje(cancion, punt);
-        //agrego la cancion y cargo el puntaje
+        //deberia existir ya que se cargan en el archivo
     } else {
         //aca se llamo a la funcion sin cargar ningun archivo
         //DEBE devolver algun tipo de error
@@ -394,4 +392,10 @@ void ParserPuntaje::ordenarPuntajes(QJsonArray & jArrayPuntajes) {
             }
         }
     }
+}
+
+
+bool ParserPuntaje::existeCancion(QString cancion) {
+    QStringList strList = getCanciones();
+    return strList.contains(cancion);
 }
