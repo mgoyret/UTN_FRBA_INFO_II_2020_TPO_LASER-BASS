@@ -26,13 +26,22 @@ QGuitarView::~QGuitarView() {
 
 }
 
+/** 
+ *  \fn         showEvent(QShowEvent *event)
+ *  \details    Override del evento "show" de una GraphicsView para que dibuje
+                la guitarra cuando se muestra
+ *  \param      QShowEvent *event
+ *  \return     void
+ */
+
 void QGuitarView::showEvent(QShowEvent *event){
     QGraphicsView::showEvent(event);
-
+    //obtengo las dimensiones de la parte visible de la GraphicsView
     int vw = this->viewport()->width(), vh = this->viewport()->height();
     QPen stringPen;
     QPen outlinePen;
-
+    
+    //Seteo los colores de las cuerdas, las notas y las outlines de la guitarra
     stringPen.setColor(stringColorOff);
     stringPen.setWidth(A_CUERDAS);
     outlinePen.setWidth(A_OUTLINE);
@@ -78,10 +87,27 @@ void QGuitarView::showEvent(QShowEvent *event){
     isShown = true;
 }
 
+
+/** 
+ *  \fn         hideEvent(QHideEvent *event)
+ *  \details    Override del evento "hide" de una GraphicsView para que avise que
+                la guitarra no se muestra mas
+ *  \param      QHideEvent *event
+ *  \return     void
+ */
+
 void QGuitarView::hideEvent(QHideEvent *event){
     QGraphicsView::hideEvent(event);
     isShown = false;
 }
+
+/** 
+ *  \fn         paintEvent(QPaintEvent *event)
+ *  \details    Override del evento "paint" de una GraphicsView para que
+                actualize las notas y los cambios de color en la misma.
+ *  \param      QPaintEvent *event
+ *  \return     void
+ */
 
 void QGuitarView::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event);
