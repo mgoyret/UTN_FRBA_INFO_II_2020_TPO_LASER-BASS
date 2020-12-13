@@ -49,6 +49,7 @@ void MainWindow::on_PBTocar_clicked()
     Tocar wtocar(this);
     wtocar.setPuerto(puerto);
     wtocar.setPuertoMidi(puertoMidi);
+    wtocar.setWindowTitle("Tocar");
     wtocar.exec();
 }
 
@@ -64,6 +65,7 @@ void MainWindow::on_actionConexion_triggered()
     DialogPreferencias pref(this);
     QString serialPortName = pref.getSerialPortPref();
     QString midiPortName;
+    pref.setWindowTitle("Configuracion");
     int retValue;
     this->hide();
     retValue = pref.exec();

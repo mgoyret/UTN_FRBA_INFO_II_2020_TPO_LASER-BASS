@@ -30,10 +30,10 @@ void MenuJugar::on_PBpreGrabada_clicked()
 {
 
     QString nombreCancion = "";
-    DialogJugar SelecionCancion(this);
-    SelecionCancion.exec();
-    nombreCancion = SelecionCancion.getNombreCancion();
-    SelecionCancion.close();
+    DialogJugar SeleccionCancion(this);
+    SeleccionCancion.exec();
+    nombreCancion = SeleccionCancion.getNombreCancion();
+    SeleccionCancion.close();
     // VENTANA CAMI
     if( nombreCancion != "" )
     {

@@ -31,7 +31,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Eliga una cancion</string>
+       <string>Eliga una canción</string>
       </property>
      </widget>
     </item>
@@ -50,7 +50,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>seleccionar</string>
+    <string>Seleccionar</string>
    </property>
   </widget>
  </widget>

@@ -37,6 +37,7 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include <string.h>
+#include <QTextStream>
 
 #define STRING_KEY_NOMBRE_CANCION "cancion"
 #define STRING_KEY_ARRAY_PUNTAJES "puntajes"
