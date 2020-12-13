@@ -41,7 +41,7 @@ int main( void )
   std::vector<unsigned char> message;
   std::string notes = "PRUEBA EN MaYuS A Ber QUE tal SUENA esto hola que tal jejejeje quesaweaaaaasklkdjadcrnsjdoemaskdjeoidd";
   std::vector<struct notas> cancion;
-  QFile file(":/midi/fur_elise.csv");
+  QFile file(":/midi/test3_4.csv");
   char buffer[200];
   unsigned int tick = 0;
 
@@ -90,9 +90,9 @@ int main( void )
         message[2] = param.at(5).trimmed().toInt();
     } else if (param.at(2).trimmed() == "Note_on_c" || param.at(2).trimmed() == "Note_off_c") {
         aux.tempo = param.at(1).trimmed().toInt();    //convierto a numero
-        aux.canal = param.at(3).trimmed().toUShort(); //convierto a numero, como va de 0 a 15 no tiene sentido usar un int. Podria usarse un char pero no se entiende
+        aux.canal = 0;//param.at(3).trimmed().toUShort(); //convierto a numero, como va de 0 a 15 no tiene sentido usar un int. Podria usarse un char pero no se entiende
         aux.nota = param.at(4).trimmed().toUShort();  //convierto a numero, como va de 0 a 127 no tiene sentido usar un int. Podria usarse un char pero no se entiende
-        aux.vel = (param.at(2).trimmed() == "Note_off_c") ? 0 : param.at(5).trimmed().toUShort();
+        aux.vel = 127;//(param.at(2).trimmed() == "Note_off_c") ? 0 : param.at(5).trimmed().toUShort();
         cancion.push_back(aux);
     } else if (param.at(2).trimmed() == "End_track") {
     }
@@ -144,12 +144,12 @@ int main( void )
 
   //Control Change
   message[0] = 0xB0; //1er byte (Status)
-  message[1] = 0x00; //2do byte (1ero de datos)
+  message[1] = 0x20; //2do byte (1ero de datos)
   message[2] = 0;   //3er byte (2do de datos)
   midiout->sendMessage(&message);
   //Ese fue el Most Significant Byte
   message[0] = 0xB0;
-  message[1] = 0x20;
+  message[1] = 0x00;
   message[2] = 0;
   midiout->sendMessage(&message);
   //Ese fue el Least Significant Byte
@@ -157,7 +157,7 @@ int main( void )
   //Program change
   message.resize(2);
   message[0] = 0xC0;
-  message[1] = 100;
+  message[1] = 30;
   message[2] = 0;
   midiout->sendMessage(&message);
   //Termina program change
@@ -200,7 +200,7 @@ int main( void )
       message[2] = (uint8_t) cancion[i].vel;
       midiout->sendMessage( &message );
       if (cancion[i].tempo - tick) {
-          SLEEP((cancion[i].tempo - tick)/3);
+          SLEEP((cancion[i].tempo - tick)/1.5);
       }
       std::cout << "nota: " << cancion[i].nota << "vel: " << cancion[i].vel << "canal: " << cancion[i].canal << "tempo" << cancion[i].tempo << std::endl;
       tick = cancion[i].tempo;

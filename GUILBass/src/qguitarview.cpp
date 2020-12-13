@@ -173,6 +173,13 @@ void QGuitarView::paintEvent(QPaintEvent *event) {
     }
 }
 
+/** 
+ *  \fn         setNotaPrendida(int nota)
+ *  \details    Enciende una nota en la guitarra
+ *  \param      int nro de nota
+ *  \return     0: todo correcto	-1: hubo algun error 
+ */
+
 int QGuitarView::setNotaPrendida(int nota) {
     if (nota < 0 || nota > noteArr.size() - 1) return -1;
     noteArr[nota]->setPen(QPen(noteColorOn));
@@ -180,6 +187,13 @@ int QGuitarView::setNotaPrendida(int nota) {
     noteArr[nota]->update();
     return 0;
 }
+
+/** 
+ *  \fn         setNotaApagada(int nota)
+ *  \details    Apaga una nota en la guitarra
+ *  \param      int nro de nota
+ *  \return     0: todo correcto	-1: hubo algun error 
+ */
 
 int QGuitarView::setNotaApagada(int nota) {
     if (nota < 0 || nota > noteArr.size() - 1) return -1;
@@ -189,6 +203,13 @@ int QGuitarView::setNotaApagada(int nota) {
     return 0;
 }
 
+/** 
+ *  \fn         setCuerdaPrendida(int cuerda)
+ *  \details    Enciende una cuerda en la guitarra
+ *  \param      int nro de cuerda
+ *  \return     0: todo correcto	-1: hubo algun error 
+ */
+
 int QGuitarView::setCuerdaPrendida(int cuerda) {
     if (cuerda < 0 || cuerda > stringArr.length() - 1) return -1;
     QPen stringPen(stringColorOn);
@@ -197,6 +218,13 @@ int QGuitarView::setCuerdaPrendida(int cuerda) {
     stringArr[cuerda]->update();
     return 0;
 }
+
+/** 
+ *  \fn         setCuerdaApagada(int cuerda)
+ *  \details    Apaga una cuerda en la guitarra
+ *  \param      int nro de cuerda
+ *  \return     0: todo correcto	-1: hubo algun error 
+ */
 
 int QGuitarView::setCuerdaApagada(int cuerda) {
     if (cuerda < 0 || cuerda > stringArr.length() - 1) return -1;

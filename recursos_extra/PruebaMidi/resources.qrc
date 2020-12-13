@@ -2,5 +2,9 @@
     <qresource prefix="/midi">
         <file>fur_elise.csv</file>
         <file>moonlight_sonata.csv</file>
+        <file>megaman2qm_4.csv</file>
+        <file>megaman2qm_3.csv</file>
+        <file>megaman2qm.csv</file>
+        <file>test3_4.csv</file>
     </qresource>
 </RCC>
