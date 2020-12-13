@@ -10,58 +10,66 @@ ParserPuntaje::~ParserPuntaje() {
     delete jDocPuntajes;
 }
 
+/** 
+ *  \fn         QStringList getCanciones()
+ *  \details    Obtinene los puntajes del archivo json de canciones
+ *  \param      void
+ *  \return     QStringList Lista_de_canciones 
+ */
+
 QStringList ParserPuntaje::getCanciones() {
     QStringList listaCanciones;
     QJsonArray jArrayCanciones;
     QJsonObject jObjetoCancion;
     int cantCanciones = 0;
 
-    if(jDocPuntajes != nullptr) {
-        listaCanciones.clear();
-        jArrayCanciones = jDocPuntajes->array();
-        cantCanciones = jArrayCanciones.size();
-        for (int i=0; i < cantCanciones; i++) {
-            jObjetoCancion = jArrayCanciones[i].toObject();
-            if (jObjetoCancion.contains(STRING_KEY_NOMBRE_CANCION)) {
-                if (jObjetoCancion[STRING_KEY_NOMBRE_CANCION].isString()) {
-                    listaCanciones.append(jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString());
-                } else {
-                    listaCanciones.append("");
-                }
+    listaCanciones.clear();
+    jArrayCanciones = jDocPuntajes->array();
+    cantCanciones = jArrayCanciones.size();
+    for (int i=0; i < cantCanciones; i++) {
+        jObjetoCancion = jArrayCanciones[i].toObject();
+        if (jObjetoCancion.contains(STRING_KEY_NOMBRE_CANCION)) {
+            if (jObjetoCancion[STRING_KEY_NOMBRE_CANCION].isString()) {
+                listaCanciones.append(jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString());
             } else {
                 listaCanciones.append("");
             }
+        } else {
+            listaCanciones.append("");
         }
-    } else {
-        //aca se llamo a la funcion sin cargar ningun archivo
-        //DEBE devolver algun tipo de error
     }
-
 
     return listaCanciones;
 }
+
+/** 
+ *  \fn         int getCantidadPuntajes(QString cancion)
+ *  \details    Obtiene la cantidad de puntajes para la cancion "cancion"
+ *  \param      QString cancion
+ *  \return     int cant_de_puntajes    -1: en caso de error
+ */
 
 int ParserPuntaje::getCantidadPuntajes(QString cancion) {
     QJsonArray jArrayCanciones;
     QJsonObject jObjetoCancion;
 
-    if(jDocPuntajes != nullptr) {
-        jArrayCanciones = jDocPuntajes->array();
-        for (int i=0; i < jArrayCanciones.size(); i++) {
-            jObjetoCancion = jArrayCanciones[i].toObject();
-            //busco la cancion y agrego el puntaje
-            if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
-                return jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES].toArray().size();
-            }
+    jArrayCanciones = jDocPuntajes->array();
+    for (int i=0; i < jArrayCanciones.size(); i++) {
+        jObjetoCancion = jArrayCanciones[i].toObject();
+        //busco la cancion y agrego el puntaje
+        if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
+            return jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES].toArray().size();
         }
-
-    } else {
-        //aca se llamo a la funcion sin cargar ningun archivo
-        //DEBE devolver algun tipo de error
     }
-
     return -1;
 }
+
+/** 
+ *  \fn         puntaje getPuntaje(QString cancion, int indice)
+ *  \details    Devuelve un struct puntaje con el puntaje para cierta cancion en determinado indice
+ *  \param      QString cancion, int indice
+ *  \return     struct puntaje      ""/-1 si hubo error
+ */
 
 puntaje ParserPuntaje::getPuntaje(QString cancion, int indice) {
     QJsonArray jArrayCanciones;
@@ -73,28 +81,31 @@ puntaje ParserPuntaje::getPuntaje(QString cancion, int indice) {
     retPuntaje.iniciales = "";
     retPuntaje.puntaje = -1;
 
-    if(jDocPuntajes != nullptr) {
-        jArrayCanciones = jDocPuntajes->array();
-        for (int i=0; i < jArrayCanciones.size(); i++) {
-            jObjetoCancion = jArrayCanciones[i].toObject();
-            //busco la cancion y agrego el puntaje
-            if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
-                jArrayPuntajes = jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES].toArray();
-                if (indice < jArrayPuntajes.size()) {
-                    jObjetoPuntaje = jArrayPuntajes.at(indice).toObject();
-                    retPuntaje.iniciales = jObjetoPuntaje[STRING_KEY_JUGADOR].toString();
-                    retPuntaje.iniciales.truncate(CARACT_MAX_PUNT_TABLA);
-                    retPuntaje.iniciales = retPuntaje.iniciales.toUpper();
-                    retPuntaje.puntaje = jObjetoPuntaje[STRING_KEY_PUNTAJE_JUGADOR].toInt();
-                }
+    jArrayCanciones = jDocPuntajes->array();
+    for (int i=0; i < jArrayCanciones.size(); i++) {
+        jObjetoCancion = jArrayCanciones[i].toObject();
+        //busco la cancion y agrego el puntaje
+        if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
+            jArrayPuntajes = jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES].toArray();
+            if (indice < jArrayPuntajes.size()) {
+                jObjetoPuntaje = jArrayPuntajes.at(indice).toObject();
+                retPuntaje.iniciales = jObjetoPuntaje[STRING_KEY_JUGADOR].toString();
+                retPuntaje.iniciales.truncate(CARACT_MAX_PUNT_TABLA);
+                retPuntaje.iniciales = retPuntaje.iniciales.toUpper();
+                retPuntaje.puntaje = jObjetoPuntaje[STRING_KEY_PUNTAJE_JUGADOR].toInt();
             }
         }
-    } else {
-        //aca se llamo a la funcion sin cargar ningun archivo
-        //DEBE devolver algun tipo de error
     }
     return retPuntaje;
 }
+
+/** 
+ *  \fn         void cargarDesdeArchivo()
+ *  \details    Funcion utilitaria que se encarga de cargar un archivo
+				o crear un documento vacio
+ *  \param      void
+ *  \return     void 
+ */
 
 void ParserPuntaje::cargarDesdeArchivo() {
     QByteArray rawTextData;
@@ -132,9 +143,23 @@ void ParserPuntaje::cargarDesdeArchivo() {
     ordenarCancionesYPuntajes(*jDocPuntajes, true);
 }
 
+/** 
+ *  \fn         int guardarPuntajes()
+ *  \details    Interfaz publica para la funcion guardarArchivo();
+ *  \param      void
+ *  \return     0: salio todo bien		-1:no se pudo guardar el archivo
+ */
+
 int ParserPuntaje::guardarPuntajes() {
     return guardarArchivo();
 }
+
+/** 
+ *  \fn         int guardarArchivo()
+ *  \details    Guarda el archivo de puntajes;
+ *  \param      void
+ *  \return     0: salio todo bien		-1: no se pudo guardar el archivo
+ */
 
 int ParserPuntaje::guardarArchivo() {
     QFile aux(STRING_ARCHIVO_NOMBRE);
@@ -149,50 +174,61 @@ int ParserPuntaje::guardarArchivo() {
     return 0;
 }
 
+/** 
+ *  \fn         int agregarCancion(QString cancion)
+ *  \details    Agrega una cancion a la lista de puntajes
+ *  \param      void
+ *  \return     0: se agrego la cancion		-1: la cancion ya existe
+ */
+
 int ParserPuntaje::agregarCancion(QString cancion) {
     QJsonArray jArrayCanciones;
     QJsonObject jObjetoCancion;
-
-    if(jDocPuntajes != nullptr) {
-        jArrayCanciones = jDocPuntajes->array();
-        for (int i=0; i < jArrayCanciones.size(); i++) {
-            jObjetoCancion = jArrayCanciones[i].toObject();
-            //si ya existe el nombre de la cancion tiro error
-            if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) return -1;
-        }
-        jObjetoCancion.insert(STRING_KEY_NOMBRE_CANCION, cancion);
-        jObjetoCancion.insert(STRING_KEY_ARRAY_PUNTAJES, QJsonArray());
-        jArrayCanciones.append(jObjetoCancion);
-        jDocPuntajes->setArray(jArrayCanciones);
-        ordenarCancionesYPuntajes(*jDocPuntajes);
-
-    } else {
-        //aca se llamo a la funcion sin cargar ningun archivo
-        //DEBE devolver algun tipo de error
-    }
-
+	
+	jArrayCanciones = jDocPuntajes->array();
+	for (int i=0; i < jArrayCanciones.size(); i++) {
+		jObjetoCancion = jArrayCanciones[i].toObject();
+		//si ya existe el nombre de la cancion tiro error
+		if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) return -1;
+	}
+	jObjetoCancion.insert(STRING_KEY_NOMBRE_CANCION, cancion);
+	jObjetoCancion.insert(STRING_KEY_ARRAY_PUNTAJES, QJsonArray());
+	jArrayCanciones.append(jObjetoCancion);
+	jDocPuntajes->setArray(jArrayCanciones);
+	ordenarCancionesYPuntajes(*jDocPuntajes);
 
     return 0;
 }
 
-int ParserPuntaje::borrarCancion(QString cancion) {
+/** 
+ *  \fn         void borrarCancion(QString cancion)
+ *  \details    Borra una cancion de la lista de puntajes
+ *  \param      QString nombre_de_cancion
+ *  \return     void
+ */
+
+void ParserPuntaje::borrarCancion(QString cancion) {
     QJsonArray jArrayCanciones;
     QJsonObject jObjetoCancion;
 
-    if(jDocPuntajes != nullptr) {
-        jArrayCanciones = jDocPuntajes->array();
-        for (int i=0; i < jArrayCanciones.size(); i++) {
-            jObjetoCancion = jArrayCanciones[i].toObject();
-            //si existe la saco con take y seteo el nuevo array
-            if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
-                jArrayCanciones.takeAt(i);
-                jDocPuntajes->setArray(jArrayCanciones);
-                return 0;
-            }
-        }
-    }
-    return -1;
+    
+	jArrayCanciones = jDocPuntajes->array();
+	for (int i=0; i < jArrayCanciones.size(); i++) {
+		jObjetoCancion = jArrayCanciones[i].toObject();
+		//si existe la saco con take y seteo el nuevo array
+		if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
+			jArrayCanciones.takeAt(i);
+			jDocPuntajes->setArray(jArrayCanciones);
+		}
+	}
 }
+
+/**
+ *  \fn         void agregarPuntaje(QString cancion, puntaje & punt)
+ *  \details    Agrega un puntaje a una cancion determinada
+ *  \param      QString nombre_de_cancion, puntaje & struct_de_puntaje
+ *  \return     0: se agrego el puntaje     -1: hubo error (no existe la cancion, por ejemplo)
+ */
 
 int ParserPuntaje::agregarPuntaje(QString cancion, puntaje & punt) {
     QJsonArray jArrayCanciones;
@@ -205,32 +241,32 @@ int ParserPuntaje::agregarPuntaje(QString cancion, puntaje & punt) {
     jObjetoPuntaje.insert(STRING_KEY_JUGADOR, punt.iniciales);
     jObjetoPuntaje.insert(STRING_KEY_PUNTAJE_JUGADOR, punt.puntaje);
 
-    if(jDocPuntajes != nullptr) {
-        jArrayCanciones = jDocPuntajes->array();
-        for (int i=0; i < jArrayCanciones.size(); i++) {
-            jObjetoCancion = jArrayCanciones[i].toObject();
-            //busco la cancion y agrego el puntaje
-            if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
-                jArrayPuntajes = jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES].toArray();
-                jArrayPuntajes.append(jObjetoPuntaje);
-                jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES] = jArrayPuntajes;
-                jArrayCanciones[i] = jObjetoCancion;
+    jArrayCanciones = jDocPuntajes->array();
+    for (int i=0; i < jArrayCanciones.size(); i++) {
+        jObjetoCancion = jArrayCanciones[i].toObject();
+        //busco la cancion y agrego el puntaje
+        if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
+            jArrayPuntajes = jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES].toArray();
+            jArrayPuntajes.append(jObjetoPuntaje);
+            jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES] = jArrayPuntajes;
+            jArrayCanciones[i] = jObjetoCancion;
 
-                jDocPuntajes->setArray(jArrayCanciones);
-                return 0;
-            }
+            jDocPuntajes->setArray(jArrayCanciones);
+            return 0;
         }
-        //si llegue aca es que no existe la cancion
-        //deberia existir ya que se cargan en el archivo
-    } else {
-        //aca se llamo a la funcion sin cargar ningun archivo
-        //DEBE devolver algun tipo de error
     }
 
     return -1;
 }
 
-int ParserPuntaje::borrarPuntaje(QString cancion, puntaje & punt) {
+/**
+ *  \fn         void borrarPuntaje(QString cancion, puntaje & punt)
+ *  \details    Borra un puntaje de la lista de puntajes
+ *  \param      QString nombre_de_cancion, puntaje & puntaje_a_borrar
+ *  \return     void
+ */
+
+void ParserPuntaje::borrarPuntaje(QString cancion, puntaje & punt) {
     QJsonArray jArrayCanciones;
     QJsonArray jArrayPuntajes;
     QJsonObject jObjetoCancion;
@@ -241,29 +277,31 @@ int ParserPuntaje::borrarPuntaje(QString cancion, puntaje & punt) {
     jObjetoPuntaje.insert(STRING_KEY_JUGADOR, punt.iniciales);
     jObjetoPuntaje.insert(STRING_KEY_PUNTAJE_JUGADOR, punt.puntaje);
 
-    if(jDocPuntajes != nullptr) {
-        jArrayCanciones = jDocPuntajes->array();
-        for (int i=0; i < jArrayCanciones.size(); i++) {
-            jObjetoCancion = jArrayCanciones[i].toObject();
-            //busco la cancion y agrego el puntaje
-            if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
-                jArrayPuntajes = jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES].toArray();
-                for (int j=0; j < jArrayPuntajes.size(); j++) {
-                    if (jArrayPuntajes[j].toObject() == jObjetoPuntaje) {
-                        jArrayPuntajes.takeAt(j);
-                        jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES] = jArrayPuntajes;
-                        jArrayCanciones[i] = jObjetoCancion;
-                        jDocPuntajes->setArray(jArrayCanciones);
-                        ordenarCancionesYPuntajes(*jDocPuntajes, true);
-                        return 0;
-                    }
+    jArrayCanciones = jDocPuntajes->array();
+    for (int i=0; i < jArrayCanciones.size(); i++) {
+        jObjetoCancion = jArrayCanciones[i].toObject();
+        //busco la cancion y agrego el puntaje
+        if (cancion == jObjetoCancion[STRING_KEY_NOMBRE_CANCION].toString()) {
+            jArrayPuntajes = jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES].toArray();
+            for (int j=0; j < jArrayPuntajes.size(); j++) {
+                if (jArrayPuntajes[j].toObject() == jObjetoPuntaje) {
+                    jArrayPuntajes.takeAt(j);
+                    jObjetoCancion[STRING_KEY_ARRAY_PUNTAJES] = jArrayPuntajes;
+                    jArrayCanciones[i] = jObjetoCancion;
+                    jDocPuntajes->setArray(jArrayCanciones);
+                    ordenarCancionesYPuntajes(*jDocPuntajes, true);
                 }
             }
         }
-
     }
-    return -1;
 }
+
+/**
+ *  \fn         void limpiarPuntajes(QString cancion)
+ *  \details    Limpia los puntajes de unas determinada cancion
+ *  \param      QString nombre_de_cancion
+ *  \return     void
+ */
 
 void ParserPuntaje::limpiarPuntajes(QString cancion) {
     int cantPuntajes = getCantidadPuntajes(cancion);
@@ -277,13 +315,35 @@ void ParserPuntaje::limpiarPuntajes(QString cancion) {
     }
 }
 
+/**
+ *  \fn         void getNombrePuntaje(puntaje & punt)
+ *  \details    Devuelve el nombre (las iniciales) de un struct puntaje
+ *  \param      puntaje & puntaje_jugador
+ *  \return     QString iniciales
+ */
+
 QString ParserPuntaje::getNombrePuntaje(puntaje & punt) {
     return punt.iniciales;
 }
 
+/**
+ *  \fn         int getValorPuntaje(puntaje & punt)
+ *  \details    Devuelve los puntos de un determinado puntaje
+ *  \param      puntaje & puntaje_jugador
+ *  \return     int valor_punt
+ */
+
 int ParserPuntaje::getValorPuntaje(puntaje & punt) {
     return punt.puntaje;
 }
+
+/**
+ *  \fn         bool verificarDocumentoJson(QJsonDocument & jDoc)
+ *  \details    Verifica que el docuemnto abierto del archivo sea valido.
+ *              Valida todas las estructuras
+ *  \param      QJsonDocument & jDoc
+ *  \return     bool verificado
+ */
 
 bool ParserPuntaje::verificarDocumentoJson(QJsonDocument & jDoc) {
     //se encarga de verificar la estructura del json cargado
@@ -348,6 +408,13 @@ bool ParserPuntaje::verificarDocumentoJson(QJsonDocument & jDoc) {
     return archValido;
 }
 
+/**
+ *  \fn         void ordenarCancionesYPuntajes(QJsonDocument & jDoc, bool tambienPuntajes)
+ *  \details    Ordena las canciones por orden alfabético y los puntajes por valor
+ *  \param      QJsonDocument & documento, bool tambien_ordenar_puntajes
+ *  \return     void
+ */
+
 void ParserPuntaje::ordenarCancionesYPuntajes(QJsonDocument & jDoc, bool tambienPuntajes) {
     QJsonArray jArrayCanciones, jArrayPuntajes;
     QJsonObject a, b;
@@ -378,6 +445,13 @@ void ParserPuntaje::ordenarCancionesYPuntajes(QJsonDocument & jDoc, bool tambien
     }
 }
 
+/**
+ *  \fn         void ordenarPuntajes(QJsonArray & jArrayPuntajes)
+ *  \details    Ordena los "puntajes" dentro del array JSON de puntajes
+ *  \param      QJsonArray & JSON_array_puntajes
+ *  \return     void
+ */
+
 void ParserPuntaje::ordenarPuntajes(QJsonArray & jArrayPuntajes) {
     QJsonObject a, b;
     if (jArrayPuntajes.size() != 0) {
@@ -392,10 +466,4 @@ void ParserPuntaje::ordenarPuntajes(QJsonArray & jArrayPuntajes) {
             }
         }
     }
-}
-
-
-bool ParserPuntaje::existeCancion(QString cancion) {
-    QStringList strList = getCanciones();
-    return strList.contains(cancion);
 }
