@@ -259,7 +259,7 @@ void Jugar::LeerArchivo(void){
         //listaNota = line.split(QLatin1Char(',')); //guarda lo separado por las comas en posiciones distintas de un array
         //saco el numero de la posicion de la lista
         int tam=(int)listaNota.size();
-        listaNota.swap(tam-1,tam-2);
+        listaNota.swapItemsAt(tam-1,tam-2);
         listaNota.removeLast();
         i++;
         aux = in.readLine();
