@@ -1,0 +1,26 @@
+Removed Pin From Net: NetName=GND Pin=R1-1
+Removed Pin From Net: NetName=L1 Pin=R1-2
+Removed Pin From Net: NetName=GND Pin=R2-1
+Removed Pin From Net: NetName=L2 Pin=R2-2
+Removed Pin From Net: NetName=GND Pin=R5-1
+Removed Pin From Net: NetName=L4 Pin=R5-2
+Removed Pin From Net: NetName=GND Pin=R6-1
+Removed Pin From Net: NetName=L3 Pin=R6-2
+Removed Pin From Net: NetName=L4 Pin=U3-3
+Removed Pin From Net: NetName=L3 Pin=U3-5
+Change Component Footprint: Designator=R1 Old Footprint=0805 New Footprint=RES400
+Change Component Footprint: Designator=R2 Old Footprint=0805 New Footprint=RES400
+Change Component Footprint: Designator=R3 Old Footprint=0805 New Footprint=RES400
+Change Component Footprint: Designator=R5 Old Footprint=0805 New Footprint=RES400
+Change Component Footprint: Designator=R6 Old Footprint=0805 New Footprint=RES400
+Added Pin To Net: NetName=L1 Pin=R1-1
+Added Pin To Net: NetName=GND Pin=R1-2
+Added Pin To Net: NetName=L2 Pin=R2-1
+Added Pin To Net: NetName=GND Pin=R2-2
+Added Pin To Net: NetName=L3 Pin=R5-1
+Added Pin To Net: NetName=GND Pin=R5-2
+Added Pin To Net: NetName=L4 Pin=R6-1
+Added Pin To Net: NetName=GND Pin=R6-2
+Added Pin To Net: NetName=L3 Pin=U3-3
+Added Pin To Net: NetName=L4 Pin=U3-5
+Added Room: Name=PLACALDR

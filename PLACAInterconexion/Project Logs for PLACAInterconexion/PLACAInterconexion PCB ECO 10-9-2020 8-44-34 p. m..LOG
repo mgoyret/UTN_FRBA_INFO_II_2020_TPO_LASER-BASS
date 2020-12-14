@@ -1,0 +1,81 @@
+Added Component: Designator=D1(1206K)
+Added Component: Designator=D2(1206K)
+Added Component: Designator=D3(1206K)
+Added Component: Designator=D4(1206K)
+Added Component: Designator=J1(BORNERA2)
+Added Component: Designator=J2(BORNERA2)
+Added Component: Designator=J3(BORNERA2)
+Added Component: Designator=J4(SIP5*2)
+Added Component: Designator=J5(SIP3*2)
+Added Component: Designator=P1(HDR2X10_CEN)
+Added Pin To Net: NetName=3V3 Pin=J4-3
+Added Pin To Net: NetName=3V3 Pin=P1-2
+Added Net: Name=3V3
+Added Pin To Net: NetName=CUERDA1 Pin=D1-1
+Added Pin To Net: NetName=CUERDA1 Pin=J5-4
+Added Net: Name=CUERDA1
+Added Pin To Net: NetName=CUERDA2 Pin=D2-1
+Added Pin To Net: NetName=CUERDA2 Pin=J5-2
+Added Net: Name=CUERDA2
+Added Pin To Net: NetName=CUERDA3 Pin=D3-1
+Added Pin To Net: NetName=CUERDA3 Pin=J5-1
+Added Net: Name=CUERDA3
+Added Pin To Net: NetName=CUERDA4 Pin=D4-1
+Added Pin To Net: NetName=CUERDA4 Pin=J5-3
+Added Net: Name=CUERDA4
+Added Pin To Net: NetName=EXP0 Pin=J4-2
+Added Pin To Net: NetName=EXP0 Pin=P1-5
+Added Net: Name=EXP0
+Added Pin To Net: NetName=EXP1 Pin=J4-4
+Added Pin To Net: NetName=EXP1 Pin=P1-6
+Added Net: Name=EXP1
+Added Pin To Net: NetName=EXP2 Pin=J4-6
+Added Pin To Net: NetName=EXP2 Pin=P1-7
+Added Net: Name=EXP2
+Added Pin To Net: NetName=EXP3 Pin=J4-8
+Added Pin To Net: NetName=EXP3 Pin=P1-8
+Added Net: Name=EXP3
+Added Pin To Net: NetName=EXP4 Pin=D4-2
+Added Pin To Net: NetName=EXP4 Pin=P1-9
+Added Net: Name=EXP4
+Added Pin To Net: NetName=EXP5 Pin=D3-2
+Added Pin To Net: NetName=EXP5 Pin=P1-10
+Added Net: Name=EXP5
+Added Pin To Net: NetName=EXP6 Pin=J1-1
+Added Pin To Net: NetName=EXP6 Pin=P1-11
+Added Net: Name=EXP6
+Added Pin To Net: NetName=EXP7 Pin=J1-2
+Added Pin To Net: NetName=EXP7 Pin=P1-12
+Added Net: Name=EXP7
+Added Pin To Net: NetName=EXP8 Pin=J2-1
+Added Pin To Net: NetName=EXP8 Pin=P1-13
+Added Net: Name=EXP8
+Added Pin To Net: NetName=EXP9 Pin=J2-2
+Added Pin To Net: NetName=EXP9 Pin=P1-14
+Added Net: Name=EXP9
+Added Pin To Net: NetName=EXP10 Pin=J3-1
+Added Pin To Net: NetName=EXP10 Pin=P1-15
+Added Net: Name=EXP10
+Added Pin To Net: NetName=EXP11 Pin=J3-2
+Added Pin To Net: NetName=EXP11 Pin=P1-16
+Added Net: Name=EXP11
+Added Pin To Net: NetName=EXP12 Pin=D1-2
+Added Pin To Net: NetName=EXP12 Pin=P1-17
+Added Net: Name=EXP12
+Added Pin To Net: NetName=EXP13 Pin=D2-2
+Added Pin To Net: NetName=EXP13 Pin=P1-18
+Added Net: Name=EXP13
+Added Pin To Net: NetName=EXP14 Pin=P1-19
+Added Net: Name=EXP14
+Added Pin To Net: NetName=EXP15 Pin=P1-20
+Added Net: Name=EXP15
+Added Pin To Net: NetName=GND Pin=J4-1
+Added Pin To Net: NetName=GND Pin=P1-4
+Added Net: Name=GND
+Added Pin To Net: NetName=VCC Pin=P1-3
+Added Net: Name=VCC
+Added Pin To Net: NetName=VDD Pin=J4-5
+Added Pin To Net: NetName=VDD Pin=P1-1
+Added Net: Name=VDD
+Added Class: Name=PLACAInterconexion
+Added Room: Name=PLACAInterconexion

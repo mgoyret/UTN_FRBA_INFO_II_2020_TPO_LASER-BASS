@@ -83,6 +83,14 @@
     {
         "cancion": "prueba",
         "puntajes": [
+            {
+                "jugador": "ASD",
+                "puntaje": 625
+            },
+            {
+                "jugador": "ALJ",
+                "puntaje": 1025
+            }
         ]
     },
     {

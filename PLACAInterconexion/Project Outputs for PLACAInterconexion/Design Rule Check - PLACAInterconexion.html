@@ -1,0 +1,715 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<style type="text/css">
+		h1, h2, h3, h4, h5, h6 {
+			font-family : sans-serif;
+			color : white;
+			background-color : #21489e;
+			padding: 0.3em;
+		}
+		body {
+			font-family : verdana;
+		}
+		td, th {
+			padding: 0.5em;
+			text-align : center;
+			width : 18%;
+		}
+		th {
+			background-color : #A6CAF0;
+
+		}
+		th.column1, td.column1 {
+			text-align: left;
+			width : auto;
+		}
+		table {
+			width : 100%;
+		}
+		
+		.DRC_summary_header {							
+			padding-bottom : 0.1em;
+			border : 0px solid black;							
+			width: 100%;
+                        align: right;
+                        
+		}
+
+		.DRC_summary_header_col1, 
+		.DRC_summary_header_col2, 
+		.DRC_summary_header_col3
+		{
+			color : black;
+			font-size:150%;
+                        padding : 0em;
+			padding-top : 0.2em;
+			padding-bottom 0.2: 0em;
+			border : 0px solid black;
+			width : auto;
+			vertical-align: top;
+			font-weight: bold;				
+		}
+		
+		.DRC_summary_header_col1 	
+		{		                       
+			text-align: right;
+                        width: auto;	
+		}
+
+		.DRC_summary_header_col2 	
+		{		
+			text-align: center;	
+		}
+
+		.DRC_summary_header_col3 	
+		{		
+			text-align: left;	
+		}
+
+
+		
+		.header_holder
+		{
+		Width = 100%;
+		border = 0px solid green;
+		padding = 0;
+		}
+		
+		
+		
+		.front_matter, .front_matter_column1, .front_matter_column2, .front_matter_column3
+                {
+			left:0;
+			top:0;
+			padding-top : 0.1em;			
+			border : 0px solid black;
+			width : 100%;
+			vertical-align: top
+
+		}
+		.front_matter {	
+			
+			margin-top: 5px;
+ 			margin-left: 0px;					 			
+ 			horizontal-align: left;
+		}
+				
+		
+		.front_matter_column1 {
+			width : 10em;	
+			text-align  : right;
+			padding-right:0.1em;
+			
+		}
+		
+		.front_matter_column2 {
+                        width: 0.1em;
+			align: center;
+			text-align : center;
+			margin-right  : 0.1em;	
+			margin-left   : 0.1em;
+		}
+		.front_matter_column3 {
+			width         : auto;  
+			text-align    : left;	
+			margin-right  : 0.5em;				
+		}
+		
+		.total_column1, .total_column {
+			font-weight : bold;
+		}
+		.total_column1 {
+			text-align : right;
+		}
+		.warning, .error {
+			color : red;
+			font-weight : bold;
+		}
+		tr.onmouseout_odd {
+			background-color : #EEEEE0 
+		}
+		tr.onmouseout_even { 
+			background-color : #F3F3E3   
+		}
+		tr.onmouseover_odd, tr.onmouseover_even { 
+			background-color : lightYellow
+		} 
+		a:link, a:visited, .q a:link,.q a:active,.q {
+			color: #21489e; 
+		}
+		a:link.callback, a:visited.callback { 
+			color: #008000 
+		}
+		a:link.customize, a:visited.customize {
+			color: #C0C0C0;
+			position: absolute; 
+			right: 10px;
+		}	
+		p.contents_level1 {
+			font-weight : bold;
+			font-size : 110%;
+			margin : 0.5em;
+		}
+		p.contents_level2 {
+			position : relative;
+			left : 20px;
+			margin : 0.5em;
+		}
+	</style><script type="text/javascript">
+		function coordToMils(coord) {
+			var number = coord / 10000;
+			
+			if (number != number.toFixed(3))
+				number = number.toFixed(3);
+
+			return number + 'mil'
+		}
+
+		function coordToMM(coord) {
+			var number = 0.0254 * coord / 10000;
+			
+			if (number != number.toFixed(4))
+				number = number.toFixed(4);
+			
+			return number + 'mm'
+		}
+	
+		function convertCoord(coordNode, units) {
+			for (var i = 0; i < coordNode.childNodes.length; i++) {
+				coordNode.removeChild(coordNode.childNodes[i]);
+			}
+
+			var coord = coordNode.getAttribute('value');
+			if (coord != null) {
+				if (units == 'mm') {
+					textNode = document.createTextNode(coordToMM(coord));
+					coordNode.appendChild(textNode);
+				} else if (units == 'mil') {
+					textNode = document.createTextNode(coordToMils(coord));		
+					coordNode.appendChild(textNode);	
+				}
+			}
+		}
+	
+		function convertUnits(unitNode, units) {
+			for (var i = 0; i < unitNode.childNodes.length; i++) {
+				unitNode.removeChild(unitNode.childNodes[i]);		
+			}
+		
+			textNode = document.createTextNode(units); 
+			unitNode.appendChild(textNode);
+		}
+	
+		function changeUnits(radio_input, units) {
+			if (radio_input.checked) {
+			
+				var elements = document.getElementsByName('coordinate');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertCoord(elements[i], units);
+					}
+				}
+	
+				var elements = document.getElementsByName('units');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertUnits(elements[i], units);
+					}
+				}
+			}
+		}
+	</script><title>Design Rule Verification Report</title>
+</head>
+<body onload=""><img ALT="Altium" src="
+			file://C:\Users\Public\Documents\Altium\AD15\Templates\AD-rgb_logo_223x64.gif
+		"><a href="dxpprocess://Client:SetupPreferences?Server=PCB|PageName=Reports" class="customize"><acronym title="dxpprocess://Client:SetupPreferences?Server=PCB|PageName=Reports">customize</acronym></a><h1>Design Rule Verification Report</h1>
+<table class="header_holder">
+<td Style="width:70%">
+<table class="front_matter">
+<tr class="front_matter">
+<td class="front_matter_column1">Date</td>
+<td class="front_matter_column2">:</td>
+<td class="front_matter_column3">10/9/2020</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Time</td>
+<td class="front_matter_column2">:</td>
+<td class="front_matter_column3">11:22:35 p. m.</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Elapsed Time</td>
+<td class="front_matter_column2">:</td>
+<td class="front_matter_column3">00:00:02</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Filename</td>
+<td class="front_matter_column2">:</td>
+<td class="front_matter_column3"><a href="file:///D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc" class="file"><acronym title="D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc">D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc</acronym></a></td>
+</tr>
+</table>
+</td>
+<td Style="Width:30%">
+<table class="DRC_summary_header">
+<tr>
+<td class="DRC_summary_header_col1">Warnings</td>
+<td class="DRC_summary_header_col2">:</td>
+<td class="DRC_summary_header_col3">0</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Rule Violations</td>
+<td class="DRC_summary_header_col2">:</td>
+<td class="DRC_summary_header_col3" style="color : red">95</td></tr>
+</table>
+</td>
+</table>
+<hr><a name="IDHGUNI33XWGSCJOGWQFRUZDLV4KANLSGP02ENYWMMBYG5M1KDII1D"><h2>Summary</h2></a><table>
+<tr>
+<th class="column1">Warnings</th>
+<th class="column2">Count</th>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">0</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Rule Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID05QZJ1MW1JDCJBUOC4BZFPL0MGTWJHL2R530QMKNRCVF3CLDORC">Modified Polygon (Allow modified: No), (Allow shelved: No)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDXOSPZU1JHGJXGN155JRIPMPLQKGHLT1YNLC4QJTX1CAAH2JDJJN">Net Antennae (Tolerance=0mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDHL2QUPMO133WIUA5JQ3JUPC00NUUJ2E3OZSUXKBSVMUIVVHSRU5L">Silk primitive without silk layer</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDS5EVPAOUJ0BFKPUI5EYPY1XDYFYHNOTDJZSZIUE1E4SZ5D5T1O2B">Silk to Silk (Clearance=0.254mm) (All),(All)</a></td>
+<td class="column2">5</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDJMZMBABSPGWVKO4MQC2GACFDLL3KYCRZTGXOGPGSV5LGEOIRZCCI">Silk To Solder Mask (Clearance=0.254mm) (IsPad),(All)</a></td>
+<td class="column2">24</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDWOZKZAU4JCOLFCUCVZY5DPU4DGLZUCTSUL4IT0KZJYHWQVG3AKK">Minimum Solder Mask Sliver (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDU2TWRZGNQZRWKBKR5KMTWXIPAIQ3ABIS1OBNC1JPTXCRVPUUFXLG">Hole To Hole Clearance (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDUQB4RA1SVEFMFJ2KTZZO14X25OGNW5RUH1SIRLI2UK4LO3BRBBSI">Hole Size Constraint (Min=0.025mm) (Max=2.54mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDNXAEZPJT0FRVC2GKAIFDSBGVLPGXRDEV0AGY3ELJ5PIULUQDDMXI">Height Constraint (Min=0mm) (Max=25.4mm) (Prefered=12.7mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDRIMO2JY5AI0IGI2LQECK4K3RUKBAOCOHMBRH3RJBHEJECXCRG3NF">Width Constraint (Min=1mm) (Max=1.1mm) (Preferred=1mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDTHKUX3TJFIWIOFCP52LBO5JAKNSBM5QILYQQIEKIQUH2FH5TVSWL">Power Plane Connect Rule(Relief Connect )(Expansion=0.508mm) (Conductor Width=0.254mm) (Air Gap=0.254mm) (Entries=4) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDKICECO4ZOGDYD4A4QFVV0QZ0RNF5VNH1A2EEYRGO3LPI5JZQTMYD">Clearance Constraint (Gap=1mm) (All),(All)</a></td>
+<td class="column2">45</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDZ2SJYCCYB31YOJUG01KT3UIOGFZ1P5KU0OOPEYES4BK1TL1YGPLG">Un-Routed Net Constraint ( (All) )</a></td>
+<td class="column2">21</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDDR5XEBHKDNX2DOXRSDGO3ICOGCZGNGK4QLBGCILUZ5T053VR5UOP">Short-Circuit Constraint (Allowed=No) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">95</td>
+</tr>
+</table><br><hr><a name="IDS5EVPAOUJ0BFKPUI5EYPY1XDYFYHNOTDJZSZIUE1E4SZ5D5T1O2B"><table>
+<tr>
+<th style="text-align : left" colspan="2" class="rule">Silk to Silk (Clearance=0.254mm) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1932mil|Location2.X=1997.984mil|Location1.Y=4745.339mil|Location2.Y=4778mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1932mil|Location2.X=1997.984mil|Location1.Y=4745.339mil|Location2.Y=4778mil|Absolute=True">Text "1" (23.876mm,-5.842mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=4736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=4736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-6.604mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1812mil|Location2.X=1877.984mil|Location1.Y=4745.339mil|Location2.Y=4778mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1812mil|Location2.X=1877.984mil|Location1.Y=4745.339mil|Location2.Y=4778mil|Absolute=True">Text "1" (20.828mm,-5.842mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=4736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=4736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-6.604mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1812mil|Location2.X=1877.984mil|Location1.Y=4745.339mil|Location2.Y=4778mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1812mil|Location2.X=1877.984mil|Location1.Y=4745.339mil|Location2.Y=4778mil|Absolute=True">Text "1" (20.828mm,-5.842mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1932mil|Location2.X=1997.984mil|Location1.Y=3638.694mil|Location2.Y=3738mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1932mil|Location2.X=1997.984mil|Location1.Y=3638.694mil|Location2.Y=3738mil|Absolute=True">Text "20" (23.876mm,-32.258mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=3743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=3743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(25.654mm,-32.004mm)  Top Overlay</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1832mil|Location2.X=1897.984mil|Location1.Y=3647.024mil|Location2.Y=3738mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1832mil|Location2.X=1897.984mil|Location1.Y=3647.024mil|Location2.Y=3738mil|Absolute=True">Text "10" (21.336mm,-32.258mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=3743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=3743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(25.654mm,-32.004mm)  Top Overlay</acronym></a></td>
+</tr>
+</table></a><a href="#top">Back to top</a><br><br><a name="IDJMZMBABSPGWVKO4MQC2GACFDLL3KYCRZTGXOGPGSV5LGEOIRZCCI"><table>
+<tr>
+<th style="text-align : left" colspan="2" class="rule">Silk To Solder Mask (Clearance=0.254mm) (IsPad),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True">Pad P1-20(24.384mm,-30.734mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=3743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=3743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(25.654mm,-32.004mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True">Pad P1-20(24.384mm,-30.734mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True">Pad P1-19(24.384mm,-28.194mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True">Pad P1-18(24.384mm,-25.654mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True">Pad P1-17(24.384mm,-23.114mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True">Pad P1-16(24.384mm,-20.574mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True">Pad P1-15(24.384mm,-18.034mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True">Pad P1-14(24.384mm,-15.494mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True">Pad P1-13(24.384mm,-12.954mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True">Pad P1-12(24.384mm,-10.414mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2006.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (25.654mm,-32.004mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True">Pad P1-11(24.384mm,-7.874mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=4736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=4736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-6.604mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True">Pad P1-11(24.384mm,-7.874mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True">Pad P1-10(21.844mm,-30.734mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=3743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=3736.063mil|Location2.Y=3743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(25.654mm,-32.004mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True">Pad P1-10(21.844mm,-30.734mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True">Pad P1-9(21.844mm,-28.194mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True">Pad P1-8(21.844mm,-25.654mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True">Pad P1-7(21.844mm,-23.114mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True">Pad P1-6(21.844mm,-20.574mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True">Pad P1-5(21.844mm,-18.034mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True">Pad P1-4(21.844mm,-15.494mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True">Pad P1-3(21.844mm,-12.954mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True">Pad P1-2(21.844mm,-10.414mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=1813.937mil|Location1.Y=3736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-32.004mm)(20.574mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True">Pad P1-1(21.844mm,-7.874mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=4736.063mil|Location2.Y=4743.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1806.063mil|Location2.X=2013.937mil|Location1.Y=4736.063mil|Location2.Y=4743.937mil|Absolute=True">Track (20.574mm,-6.604mm)(25.654mm,-6.604mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True">Pad P1-1(21.844mm,-7.874mm)  Multi-Layer</acronym></a></td>
+</tr>
+</table></a><a href="#top">Back to top</a><br><br><a name="IDKICECO4ZOGDYD4A4QFVV0QZ0RNF5VNH1A2EEYRGO3LPI5JZQTMYD"><table>
+<tr>
+<th style="text-align : left" colspan="2" class="rule">Clearance Constraint (Gap=1mm) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True">Pad P1-10(21.844mm,-30.734mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True">Pad P1-20(24.384mm,-30.734mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True">Pad P1-19(24.384mm,-28.194mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True">Pad P1-20(24.384mm,-30.734mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True">Pad P1-9(21.844mm,-28.194mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True">Pad P1-19(24.384mm,-28.194mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True">Pad P1-18(24.384mm,-25.654mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True">Pad P1-19(24.384mm,-28.194mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True">Pad P1-8(21.844mm,-25.654mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True">Pad P1-18(24.384mm,-25.654mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True">Pad P1-17(24.384mm,-23.114mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True">Pad P1-18(24.384mm,-25.654mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True">Pad P1-7(21.844mm,-23.114mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True">Pad P1-17(24.384mm,-23.114mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True">Pad P1-16(24.384mm,-20.574mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True">Pad P1-17(24.384mm,-23.114mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True">Pad P1-6(21.844mm,-20.574mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True">Pad P1-16(24.384mm,-20.574mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True">Pad P1-15(24.384mm,-18.034mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True">Pad P1-16(24.384mm,-20.574mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True">Pad P1-5(21.844mm,-18.034mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True">Pad P1-15(24.384mm,-18.034mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True">Pad P1-14(24.384mm,-15.494mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True">Pad P1-15(24.384mm,-18.034mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True">Pad P1-4(21.844mm,-15.494mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True">Pad P1-14(24.384mm,-15.494mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True">Pad P1-13(24.384mm,-12.954mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True">Pad P1-14(24.384mm,-15.494mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True">Pad P1-3(21.844mm,-12.954mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True">Pad P1-13(24.384mm,-12.954mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True">Pad P1-12(24.384mm,-10.414mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True">Pad P1-13(24.384mm,-12.954mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True">Pad P1-2(21.844mm,-10.414mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True">Pad P1-12(24.384mm,-10.414mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True">Pad P1-11(24.384mm,-7.874mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True">Pad P1-12(24.384mm,-10.414mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True">Pad P1-1(21.844mm,-7.874mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2001.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True">Pad P1-11(24.384mm,-7.874mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True">Pad P1-9(21.844mm,-28.194mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3748.599mil|Location2.Y=3831.401mil|Absolute=True">Pad P1-10(21.844mm,-30.734mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True">Pad P1-8(21.844mm,-25.654mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3848.599mil|Location2.Y=3931.401mil|Absolute=True">Pad P1-9(21.844mm,-28.194mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True">Pad P1-7(21.844mm,-23.114mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=3948.599mil|Location2.Y=4031.401mil|Absolute=True">Pad P1-8(21.844mm,-25.654mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True">Pad P1-6(21.844mm,-20.574mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4048.599mil|Location2.Y=4131.401mil|Absolute=True">Pad P1-7(21.844mm,-23.114mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True">Pad P1-5(21.844mm,-18.034mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4148.599mil|Location2.Y=4231.401mil|Absolute=True">Pad P1-6(21.844mm,-20.574mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True">Pad P1-4(21.844mm,-15.494mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4248.599mil|Location2.Y=4331.401mil|Absolute=True">Pad P1-5(21.844mm,-18.034mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True">Pad P1-3(21.844mm,-12.954mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4348.599mil|Location2.Y=4431.401mil|Absolute=True">Pad P1-4(21.844mm,-15.494mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True">Pad P1-2(21.844mm,-10.414mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4448.599mil|Location2.Y=4531.401mil|Absolute=True">Pad P1-3(21.844mm,-12.954mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4648.599mil|Location2.Y=4731.401mil|Absolute=True">Pad P1-1(21.844mm,-7.874mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=1901.401mil|Location1.Y=4548.599mil|Location2.Y=4631.401mil|Absolute=True">Pad P1-2(21.844mm,-10.414mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3283.599mil|Location2.Y=3366.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3283.599mil|Location2.Y=3366.401mil|Absolute=True">Pad J5-1(63.627mm,-42.545mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True">Pad J5-3(63.627mm,-40.005mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True">Pad J5-4(61.087mm,-40.005mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True">Pad J5-3(63.627mm,-40.005mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3483.599mil|Location2.Y=3566.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3483.599mil|Location2.Y=3566.401mil|Absolute=True">Pad J5-5(63.627mm,-37.465mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True">Pad J5-3(63.627mm,-40.005mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3283.599mil|Location2.Y=3366.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3283.599mil|Location2.Y=3366.401mil|Absolute=True">Pad J5-2(61.087mm,-42.545mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3283.599mil|Location2.Y=3366.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3463.599mil|Location2.X=3546.401mil|Location1.Y=3283.599mil|Location2.Y=3366.401mil|Absolute=True">Pad J5-1(63.627mm,-42.545mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True">Pad J5-4(61.087mm,-40.005mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3283.599mil|Location2.Y=3366.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3283.599mil|Location2.Y=3366.401mil|Absolute=True">Pad J5-2(61.087mm,-42.545mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3483.599mil|Location2.Y=3566.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3483.599mil|Location2.Y=3566.401mil|Absolute=True">Pad J5-6(61.087mm,-37.465mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3363.599mil|Location2.X=3446.401mil|Location1.Y=3383.599mil|Location2.Y=3466.401mil|Absolute=True">Pad J5-4(61.087mm,-40.005mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1741.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1741.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-2(17.78mm,-48.26mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1741.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1741.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-1(17.78mm,-45.72mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-3(15.24mm,-45.72mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1741.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1741.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-1(17.78mm,-45.72mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-4(15.24mm,-48.26mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1741.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1741.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-2(17.78mm,-48.26mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-5(12.7mm,-45.72mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-3(15.24mm,-45.72mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-4(15.24mm,-48.26mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-3(15.24mm,-45.72mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-6(12.7mm,-48.26mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1641.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-4(15.24mm,-48.26mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-6(12.7mm,-48.26mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-5(12.7mm,-45.72mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-7(10.16mm,-45.72mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-5(12.7mm,-45.72mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-8(10.16mm,-48.26mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1541.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-6(12.7mm,-48.26mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-8(10.16mm,-48.26mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3158.599mil|Location2.Y=3241.401mil|Absolute=True">Pad J4-7(10.16mm,-45.72mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1258.599mil|Location2.X=1341.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1258.599mil|Location2.X=1341.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-10(7.62mm,-48.26mm)  Multi-Layer</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1441.401mil|Location1.Y=3058.599mil|Location2.Y=3141.401mil|Absolute=True">Pad J4-8(10.16mm,-48.26mm)  Multi-Layer</acronym></a></td>
+</tr>
+</table></a><a href="#top">Back to top</a><br><br><a name="IDZ2SJYCCYB31YOJUG01KT3UIOGFZ1P5KU0OOPEYES4BK1TL1YGPLG"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Un-Routed Net Constraint ( (All) )</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1901.401mil|Location1.Y=3158.599mil|Location2.Y=4731.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1901.401mil|Location1.Y=3158.599mil|Location2.Y=4731.401mil|Absolute=True">Un-Routed Net Constraint: Net VDD Between Pad J4-5 (12.7,-45.72mm) And Pad P1-1 (21.844,-7.874mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1901.401mil|Location1.Y=3158.599mil|Location2.Y=4431.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1901.401mil|Location1.Y=3158.599mil|Location2.Y=4431.401mil|Absolute=True">Un-Routed Net Constraint: Net GND Between Pad J4-1 (17.78,-45.72mm) And Pad P1-4 (21.844,-15.494mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2668.528mil|Location1.Y=3381.472mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2668.528mil|Location1.Y=3381.472mil|Location2.Y=4031.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP13 Between Pad P1-18 (24.384,-25.654mm) And Pad D2-2 (41.529,-40.259mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2683.528mil|Location1.Y=3641.472mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2683.528mil|Location1.Y=3641.472mil|Location2.Y=4131.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP12 Between Pad P1-17 (24.384,-23.114mm) And Pad D1-2 (41.91,-33.655mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=3437.819mil|Location1.Y=3933.755mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=3437.819mil|Location1.Y=3933.755mil|Location2.Y=4231.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP11 Between Pad P1-16 (24.384,-20.574mm) And Pad J3-2 (59.944,-25.106mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=3437.819mil|Location1.Y=4130.607mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=3437.819mil|Location1.Y=4130.607mil|Location2.Y=4331.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP10 Between Pad P1-15 (24.384,-18.034mm) And Pad J3-1 (59.944,-20.106mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=3336.245mil|Location1.Y=4348.599mil|Location2.Y=4722.819mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=3336.245mil|Location1.Y=4348.599mil|Location2.Y=4722.819mil|Absolute=True">Un-Routed Net Constraint: Net EXP9 Between Pad P1-14 (24.384,-15.494mm) And Pad J2-2 (57.364,-9.017mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=3139.393mil|Location1.Y=4448.599mil|Location2.Y=4722.819mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=3139.393mil|Location1.Y=4448.599mil|Location2.Y=4722.819mil|Absolute=True">Un-Routed Net Constraint: Net EXP8 Between Pad P1-13 (24.384,-12.954mm) And Pad J2-1 (52.364,-9.017mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2761.245mil|Location1.Y=4548.599mil|Location2.Y=4737.819mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2761.245mil|Location1.Y=4548.599mil|Location2.Y=4737.819mil|Absolute=True">Un-Routed Net Constraint: Net EXP7 Between Pad P1-12 (24.384,-10.414mm) And Pad J1-2 (42.759,-8.636mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2564.393mil|Location1.Y=4582.181mil|Location2.Y=4737.819mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1918.599mil|Location2.X=2564.393mil|Location1.Y=4582.181mil|Location2.Y=4737.819mil|Absolute=True">Un-Routed Net Constraint: Net EXP6 Between Pad P1-11 (24.384,-7.874mm) And Pad J1-1 (37.759,-8.636mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=2683.528mil|Location1.Y=3136.472mil|Location2.Y=3831.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=2683.528mil|Location1.Y=3136.472mil|Location2.Y=3831.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP5 Between Pad P1-10 (21.844,-30.734mm) And Pad D3-2 (41.91,-46.482mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=2693.528mil|Location1.Y=2871.472mil|Location2.Y=3931.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1818.599mil|Location2.X=2693.528mil|Location1.Y=2871.472mil|Location2.Y=3931.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP4 Between Pad P1-9 (21.844,-28.194mm) And Pad D4-2 (42.164,-53.213mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1901.401mil|Location1.Y=3058.599mil|Location2.Y=4031.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1358.599mil|Location2.X=1901.401mil|Location1.Y=3058.599mil|Location2.Y=4031.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP3 Between Pad J4-8 (10.16,-48.26mm) And Pad P1-8 (21.844,-25.654mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1901.401mil|Location1.Y=3058.599mil|Location2.Y=4131.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1458.599mil|Location2.X=1901.401mil|Location1.Y=3058.599mil|Location2.Y=4131.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP2 Between Pad J4-6 (12.7,-48.26mm) And Pad P1-7 (21.844,-23.114mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1901.401mil|Location1.Y=3058.599mil|Location2.Y=4231.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1901.401mil|Location1.Y=3058.599mil|Location2.Y=4231.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP1 Between Pad J4-4 (15.24,-48.26mm) And Pad P1-6 (21.844,-20.574mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1901.401mil|Location1.Y=3058.599mil|Location2.Y=4331.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1658.599mil|Location2.X=1901.401mil|Location1.Y=3058.599mil|Location2.Y=4331.401mil|Absolute=True">Un-Routed Net Constraint: Net EXP0 Between Pad J4-2 (17.78,-48.26mm) And Pad P1-5 (21.844,-18.034mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3026.472mil|Location2.X=3546.401mil|Location1.Y=2871.472mil|Location2.Y=3466.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3026.472mil|Location2.X=3546.401mil|Location1.Y=2871.472mil|Location2.Y=3466.401mil|Absolute=True">Un-Routed Net Constraint: Net CUERDA4 Between Pad D4-1 (52.324,-53.213mm) And Pad J5-3 (63.627,-40.005mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3016.472mil|Location2.X=3546.401mil|Location1.Y=3136.472mil|Location2.Y=3366.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3016.472mil|Location2.X=3546.401mil|Location1.Y=3136.472mil|Location2.Y=3366.401mil|Absolute=True">Un-Routed Net Constraint: Net CUERDA3 Between Pad D3-1 (52.07,-46.482mm) And Pad J5-1 (63.627,-42.545mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3001.472mil|Location2.X=3446.401mil|Location1.Y=3283.599mil|Location2.Y=3448.528mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3001.472mil|Location2.X=3446.401mil|Location1.Y=3283.599mil|Location2.Y=3448.528mil|Absolute=True">Un-Routed Net Constraint: Net CUERDA2 Between Pad D2-1 (51.689,-40.259mm) And Pad J5-2 (61.087,-42.545mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3016.472mil|Location2.X=3446.401mil|Location1.Y=3383.599mil|Location2.Y=3708.528mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3016.472mil|Location2.X=3446.401mil|Location1.Y=3383.599mil|Location2.Y=3708.528mil|Absolute=True">Un-Routed Net Constraint: Net CUERDA1 Between Pad D1-1 (52.07,-33.655mm) And Pad J5-4 (61.087,-40.005mm)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1901.401mil|Location1.Y=3158.599mil|Location2.Y=4631.401mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=D:\Documentos\utn\TPO\PLACAInterconexion\PLACAInterconexion.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1558.599mil|Location2.X=1901.401mil|Location1.Y=3158.599mil|Location2.Y=4631.401mil|Absolute=True">Un-Routed Net Constraint: Net 3V3 Between Pad J4-3 (15.24,-45.72mm) And Pad P1-2 (21.844,-10.414mm)</acronym></a><br></td>
+</tr>
+</table></a><a href="#top">Back to top</a><br><br></body>
+</html>

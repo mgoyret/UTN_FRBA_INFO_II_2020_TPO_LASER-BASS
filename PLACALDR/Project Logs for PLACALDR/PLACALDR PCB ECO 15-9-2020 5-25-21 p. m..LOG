@@ -1,0 +1,13 @@
+Removed Pin From Net: NetName=O4 Pin=U3-1
+Removed Pin From Net: NetName=O3 Pin=U3-7
+Change Component Footprint: Designator=C1 Old Footprint=CAP200 New Footprint=CAP100
+Change Component Footprint: Designator=C2 Old Footprint=CAP200 New Footprint=CAP100
+Change Component Footprint: Designator=C3 Old Footprint=CAP200 New Footprint=CAP100
+Change Component Library : Designator=D1 Old Library=LibGorra.SchLib New Library=LIBEBAL.IntLib
+Added Component: Designator=C4(CAP100)
+Added Pin To Net: NetName=5V Pin=C4-1
+Added Pin To Net: NetName=GND Pin=C4-2
+Added Pin To Net: NetName=O3 Pin=U3-1
+Added Pin To Net: NetName=O4 Pin=U3-7
+Added Member To Class: ClassName=PLACALDR Member=Component C4 100nF
+Added Room: Name=PLACALDR

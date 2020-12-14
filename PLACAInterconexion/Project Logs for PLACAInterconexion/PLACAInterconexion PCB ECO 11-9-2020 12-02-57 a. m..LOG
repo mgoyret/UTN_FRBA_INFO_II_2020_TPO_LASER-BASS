@@ -1,0 +1,17 @@
+Removed Pin From Net: NetName=EXP6 Pin=J1-1
+Removed Pin From Net: NetName=EXP7 Pin=J1-2
+Removed Pin From Net: NetName=EXP8 Pin=J2-1
+Removed Pin From Net: NetName=EXP9 Pin=J2-2
+Removed Pin From Net: NetName=EXP10 Pin=J3-1
+Removed Pin From Net: NetName=EXP11 Pin=J3-2
+Change Component Comment : Designator=D1 Old Comment=DIODO New Comment=1N4148
+Change Component Comment : Designator=D2 Old Comment=DIODO New Comment=1N4148
+Change Component Comment : Designator=D3 Old Comment=DIODO New Comment=1N4148
+Change Component Comment : Designator=D4 Old Comment=DIODO New Comment=1N4148
+Added Pin To Net: NetName=EXP7 Pin=J1-1
+Added Pin To Net: NetName=EXP6 Pin=J1-2
+Added Pin To Net: NetName=EXP9 Pin=J2-1
+Added Pin To Net: NetName=EXP8 Pin=J2-2
+Added Pin To Net: NetName=EXP11 Pin=J3-1
+Added Pin To Net: NetName=EXP10 Pin=J3-2
+Added Room: Name=PLACAInterconexion

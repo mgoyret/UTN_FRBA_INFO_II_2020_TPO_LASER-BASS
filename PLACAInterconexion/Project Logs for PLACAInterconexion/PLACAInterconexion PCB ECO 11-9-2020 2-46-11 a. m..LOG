@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=EXP7 Pin=J1-1
+Removed Pin From Net: NetName=EXP6 Pin=J1-2
+Added Pin To Net: NetName=EXP6 Pin=J1-1
+Added Pin To Net: NetName=EXP7 Pin=J1-2
+Added Room: Name=PLACAInterconexion

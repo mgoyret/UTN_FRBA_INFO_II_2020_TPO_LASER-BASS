@@ -1,0 +1,37 @@
+Removed Pin From Net: NetName=CUERDA2 Pin=J1-1
+Removed Pin From Net: NetName=CUERDA1 Pin=J1-2
+Removed Pin From Net: NetName=CUERDA3 Pin=J1-3
+Removed Pin From Net: NetName=CUERDA4 Pin=J1-5
+Removed Pin From Net: NetName=EXP8 Pin=J2-1
+Removed Pin From Net: NetName=EXP6 Pin=J2-2
+Removed Pin From Net: NetName=EXP7 Pin=J2-3
+Removed Pin From Net: NetName=EXP3 Pin=J3-1
+Removed Pin From Net: NetName=EXP4 Pin=J3-2
+Removed Pin From Net: NetName=EXP2 Pin=J3-3
+Removed Pin From Net: NetName=EXP5 Pin=J3-4
+Removed Pin From Net: NetName=GND Pin=J3-5
+Removed Pin From Net: NetName=3V3 Pin=J3-7
+Removed Pin From Net: NetName=VDD Pin=J3-9
+Change Component DesignItemId : Designator=J2 Old DesignItemId=BORNERA 3 New DesignItemId=BORNERA 2
+Change Component DesignItemId : Designator=J1 Old DesignItemId=CON3*2 New DesignItemId=BORNERA 2
+Change Component DesignItemId : Designator=J3 Old DesignItemId=CON5*2 New DesignItemId=BORNERA 3
+Change Component Footprint: Designator=J2 Old Footprint=BORNERA3 New Footprint=BORNERA2
+Change Component Footprint: Designator=J1 Old Footprint=SIP3*2 New Footprint=BORNERA2
+Change Component Footprint: Designator=J3 Old Footprint=SIP5*2 New Footprint=BORNERA3
+Change Component Comment : Designator=J2 Old Comment=BORNERA 3 New Comment=BORNERA 2
+Change Component Comment : Designator=J1 Old Comment=CON3*2 New Comment=BORNERA 2
+Change Component Comment : Designator=J3 Old Comment=CON5*2 New Comment=BORNERA 3
+Change Component Designator: OldDesignator=J4 NewDesignator=J5
+Added Component: Designator=J4(SIP5*2)
+Added Pin To Net: NetName=CUERDA1 Pin=J1-1
+Added Pin To Net: NetName=CUERDA2 Pin=J1-2
+Added Pin To Net: NetName=CUERDA3 Pin=J2-1
+Added Pin To Net: NetName=CUERDA4 Pin=J2-2
+Added Pin To Net: NetName=EXP8 Pin=J3-1
+Added Pin To Net: NetName=EXP6 Pin=J3-2
+Added Pin To Net: NetName=EXP7 Pin=J3-3
+Added Pin To Net: NetName=EXP3 Pin=J3-1
+Added Pin To Net: NetName=EXP4 Pin=J3-2
+Added Pin To Net: NetName=EXP2 Pin=J3-3
+Added Member To Class: ClassName=PLACAInterconexion Member=Component J5 BORNERA 3
+Added Room: Name=PLACAInterconexion

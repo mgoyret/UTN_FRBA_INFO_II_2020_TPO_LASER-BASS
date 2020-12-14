@@ -1,0 +1,12 @@
+Change Component Designator: Old Designator=J1 New Designator=J2
+Change Component Designator: Old Designator=J2 New Designator=J4
+Change Component Designator: Old Designator=J4 New Designator=J1
+Change Component Designator: Old Designator=R1 New Designator=R3
+Change Component Designator: Old Designator=R2 New Designator=R4
+Change Component Designator: Old Designator=R5 New Designator=R1
+Change Component Designator: Old Designator=R6 New Designator=R5
+Change Component Designator: Old Designator=R9 New Designator=R2
+Change Component Designator: Old Designator=R10 New Designator=R6
+Change Component Part ID : Designator=U2 Old Part ID =1 New Part ID =2
+Change Component Designator: Old Designator=U5 New Designator=U3
+Change Component Part ID : Designator=U3 Old Part ID =1 New Part ID =2
