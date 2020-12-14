@@ -1,0 +1,20 @@
+Removed Pin From Net: NetName=EXP6 Pin=J1-1
+Removed Pin From Net: NetName=EXP7 Pin=J1-2
+Removed Pin From Net: NetName=EXP9 Pin=J2-1
+Removed Pin From Net: NetName=EXP8 Pin=J2-2
+Removed Pin From Net: NetName=EXP11 Pin=J3-1
+Removed Pin From Net: NetName=EXP10 Pin=J3-2
+Removed Member From Class: ClassName=PLACAInterconexion Member=J5
+Change Component DesignItemId : Designator=J2 Old DesignItemId=BORNERA 2 New DesignItemId=BORNERA 3
+Change Component Footprint: Designator=J2 Old Footprint=BORNERA2 New Footprint=BORNERA3
+Change Component Comment : Designator=J2 Old Comment=BORNERA 2 New Comment=BORNERA 3
+Change Component Designator: OldDesignator=J4 NewDesignator=J3
+Change Component Designator: OldDesignator=J5 NewDesignator=J1
+Added Component: Designator=J4(BORNERA3)
+Added Pin To Net: NetName=EXP8 Pin=J2-1
+Added Pin To Net: NetName=EXP6 Pin=J2-2
+Added Pin To Net: NetName=EXP7 Pin=J2-3
+Added Pin To Net: NetName=EXP11 Pin=J4-1
+Added Pin To Net: NetName=EXP10 Pin=J4-2
+Added Pin To Net: NetName=EXP9 Pin=J4-3
+Added Room: Name=PLACAInterconexion
