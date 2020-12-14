@@ -300,8 +300,9 @@ void Grabar::on_PBfinRec_clicked()
     }else
         QMessageBox::critical(this, "ERROR", "Ocurrio un error inesperado [on_PBfinRed_clicked()]");
 
-    ui->lineEditNombre->setEnabled(true);
-    ui->PBnombre->setEnabled(true);
+    //ui->lineEditNombre->setEnabled(true);
+    //ui->PBnombre->setEnabled(true);
+    hide();
 }
 //////////////////////////////////// timer handler
 /**

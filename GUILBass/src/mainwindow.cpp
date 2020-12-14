@@ -21,13 +21,14 @@ MainWindow::MainWindow(QWidget *parent)
     if (verificarConfiguracionPuertos()) {
         configurarPuertoMidi(pref.getMidiPortPref());
         configurarPuertoSerie(pref.getSerialPortPref());
-        ui->PBTocar->setDisabled(false);
-        ui->PBJugar->setDisabled(false);
+        ui->PBTocar->setEnabled(true);
+        ui->PBJugar->setEnabled(true);
     }
 }
 
 MainWindow::~MainWindow()
 {
+    puerto->close();
     delete ui;
     delete puerto;
     delete puertoMidi;
@@ -56,7 +57,7 @@ void MainWindow::on_PBTocar_clicked()
 
 bool MainWindow::verificarConfiguracionPuertos() {
     DialogPreferencias pref(this);
-    if (pref.getMidiPortPref() != "" && pref.getSerialPortPref() != "") return true;
+    if ( (pref.getMidiPortPref() != "") && (pref.getSerialPortPref() != "") ) return true;
     return false;
 }
 

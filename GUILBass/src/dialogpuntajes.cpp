@@ -31,6 +31,11 @@ void DialogPuntajes::on_PBok_clicked()
     }else
     {
         nombre = ui->lineNombre->text();
-        hide();
+        QDialog::accept();
     }
+}
+
+void DialogPuntajes::on_PBdescartar_clicked()
+{
+    QDialog::reject();
 }

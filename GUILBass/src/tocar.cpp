@@ -93,6 +93,7 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     qDebug() <<"la nota es"<<(int)nota;
     mostrarNota(nota);
+    qDebug()<<"aca";
     if (nota < 0) {
         qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
     } else {

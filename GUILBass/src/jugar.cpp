@@ -9,7 +9,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
 
     bufferSerie.clear();
     nombreCancion = nombre;
-    nombreCancion=nombreCancion.prepend(SONG_FOLDER_PATH_).append(".csv");
+    nombreCancion=nombreCancion.prepend(SONG_FOLDER_PATH_).append(SONG_FILE_TYPE_);
     LeerArchivo();
     ui->graphicsView_2->tam=listaNota.size();
     int i;
@@ -287,12 +287,17 @@ void Jugar::slotPuntaje()
     int puntosMax=setPuntosMax();
     qDebug()<<"puntaje maximo"<<puntosMax;
     DialogPuntajes dPuntajes(this, puntos,puntosMax);
-    dPuntajes.exec();
-    estructuraPuntajes.iniciales = dPuntajes.getName();
-    estructuraPuntajes.puntaje = puntos;
-    dPuntajes.close();
-    puntajes.agregarPuntaje(nCancion, estructuraPuntajes);
-    puntajes.guardarPuntajes();
+    if( dPuntajes.exec() != QDialog::DialogCode::Rejected) {
+        estructuraPuntajes.iniciales = dPuntajes.getName();
+        estructuraPuntajes.puntaje = puntos;
+        dPuntajes.close();
+        puntajes.agregarPuntaje(nCancion, estructuraPuntajes);
+        puntajes.guardarPuntajes();
+        QMessageBox::information(this, "Atencion", "Puntaje guardado");
+    }else{
+        QMessageBox::information(this, "Atencion", "Puntaje descartado");
+    }
+
     hide();//cierro ventana jugar
 }
 

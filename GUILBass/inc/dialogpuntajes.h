@@ -21,6 +21,8 @@ public:
 private slots:
     void on_PBok_clicked();
 
+    void on_PBdescartar_clicked();
+
 private:
     Ui::DialogPuntajes *ui;
     QString nombre;

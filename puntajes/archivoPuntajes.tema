@@ -77,16 +77,46 @@
             {
                 "jugador": "ABC",
                 "puntaje": 0
+            },
+            {
+                "jugador": "LLL",
+                "puntaje": 0
             }
         ]
     },
     {
         "cancion": "prueba",
         "puntajes": [
+            {
+                "jugador": "ALJ",
+                "puntaje": 1025
+            },
+            {
+                "jugador": "ASD",
+                "puntaje": 625
+            }
+        ]
+    },
+    {
+        "cancion": "s2",
+        "puntajes": [
+            {
+                "jugador": "HHH",
+                "puntaje": 0
+            },
+            {
+                "jugador": "JJJ",
+                "puntaje": 0
+            }
         ]
     },
     {
         "cancion": "saliobien",
+        "puntajes": [
+        ]
+    },
+    {
+        "cancion": "short",
         "puntajes": [
         ]
     }
