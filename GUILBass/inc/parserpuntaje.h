@@ -63,15 +63,14 @@ public:
     puntaje getPuntaje(QString cancion, int indice);
 
     int agregarCancion(QString cancion);
-    int borrarCancion(QString cancion);
+    void borrarCancion(QString cancion);
     int agregarPuntaje(QString cancion, puntaje & punt);
-    int borrarPuntaje(QString cancion, puntaje & punt);
+    void borrarPuntaje(QString cancion, puntaje & punt);
     void limpiarPuntajes(QString cancion);
 
     QString getNombrePuntaje(puntaje & punt);
     int getValorPuntaje(puntaje & punt);
 
-    bool existeCancion(QString cancion);
 
 private:
     QJsonDocument * jDocPuntajes;

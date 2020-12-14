@@ -27,7 +27,6 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
 void Tocar::setPuertoMidi(ClaseMIDI *puertoExt)
 {
     puertoMidi = puertoExt;
-    puertoMidi->enviarProgramChange(0, 33);
 }
 
 void Tocar::mostrarNota(char nota) {

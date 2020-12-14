@@ -8,6 +8,8 @@
 #include <QColorDialog>
 #include <clasemidi.h>
 #include <dialogpreferencias.h>
+#include <QFontDatabase>
+#include <QFont>
 #include "../inc/tocar.h"
 #include "../inc/menujugar.h"
 
