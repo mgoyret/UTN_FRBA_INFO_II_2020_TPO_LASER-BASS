@@ -1,0 +1,13 @@
+Removed Pin From Net: NetName=L3 Pin=R2-2
+Removed Pin From Net: NetName=L2 Pin=R5-2
+Removed Pin From Net: NetName=O3 Pin=U2-1
+Removed Pin From Net: NetName=L3 Pin=U2-3
+Removed Pin From Net: NetName=O2 Pin=U3-1
+Removed Pin From Net: NetName=L2 Pin=U3-3
+Added Pin To Net: NetName=L2 Pin=R2-2
+Added Pin To Net: NetName=L3 Pin=R5-2
+Added Pin To Net: NetName=O2 Pin=U2-1
+Added Pin To Net: NetName=L2 Pin=U2-3
+Added Pin To Net: NetName=O3 Pin=U3-1
+Added Pin To Net: NetName=L3 Pin=U3-3
+Added Room: Name=PLACALDR

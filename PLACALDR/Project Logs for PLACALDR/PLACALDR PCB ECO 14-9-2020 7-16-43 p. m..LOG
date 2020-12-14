@@ -1,0 +1,18 @@
+Removed Pin From Net: NetName=O2 Pin=P1-1
+Removed Pin From Net: NetName=O1 Pin=P1-2
+Removed Pin From Net: NetName=GND Pin=P1-3
+Removed Pin From Net: NetName=3.3 Pin=P1-4
+Removed Pin From Net: NetName=VDD Pin=P1-5
+Removed Pin From Net: NetName=O3 Pin=P1-6
+Removed Pin From Net: NetName=O4 Pin=P1-7
+Removed Member From Class: ClassName=PLACALDR Member=P1
+Added Component: Designator=J2(SIP5*2)
+Added Pin To Net: NetName=O2 Pin=J2-1
+Added Pin To Net: NetName=O3 Pin=J2-2
+Added Pin To Net: NetName=O1 Pin=J2-3
+Added Pin To Net: NetName=O4 Pin=J2-4
+Added Pin To Net: NetName=GND Pin=J2-5
+Added Pin To Net: NetName=3.3 Pin=J2-7
+Added Pin To Net: NetName=VDD Pin=J2-9
+Added Member To Class: ClassName=PLACALDR Member=Component J2 CON5*2
+Added Room: Name=PLACALDR

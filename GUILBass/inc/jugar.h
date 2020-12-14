@@ -31,26 +31,14 @@
 #define TOTAL_NOTAS_ 52
 #define NOTA_MAX_    28
 
-#define SONG_FILE_NAME_ "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
-#define SONG_FOLDER_PATH_ "../media/"
+#define SONG_FILE_NAME_     "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
+#define SONG_FOLDER_PATH_   "../media/"
+#define SONG_FILE_TYPE_     ".csv"
 
 #define TIME_JUGAR 200
 #define PUNTOCSIMPLE 10
 #define PUNTOCLARGA 15
 
-
-//////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
-#define PRIMER_MITAD_    240 // 240 = 11110000
-#define ULTIMA_MITAD_    15  // 15  = 00001111
-#define INICIO_TRAMA_    10  // 10  = 1010 que es el inicio de trama que esta en el primer byte
-#define FIN_TRAMA_     5   // 5   = 0101 que es el fin de trama que esta en el segundo byte
-#define INICIO_TRAMA_OK_ ( ( ( ((uint8_t)data[0]) & PRIMER_MITAD_ ) >>4) == (uint8_t)INICIO_TRAMA_ )
-#define FIN_TRAMA_OK_    ( ( ((uint8_t)data[1]) & ULTIMA_MITAD_ ) == (uint8_t)FIN_TRAMA_ )
-
-#define BIT1_MITAD1_ ( ( ((uint8_t)data[0]) & PRIMER_MITAD_ ) >>4)
-#define BIT1_MITAD2_ ( ((uint8_t)data[0]) & ULTIMA_MITAD_ )
-#define BIT2_MITAD1_ ( ( ((uint8_t)data[1]) & PRIMER_MITAD_ ) >>4)
-#define BIT2_MITAD2_ ( ((uint8_t)data[1]) & ULITMA_MITAD_ )
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace Ui {

@@ -25,14 +25,15 @@ MainWindow::MainWindow(QWidget *parent)
     if (verificarConfiguracionPuertos()) {
         configurarPuertoMidi(pref.getMidiPortPref());
         configurarPuertoSerie(pref.getSerialPortPref());
-        ui->PBTocar->setDisabled(false);
-        ui->PBJugar->setDisabled(false);
         ui->label->hide();
+        ui->PBTocar->setEnabled(true);
+        ui->PBJugar->setEnabled(true);
     }
 }
 
 MainWindow::~MainWindow()
 {
+    puerto->close();
     delete ui;
     if (puerto->isOpen()) puerto->close();
     delete puerto;
@@ -58,6 +59,7 @@ void MainWindow::on_PBTocar_clicked()
     this->hide();
     wtocar.setPuerto(puerto);
     wtocar.setPuertoMidi(puertoMidi);
+    wtocar.setWindowTitle("Tocar");
     wtocar.exec();
     this->show();
 }
@@ -65,7 +67,7 @@ void MainWindow::on_PBTocar_clicked()
 
 bool MainWindow::verificarConfiguracionPuertos() {
     DialogPreferencias pref(this);
-    if (pref.getMidiPortPref() != "" && pref.getSerialPortPref() != "") return true;
+    if ( (pref.getMidiPortPref() != "") && (pref.getSerialPortPref() != "") ) return true;
     return false;
 }
 
@@ -74,6 +76,7 @@ void MainWindow::on_actionConexion_triggered()
     DialogPreferencias pref(this);
     QString serialPortName = pref.getSerialPortPref();
     QString midiPortName;
+    pref.setWindowTitle("Configuracion");
     int retValue;
     this->hide();
     retValue = pref.exec();

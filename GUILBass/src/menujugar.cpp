@@ -30,20 +30,18 @@ void MenuJugar::on_PBpreGrabada_clicked()
 {
 
     QString nombreCancion = "";
-    DialogJugar SelecionCancion(this);
-    SelecionCancion.exec();
-    nombreCancion = SelecionCancion.getNombreCancion();
-    SelecionCancion.close();
+    DialogJugar SeleccionCancion(this);
+    SeleccionCancion.exec();
+    nombreCancion = SeleccionCancion.getNombreCancion();
+    SeleccionCancion.close();
     // VENTANA CAMI
     if( nombreCancion != "" )
     {
         Jugar wJugar(this, nombreCancion);
-        hide();
         wJugar.setWindowTitle("Jugar");
         wJugar.setPuerto(puerto);
         wJugar.setPuertoMidi(puertoMidi);
         wJugar.exec();
-        close();
     }
 }
 
@@ -51,7 +49,6 @@ void MenuJugar::on_PBgrabarNueva_clicked()
 {
     // VENTANA MARCOS
     Grabar wGrabar(this);
-    hide();
     wGrabar.setWindowTitle("Grabar");
     wGrabar.setPuerto(puerto);
     wGrabar.setPuertoMidi(puertoMidi);
@@ -63,6 +60,5 @@ void MenuJugar::on_PBpuntajes_clicked()
     // VENTANA FELIPE
     TablaPuntajes a(this);
     a.setWindowTitle("Puntajes");
-    //hide();
     a.exec();
 }
