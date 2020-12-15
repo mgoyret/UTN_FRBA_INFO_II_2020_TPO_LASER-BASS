@@ -98,25 +98,7 @@
         ]
     },
     {
-        "cancion": "s2",
-        "puntajes": [
-            {
-                "jugador": "HHH",
-                "puntaje": 0
-            },
-            {
-                "jugador": "JJJ",
-                "puntaje": 0
-            }
-        ]
-    },
-    {
         "cancion": "saliobien",
-        "puntajes": [
-        ]
-    },
-    {
-        "cancion": "short",
         "puntajes": [
         ]
     }
