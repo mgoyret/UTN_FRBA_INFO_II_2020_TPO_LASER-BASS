@@ -10,7 +10,7 @@ DialogBorrar::DialogBorrar(QWidget *parent) :
     QStringList lista = QDir("../media").entryList();
     for(uint8_t i=0; i<lista.size(); i++)
     {
-        if( (lista[i] != ".") || (lista[i] != "..") )
+        if( (lista[i] != ".") && (lista[i] != "..") && (lista[i] != "") )
             ui->comboBox->addItem(lista[i].remove(lista[i].size()-4, 4)); //elimino los .csv
     }
 }
