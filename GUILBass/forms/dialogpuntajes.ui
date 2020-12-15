@@ -92,16 +92,16 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QPushButton" name="PBdescartar">
+     <widget class="QPushButton" name="PBok">
       <property name="text">
-       <string>Descartar</string>
+       <string>Guardar</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="PBok">
+     <widget class="QPushButton" name="PBdescartar">
       <property name="text">
-       <string>Guardar</string>
+       <string>Descartar</string>
       </property>
      </widget>
     </item>

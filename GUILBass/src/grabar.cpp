@@ -54,7 +54,7 @@ void Grabar::inicializar( void )
 }
 
 /**
-*	\fn         void iniciarTimer_250ms(void)
+*	\fn         void iniciarTimer(void)
 *	\brief      inicializa un timer periodico
 *	\details    Inicia un timer que ejecuta timer_handler() al terminar
 */
@@ -321,7 +321,7 @@ void Grabar::on_datosRecibidos() {
 */
 void Grabar::on_PBnombre_clicked()
 {
-    if( ui->lineEditNombre->text() != "" )
+    if( (ui->lineEditNombre->text() != "") && (ui->lineEditNombre->text() != "Ingrese Nombre") )
     {
         if ( !checkName() )
         {

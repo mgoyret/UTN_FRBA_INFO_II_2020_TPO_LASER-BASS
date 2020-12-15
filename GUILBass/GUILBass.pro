@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/dialogborrar.cpp \
     src/dialogjugar.cpp \
     src/dialogpuntajes.cpp \
     src/parserpuntaje.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     inc/dialogjugar.h \
     inc/dialogpuntajes.h \
     inc/dialogpreferencias.h \
+    inc/dialogborrar.h
 
 FORMS += \
     forms/mainwindow.ui \
@@ -58,6 +60,7 @@ FORMS += \
     forms/dialogjugar.ui \
     forms/dialogpuntajes.ui \
     forms/dialogpreferencias.ui \
+    forms/dialogborrar.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

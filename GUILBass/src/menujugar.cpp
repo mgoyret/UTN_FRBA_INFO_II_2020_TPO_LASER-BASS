@@ -62,3 +62,9 @@ void MenuJugar::on_PBpuntajes_clicked()
     a.setWindowTitle("Puntajes");
     a.exec();
 }
+
+void MenuJugar::on_PBborrar_clicked()
+{
+    DialogBorrar dBorrar(this);
+    dBorrar.exec();
+}
