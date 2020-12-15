@@ -6,4 +6,7 @@
         <file>utn.ico</file>
         <file>IconoProyectoInfo.ico</file>
     </qresource>
+    <qresource prefix="/fonts">
+        <file>neuropol-x-regular.ttf</file>
+    </qresource>
 </RCC>

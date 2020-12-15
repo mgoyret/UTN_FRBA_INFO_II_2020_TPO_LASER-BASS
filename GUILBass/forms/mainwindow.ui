@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>722</width>
-    <height>374</height>
+    <height>335</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +23,9 @@
       <height>241</height>
      </rect>
     </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
     <property name="html">
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -34,7 +37,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="PBJugar">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>280</x>
       <y>200</y>
       <width>201</width>
       <height>81</height>
@@ -47,7 +50,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="PBTocar">
     <property name="geometry">
      <rect>
-      <x>480</x>
+      <x>500</x>
       <y>200</y>
       <width>201</width>
       <height>81</height>
@@ -60,16 +63,16 @@ p, li { white-space: pre-wrap; }
    <widget class="QLineEdit" name="lineEditLaserBass">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>40</y>
-      <width>351</width>
+      <x>280</x>
+      <y>60</y>
+      <width>421</width>
       <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>MS UI Gothic</family>
-      <pointsize>26</pointsize>
+      <pointsize>30</pointsize>
      </font>
     </property>
     <property name="text">
@@ -85,9 +88,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>130</y>
-      <width>411</width>
+      <x>280</x>
+      <y>140</y>
+      <width>421</width>
       <height>31</height>
      </rect>
     </property>

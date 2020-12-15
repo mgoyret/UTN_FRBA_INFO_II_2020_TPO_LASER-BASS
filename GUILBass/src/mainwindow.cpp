@@ -7,11 +7,15 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    int fontID = QFontDatabase::addApplicationFont(":/fonts/neuropol-x-regular.ttf");
     DialogPreferencias pref(this);
 
     ui->setupUi(this);
     setWindowIcon(QIcon(":/IconoProyectoInfo.ico"));
     setWindowTitle("Menu Principal");
+    ui->textBrowser_2->setStyleSheet("border:0px; background:transparent");
+    ui->lineEditLaserBass->setStyleSheet("border:0px; background:transparent");
+    ui->lineEditLaserBass->setFont(QFont(QFontDatabase::applicationFontFamilies(fontID).at(0), ui->lineEditLaserBass->fontInfo().pointSize(), QFont::Normal, false));
     //para probar si no tienen puerto serie virtual para conectarse
     //comenten las 2 dos lineas siguientes
     ui->PBJugar->setDisabled(true);
@@ -21,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (verificarConfiguracionPuertos()) {
         configurarPuertoMidi(pref.getMidiPortPref());
         configurarPuertoSerie(pref.getSerialPortPref());
+        ui->label->hide();
         ui->PBTocar->setEnabled(true);
         ui->PBJugar->setEnabled(true);
     }
@@ -30,7 +35,9 @@ MainWindow::~MainWindow()
 {
     puerto->close();
     delete ui;
+    if (puerto->isOpen()) puerto->close();
     delete puerto;
+    if (puertoMidi->estaAbierto()) puertoMidi->cerrarPuerto();
     delete puertoMidi;
 }
 
@@ -38,20 +45,23 @@ MainWindow::~MainWindow()
 void MainWindow::on_PBJugar_clicked()
 {
     MenuJugar wMenuJugar(this);
+    this->hide();
     wMenuJugar.setPuerto(puerto);
     wMenuJugar.setPuertoMidi(puertoMidi);
-
     wMenuJugar.setWindowTitle("Maneras de jugar");
     wMenuJugar.exec();
+    this->show();
 }
 
 void MainWindow::on_PBTocar_clicked()
 {
     Tocar wtocar(this);
+    this->hide();
     wtocar.setPuerto(puerto);
     wtocar.setPuertoMidi(puertoMidi);
     wtocar.setWindowTitle("Tocar");
     wtocar.exec();
+    this->show();
 }
 
 
@@ -76,9 +86,10 @@ void MainWindow::on_actionConexion_triggered()
         configurarPuertoSerie(serialPortName);
         configurarPuertoMidi(midiPortName);
     } else {
-        if (serialPortName == "" || midiPortName == "") {
+        if (!verificarConfiguracionPuertos()) {
             ui->PBTocar->setDisabled(true);
             ui->PBJugar->setDisabled(true);
+            ui->label->show();
         } else {
             configurarPuertoSerie(serialPortName);
             configurarPuertoMidi(midiPortName);
@@ -115,6 +126,8 @@ void MainWindow::configurarPuertoMidi(QString portName) {
             if (puertoMidi->estaAbierto()) puertoMidi->cerrarPuerto(); //no puedo obtener el nombre del puerto abierto, ni el indice
                                                                        //sino podría hacer lo mismo que hice para el serie
             puertoMidi->abrirPuerto(i);
+            puertoMidi->inicializarGS();
+            puertoMidi->enviarProgramChange(0, 33);
             return;
         }
     }

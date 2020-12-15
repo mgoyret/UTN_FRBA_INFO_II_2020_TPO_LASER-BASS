@@ -286,19 +286,19 @@ void Grabar::on_PBfinRec_clicked()
     grabacion = OFF; //el timer no se ejecutara la siguiente vez
 
     //Pregunto si descartar grabacion o guardar
-    opcion = QMessageBox::question(this, "Fin de la grabacion", "guardar?");
+    opcion = QMessageBox::question(this, "Fin de la grabación", "Desea guardar la canción?");
     //si no se quiere guardar liberar memoria
 
     if( opcion == QMessageBox::StandardButton::Yes )
     {
         if(guardarCancion())
-            QMessageBox::information(this, "Bien hecho", "Cancion guarada exitosamente");
+            QMessageBox::information(this, "Bien hecho", "Canción guardada exitosamente");
     }else if ( (opcion == QMessageBox::StandardButton::No) || (opcion == QMessageBox::StandardButton::Escape) )
     {
         //se descarta la grabacion
-        QMessageBox::information(this, "Atencion", "Grabacion descartada");
+        QMessageBox::information(this, "Atención", "Grabación descartada");
     }else
-        QMessageBox::critical(this, "ERROR", "Ocurrio un error inesperado [on_PBfinRed_clicked()]");
+        QMessageBox::critical(this, "ERROR", "Ocurrió un error inesperado [on_PBfinRed_clicked()]");
 
     //ui->lineEditNombre->setEnabled(true);
     //ui->PBnombre->setEnabled(true);

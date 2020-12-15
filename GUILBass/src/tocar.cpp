@@ -27,7 +27,6 @@ void Tocar::setPuerto(QSerialPort *puertoExt)
 void Tocar::setPuertoMidi(ClaseMIDI *puertoExt)
 {
     puertoMidi = puertoExt;
-    puertoMidi->enviarProgramChange(0, 33);
 }
 
 void Tocar::mostrarNota(char nota) {
@@ -76,7 +75,6 @@ void Tocar::validarDatos() {
             datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
             procesarNotaATocar(datoAProcesar);
-            datoAProcesar.clear();
         } else if (bufferSerie.at(0) & 0x0a) {
             bufferSerie.remove(0,1);
         } else {
@@ -92,11 +90,24 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
     qDebug() <<"la nota es"<<(int)nota;
+    qDebug() << "conversion a MIDI: " << notaANotaMidi((uint8_t)std::abs(nota));
     mostrarNota(nota);
     qDebug()<<"aca";
     if (nota < 0) {
-        qDebug() << puertoMidi->enviarNoteOff(0, 32 + (uint8_t)std::abs(nota) * 2);
+        qDebug() << puertoMidi->enviarNoteOff(0, notaANotaMidi((uint8_t)std::abs(nota)));
     } else {
-        qDebug() << puertoMidi->enviarNoteOn(0, 32 + (uint8_t)std::abs(nota) * 2, 127);
+        qDebug() << puertoMidi->enviarNoteOn(0, notaANotaMidi((uint8_t)std::abs(nota)), 127);
     }
+}
+
+uint8_t Tocar::notaANotaMidi(uint8_t nota) {
+    int cuerdaYNota = notaACuerdaYNota(nota);
+    uint8_t cuerda = cuerdaYNota >> 8, indiceNota = (cuerdaYNota & 0x000000ff), notaReturn = 128, traste; //si hay un error lo puedo ver como una nota Midi invalida (>127)
+    if (indiceNota == (uint8_t)0xff) {
+        traste = 7; //aca va un 7 porque 7 - 7 = 0 y entonces no se suma el desp por traste
+    } else {
+        traste = (indiceNota % 6) + 1;
+    }
+    notaReturn = NOTAS_BASE + (NOTAS_DESP_POR_CUERDA * cuerda) + (NOTAS_DESP_POR_TRASTE * (7-traste));
+    return notaReturn;
 }

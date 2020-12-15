@@ -231,7 +231,7 @@ uint8_t ClaseMIDI::enviarControlChange(uint8_t ch, uint8_t byte_1, uint8_t byte_
 */
 
 uint8_t ClaseMIDI::enviarMensaje(QByteArray & msg) {
-    if (!out->isPortOpen()) {
+    if (out->isPortOpen()) {
         out->sendMessage(reinterpret_cast<const uint8_t *>(msg.constData()), msg.length());
         return 0;
     }

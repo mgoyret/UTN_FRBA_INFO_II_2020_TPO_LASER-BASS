@@ -72,7 +72,6 @@ public:
     QString getNombrePuntaje(puntaje & punt);
     int getValorPuntaje(puntaje & punt);
 
-    bool existeCancion(QString cancion);
 
 private:
     QJsonDocument * jDocPuntajes;
