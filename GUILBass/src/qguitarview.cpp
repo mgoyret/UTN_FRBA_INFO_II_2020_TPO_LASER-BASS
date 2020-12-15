@@ -85,6 +85,8 @@ void QGuitarView::showEvent(QShowEvent *event){
     }
 
     isShown = true;
+    this->setScene(scene);
+    this->setSceneRect(0, 0, vw, vh);
 }
 
 
@@ -102,15 +104,15 @@ void QGuitarView::hideEvent(QHideEvent *event){
 }
 
 /** 
- *  \fn         paintEvent(QPaintEvent *event)
- *  \details    Override del evento "paint" de una GraphicsView para que
-                actualize las notas y los cambios de color en la misma.
- *  \param      QPaintEvent *event
+ *  \fn         resizeEvent(QResizeEvent *event)
+ *  \details    Override del evento "resize" de una GraphicsView, para
+ *              acomodar la guitarra al centro del widget
+ *  \param      QResizeEvent *event
  *  \return     void
  */
 
-void QGuitarView::paintEvent(QPaintEvent *event) {
-    QGraphicsView::paintEvent(event);
+void QGuitarView::resizeEvent(QResizeEvent *event) {
+    QGraphicsView::resizeEvent(event);
 
     int vw = this->viewport()->width(), vh = this->viewport()->height();
     QPen stringPen;
@@ -171,6 +173,7 @@ void QGuitarView::paintEvent(QPaintEvent *event) {
         this->setScene(scene);
         this->setSceneRect(0, 0, vw, vh);
     }
+
 }
 
 /** 

@@ -69,14 +69,11 @@ void Tocar::validarDatos() {
     QByteArray datoAProcesar;
     while (cant > 1) {
         if (!(bufferSerie[0] & 0x50) && !(bufferSerie[1] & 0x0A) ) {
-            if (cant == 1) break;
             datoAProcesar.clear();
             datoAProcesar.append(bufferSerie[0]);
             datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
             procesarNotaATocar(datoAProcesar);
-        } else if (bufferSerie.at(0) & 0x0a) {
-            bufferSerie.remove(0,1);
         } else {
             bufferSerie.remove(0, 1);
         }
@@ -101,13 +98,7 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
 }
 
 uint8_t Tocar::notaANotaMidi(uint8_t nota) {
-    int cuerdaYNota = notaACuerdaYNota(nota);
-    uint8_t cuerda = cuerdaYNota >> 8, indiceNota = (cuerdaYNota & 0x000000ff), notaReturn = 128, traste; //si hay un error lo puedo ver como una nota Midi invalida (>127)
-    if (indiceNota == (uint8_t)0xff) {
-        traste = 7; //aca va un 7 porque 7 - 7 = 0 y entonces no se suma el desp por traste
-    } else {
-        traste = (indiceNota % 6) + 1;
-    }
-    notaReturn = NOTAS_BASE + (NOTAS_DESP_POR_CUERDA * cuerda) + (NOTAS_DESP_POR_TRASTE * (7-traste));
-    return notaReturn;
+    uint8_t cuerda = (nota - 1) / 7;
+    uint8_t traste = (nota - 1) % 7;
+    return NOTAS_BASE + NOTAS_DESP_POR_CUERDA * cuerda + NOTAS_DESP_POR_TRASTE * traste;
 }
