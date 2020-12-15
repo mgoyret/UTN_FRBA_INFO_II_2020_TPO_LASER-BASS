@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>LASERBASS™</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTextBrowser" name="textBrowser_2">
@@ -75,7 +75,8 @@ p, li { white-space: pre-wrap; }
     <property name="font">
      <font>
       <family>MS UI Gothic</family>
-      <pointsize>25</pointsize>
+      <pointsize>30</pointsize>
+      <kerning>true</kerning>
      </font>
     </property>
     <property name="contextMenuPolicy">
