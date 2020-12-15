@@ -28,10 +28,6 @@
 
 #define TIMER_TIME 50
 
-
-//////////////////////////////////   DEFINES PARA MANEJAR TRAMA MAS COMODAMENTE    //////////////////////////////////////
-#define INICIO_TRAMA    0xA0  // 10 0  = 1010 0000 que es el inicio de trama que esta en el primer byte
-#define FIN_TRAMA       0x05  // 13  = 0101 que es fin de trama
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -70,9 +66,9 @@ public:
     void inicializar( void );
     void iniciarTimer( void );
     void guardarNota( void );
-    uint8_t guardarCancion( void );
+    bool guardarCancion( void );
+    bool checkName( void );
     void validarDatos(void);
-    uint8_t checkName( void );
     void procesarNotaATocar(QByteArray dato);
     void mostrarNota(char nota);
     int notaACuerdaYNota(uint8_t nota);

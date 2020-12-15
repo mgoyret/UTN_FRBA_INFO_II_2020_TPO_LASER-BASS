@@ -206,7 +206,6 @@ void Jugar::validarDatos() {
     datoAProcesar.clear();
     while (cant > 1) {
         if (!(bufferSerie[0] & 0x50) && !(bufferSerie[1] & 0x0A) ) {
-            if (cant == 1) break;
             datoAProcesar.append(bufferSerie.at(0));
             datoAProcesar.append(bufferSerie.at(1));
             bufferSerie.remove(0, 2);

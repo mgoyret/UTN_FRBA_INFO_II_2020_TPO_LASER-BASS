@@ -42,22 +42,6 @@ void Tocar::mostrarNota(char nota) {
     //qDebug() << "Valor nota de mostrar (Nota/Cuerda): " << (cuerdaYNota & 0x000000ff) << "/" << (cuerdaYNota >> 8);
 }
 
-int Tocar::notaACuerdaYNota(uint8_t nota) {
-    int ret = 0, cuerda = 0, notaConv = 0;
-    nota--;
-    notaConv = nota % 7;
-    if (notaConv) {
-        cuerda = nota / 7;
-        notaConv = (6 - notaConv) + (6 * cuerda);
-    } else {
-        cuerda = nota / 7;
-        notaConv = 0xff;
-    }
-   // qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
-    ret |= notaConv;
-    ret |= cuerda << 8;
-    return ret;
-}
 
 void Tocar::on_datosRecibidos() {
     bufferSerie.append(puerto->readAll());
@@ -110,4 +94,21 @@ uint8_t Tocar::notaANotaMidi(uint8_t nota) {
     }
     notaReturn = NOTAS_BASE + (NOTAS_DESP_POR_CUERDA * cuerda) + (NOTAS_DESP_POR_TRASTE * (7-traste));
     return notaReturn;
+}
+
+int Tocar::notaACuerdaYNota(uint8_t nota) {
+    int ret = 0, cuerda = 0, notaConv = 0;
+    nota--;
+    notaConv = nota % 7;
+    if (notaConv) {
+        cuerda = nota / 7;
+        notaConv = (6 - notaConv) + (6 * cuerda);
+    } else {
+        cuerda = nota / 7;
+        notaConv = 0xff;
+    }
+   // qDebug() << "Cuerda: " << cuerda << "\nNotaConvertida: " << notaConv;
+    ret |= notaConv;
+    ret |= cuerda << 8;
+    return ret;
 }

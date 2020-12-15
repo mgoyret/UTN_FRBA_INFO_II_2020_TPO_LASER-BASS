@@ -69,16 +69,6 @@ void Grabar::iniciarTimer()
 *	\details    Guarda la nota actual almacenada en el array secuencial de estructuras notas y tiempos. Cada un
 *                   tiempo TIMER_TIME ms, se graba una posicion
 */
-void Grabar::timer_handler( void )
-{
-    if(grabacion == ON)
-    {
-        guardarNota();
-        iniciarTimer(); //timer periodico
-        if(notaTocada.size()==0)
-            notaTocada.append(SIN_NOTA);
-    }
-}
 void Grabar::guardarNota( void )
 {
     uint64_t i=0;
@@ -108,10 +98,10 @@ void Grabar::guardarNota( void )
 *	\details 	Imprime la informacion contenida en la estructura del tipo songBuffer, en un archivo
 *	\return 	chequeo de errores
 */
-uint8_t Grabar::guardarCancion( void )
+bool Grabar::guardarCancion( void )
 {
     uint64_t i;
-    uint8_t res = FALSE;
+    bool res = false;
 
     #ifdef DEBUG
     qDebug()<<"total notas: " << recBuf.total_cntr;
@@ -136,7 +126,26 @@ uint8_t Grabar::guardarCancion( void )
             out << recBuf.note_st[i].cntr << "," << (int)(recBuf.note_st[i].note) << "\n";
         }
         songFile.close();
-        res = TRUE;
+        res = true;
+    }
+    return res;
+}
+
+/**
+*	\fn         void checkName( void )
+*	\brief      Chequea que el nombre de la cancion no este en uso
+*	\details    Compara el nombre escrito, con los nombres de las canciones en la carpeta "media"
+*/
+bool Grabar::checkName( void )
+{
+    bool res = false;
+    QString aux2Name = auxName;
+    aux2Name.append(".csv"); // los archivos guardados tienen esta terminacion, asique debo compararla tambien
+    QStringList lista = QDir("../media").entryList();
+    for(uint8_t i=0; i<lista.size(); i++)
+    {
+        if( lista.at(i) == aux2Name )
+            res = true;
     }
     return res;
 }
@@ -151,17 +160,14 @@ void Grabar::validarDatos() {
     QByteArray datoAProcesar;
     while (cant > 1) {          //chequeos de inicio y fin de trama
         if ( !(bufferSerie[0] & 0x50)  && !(bufferSerie[1] & 0x0A) ) {
-            if (cant == 1) break;
             datoAProcesar.clear();
             datoAProcesar.append(bufferSerie[0]);
             datoAProcesar.append(bufferSerie[1]);
             bufferSerie.remove(0, 2);
             procesarNotaATocar(datoAProcesar);
-        } else if (bufferSerie.at(0) & 0x0a) {
-            bufferSerie.remove(0,1);
         } else {
             bufferSerie.remove(0,1);
-        }
+            }
         cant = bufferSerie.size();
     }
 }
@@ -236,27 +242,6 @@ int Grabar::notaACuerdaYNota(uint8_t nota) {
     return ret;
 }
 
-
-/**
-*	\fn         void checkName( void )
-*	\brief      Chequea que el nombre de la cancion no este en uso
-*	\details    Compara el nombre escrito, con los nombres de las canciones en la carpeta "media"
-*/
-uint8_t Grabar::checkName( void )
-{
-    uint8_t res = TRUE;
-    QString aux2Name = auxName;
-    aux2Name.append(".csv"); // los archivos guardados tienen esta terminacion, asique debo compararla tambien
-    QStringList lista = QDir("../media").entryList();
-    for(uint8_t i=0; i<lista.size(); i++)
-    {
-        if( lista.at(i) == aux2Name )
-            res = FALSE;
-        //qDebug() << lista.at(i);
-    }
-    return res;
-}
-
 /////////////////////////     PRIVATE SLOTS      //////////////////////////////////////////////////////
 
 /**
@@ -300,8 +285,6 @@ void Grabar::on_PBfinRec_clicked()
     }else
         QMessageBox::critical(this, "ERROR", "Ocurrió un error inesperado [on_PBfinRed_clicked()]");
 
-    //ui->lineEditNombre->setEnabled(true);
-    //ui->PBnombre->setEnabled(true);
     hide();
 }
 //////////////////////////////////// timer handler
@@ -310,7 +293,16 @@ void Grabar::on_PBfinRec_clicked()
 *	\brief      Handler del timer periodico
 *	\details    Ejecuta la funcion guardar nota, y restaura el valor de la nota a sin nota
 */
-
+void Grabar::timer_handler( void )
+{
+    if(grabacion == ON)
+    {
+        guardarNota();
+        iniciarTimer(); //timer periodico
+        if(notaTocada.size()==0)
+            notaTocada.append(SIN_NOTA);
+    }
+}
 
 /**
 *	\fn         void on_datosRecibidos( void )
@@ -331,7 +323,7 @@ void Grabar::on_PBnombre_clicked()
 {
     if( ui->lineEditNombre->text() != "" )
     {
-        if ( checkName() )
+        if ( !checkName() )
         {
             songName = auxName;
             ui->lineEditNombre->setDisabled(true);
