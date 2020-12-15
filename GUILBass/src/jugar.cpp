@@ -9,7 +9,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
 
     bufferSerie.clear();
     nombreCancion = nombre;
-    nombreCancion=nombreCancion.prepend(SONG_FOLDER_PATH_).append(SONG_FILE_TYPE_);
+    nombreCancion=nombreCancion.prepend(SONG_FOLDER_PATH).append(SONG_FILE_TYPE);
     LeerArchivo();
     ui->graphicsView_2->tam=listaNota.size();
     int i;
@@ -280,7 +280,7 @@ void Jugar::slotPuntaje()
     }*/
     ui->graphicsView_2->stopTiempo();
     QString nCancion = nombreCancion;
-    nCancion.remove(SONG_FOLDER_PATH_);
+    nCancion.remove(SONG_FOLDER_PATH);
     nCancion.remove(".csv");
     puntaje estructuraPuntajes;
     int puntosMax=setPuntosMax();

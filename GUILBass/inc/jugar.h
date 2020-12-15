@@ -16,24 +16,9 @@
 
 #define DEBUG
 
-#define	TRUE_    1
-#define	FALSE_   0
-
-#define EXITO_   1
-#define ERROR_   0
-
-#define ON_      1
-#define OFF_     0
-
-#define SIN_NOTA_    0
-#define NOTA1_       '1'   //aca va el numero que represente a lo que llega por puerto serie al llegar la nota de valor mas chico
-#define NOTA28_      '9'  // "" de valor mas grande  (estoy presuponiendo que cada nota tiene valor consecutivo)
-#define TOTAL_NOTAS_ 52
-#define NOTA_MAX_    28
-
-#define SONG_FILE_NAME_     "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
-#define SONG_FOLDER_PATH_   "../media/"
-#define SONG_FILE_TYPE_     ".csv"
+#define SONG_FILE_NAME      "cancionGrabada.csv" //agregar el nombre que sea con el path deseado
+#define SONG_FOLDER_PATH    "../media/"
+#define SONG_FILE_TYPE      ".csv"
 
 #define TIME_JUGAR 200
 #define PUNTOCSIMPLE 10
@@ -54,9 +39,6 @@ public:
     ~Jugar();
     void setPuerto( QSerialPort* );
     void setPuertoMidi(ClaseMIDI* puertoExt);
-    void procesarNota( QByteArray );
-    uint8_t tramaOk(unsigned char* );
-    uint8_t tramaInfo( unsigned char* );
     void LeerArchivo(void);
     void setNotaCorrecta(void);
     void setNotaIncorrecta(void);
