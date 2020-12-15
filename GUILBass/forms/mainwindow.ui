@@ -23,6 +23,9 @@
       <height>241</height>
      </rect>
     </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::NoContextMenu</enum>
+    </property>
     <property name="acceptDrops">
      <bool>false</bool>
     </property>
@@ -74,6 +77,9 @@ p, li { white-space: pre-wrap; }
       <family>MS UI Gothic</family>
       <pointsize>30</pointsize>
      </font>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::NoContextMenu</enum>
     </property>
     <property name="text">
      <string>LASER BASS</string>
