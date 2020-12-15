@@ -75,7 +75,7 @@ p, li { white-space: pre-wrap; }
     <property name="font">
      <font>
       <family>MS UI Gothic</family>
-      <pointsize>30</pointsize>
+      <pointsize>25</pointsize>
      </font>
     </property>
     <property name="contextMenuPolicy">
