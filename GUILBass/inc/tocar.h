@@ -47,6 +47,9 @@
 #define BIT2_MITAD2_ ( ((uint8_t)data[1]) & ULITMA_MITAD_ )
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define NOTAS_BASE 40
+#define NOTAS_DESP_POR_CUERDA 5
+#define NOTAS_DESP_POR_TRASTE 1
 
 namespace Ui {
 class Tocar;
@@ -86,6 +89,7 @@ private:
     void procesarNotaATocar(QByteArray);
     void mostrarNota(char nota);
     int  notaACuerdaYNota(uint8_t nota);
+    uint8_t notaANotaMidi(uint8_t nota);
 
 };
 
