@@ -14,7 +14,7 @@ DialogPuntajes::DialogPuntajes(QWidget *parent, int puntos, int puntosMax) :
     if ( (puntos>=0) && (puntos<(puntosMax/3)))
         ui->labelMensaje->setText("Hoy no es tu día, sigue practicando!");
     if ( (puntos>=(puntosMax/3)) && (puntos<(puntosMax*2/3)))
-        ui->labelMensaje->setText("Bien jugado, pero hay mejores formas\nde rascarse la oreja...");
+        ui->labelMensaje->setText("Bien jugado, pero te falta para ser \n un Rockstar");
     if ( puntos>=(puntosMax*2/3))
         ui->labelMensaje->setText("EXCELENTE! Ya podes tocar para el duko");
 }

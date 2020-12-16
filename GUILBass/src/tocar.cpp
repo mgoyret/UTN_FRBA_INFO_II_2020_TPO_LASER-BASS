@@ -70,10 +70,9 @@ void Tocar::procesarNotaATocar(QByteArray dato) {
     if (dato.size() != 2) qDebug() << "array de datos con mas de 2 bytes";
     nota |= (uint8_t)(dato.at(0) << 4) & 0xf0;
     nota |= (uint8_t)(dato.at(1) >> 4) & 0x0f;
-    qDebug() <<"la nota es"<<(int)nota;
-    qDebug() << "conversion a MIDI: " << notaANotaMidi((uint8_t)std::abs(nota));
+   // qDebug() <<"la nota es"<<(int)nota;
+   // qDebug() << "conversion a MIDI: " << notaANotaMidi((uint8_t)std::abs(nota));
     mostrarNota(nota);
-    qDebug()<<"aca";
     if (nota < 0) {
         qDebug() << puertoMidi->enviarNoteOff(0, notaANotaMidi((uint8_t)std::abs(nota)));
     } else {

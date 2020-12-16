@@ -3,8 +3,8 @@
         "cancion": "PIPO",
         "puntajes": [
             {
-                "jugador": "",
-                "puntaje": 0
+                "jugador": "ALJ",
+                "puntaje": 2010
             }
         ]
     },
@@ -31,15 +31,6 @@
     {
         "cancion": "Rodolfo",
         "puntajes": [
-        ]
-    },
-    {
-        "cancion": "TITO",
-        "puntajes": [
-            {
-                "jugador": "ALJ",
-                "puntaje": 1195
-            }
         ]
     },
     {
@@ -81,6 +72,15 @@
             {
                 "jugador": "LLL",
                 "puntaje": 0
+            }
+        ]
+    },
+    {
+        "cancion": "charly",
+        "puntajes": [
+            {
+                "jugador": "ASD",
+                "puntaje": 340
             }
         ]
     },
