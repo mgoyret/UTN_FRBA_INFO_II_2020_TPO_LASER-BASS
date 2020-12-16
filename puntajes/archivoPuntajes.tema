@@ -39,52 +39,6 @@
         ]
     },
     {
-        "cancion": "cancion1",
-        "puntajes": [
-            {
-                "jugador": "",
-                "puntaje": 1530
-            },
-            {
-                "jugador": "ZAZ",
-                "puntaje": 1440
-            },
-            {
-                "jugador": "",
-                "puntaje": 1020
-            },
-            {
-                "jugador": "",
-                "puntaje": 855
-            },
-            {
-                "jugador": "",
-                "puntaje": 0
-            },
-            {
-                "jugador": "ALE",
-                "puntaje": 0
-            },
-            {
-                "jugador": "ABC",
-                "puntaje": 0
-            },
-            {
-                "jugador": "LLL",
-                "puntaje": 0
-            }
-        ]
-    },
-    {
-        "cancion": "charly",
-        "puntajes": [
-            {
-                "jugador": "ASD",
-                "puntaje": 340
-            }
-        ]
-    },
-    {
         "cancion": "prueba",
         "puntajes": [
             {

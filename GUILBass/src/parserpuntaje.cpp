@@ -116,9 +116,9 @@ void ParserPuntaje::cargarDesdeArchivo() {
     if (jDocPuntajes != nullptr) delete jDocPuntajes;
 
     if(arch.exists()) {
-        qDebug()<<"Archivo de puntajes encontrado";
+        //qDebug()<<"Archivo de puntajes encontrado";
         if (arch.open(QIODevice::ReadOnly)) {
-            qDebug()<<"Archivo de puntajes abierto";
+            //qDebug()<<"Archivo de puntajes abierto";
             rawTextData = arch.readAll();
             arch.close();
             jDoc = QJsonDocument::fromJson(rawTextData);

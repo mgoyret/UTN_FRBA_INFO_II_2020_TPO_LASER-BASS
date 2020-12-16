@@ -35,7 +35,8 @@ void DialogBorrar::on_pushButton_clicked()
         else
         {
             QMessageBox::information(this, "Atencion!", "Cancion eliminada");
-            parser.borrarCancion((ui->comboBox->currentText()).prepend(SONG_FOLDER_PATH).append(SONG_FILE_TYPE));
+            parser.borrarCancion( ui->comboBox->currentText() );
+            parser.guardarPuntajes();//para que guarde los cambios
             QDialog::accept();
         }
     }
