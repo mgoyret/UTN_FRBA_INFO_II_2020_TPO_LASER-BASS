@@ -10,6 +10,7 @@ Jugar::Jugar(QWidget *parent, QString nombre) :
     bufferSerie.clear();
     nombreCancion = nombre;
     nombreCancion=nombreCancion.prepend(SONG_FOLDER_PATH).append(SONG_FILE_TYPE);
+    //leo el archivo y lo cargo a lista nota
     LeerArchivo();
     ui->graphicsView_2->tam=listaNota.size();
     int i;
@@ -80,8 +81,8 @@ void Jugar::timer_handler(void)
     for(i=0;i<29;i++){
         if(timerNota[i]== 1)
         {
+            //pongo el blanco el cartel de los puntos
             timerNota[i]=0;
-            //mostrarNota(-i);
             ui->Puntos->setPalette(Qt::white);
         }
     }
@@ -102,13 +103,12 @@ void Jugar::monitoreoPuntos() {
                 //4 : Se toco
                 //5 : (Solo largas) se solto a mitad de camino
    // 0->no me importa 4->no me importa transitorio en el, 3->espero nota asi q no me importa
-  // 5-> poner amarillo es medio punto -1-> rojo  1-> verde
+  // 5-> amarillo  -1-> rojo  1-> verde  2->azul
+   //dependiendo el estado seteo los puntos y sumo puntos o no
    if(ui->graphicsView_2->getEstadoMostrar()==-1){
-       //no se xq en roja no se ve
        ui->Puntos->setPalette(Qt::red);
        iniciarTimer(nota);
    }else if(ui->graphicsView_2->getEstadoMostrar()==1) {
-       //ESTO DE PALETTA NI IDEA SI ANDA O HAY Q PONERLE DE OTRA FORMA EL COLOR
        ui->Puntos->setPalette(Qt::green);
        puntos+=PUNTOCSIMPLE;
        ui->Puntos->setText(QString::number(puntos));
@@ -121,8 +121,6 @@ void Jugar::monitoreoPuntos() {
        iniciarTimer(nota);
    }else if(ui->graphicsView_2->getEstadoMostrar()==5) {
        ui->Puntos->setPalette(Qt::yellow);
-       //esto lo dejo en yellow para poder diferenciar entre estados
-       //despues se puede poner red
        iniciarTimer(nota);
    }
 }
@@ -138,7 +136,7 @@ void Jugar::setPuertoMidi(ClaseMIDI *puertoExt)
 int Jugar::setPuntosMax(void)
 {
             int res=0;
-            //arranco desde 1 xq la posicion 0 es imposible menos Tom Cruise
+            //arranco desde 1 xq la posicion 0 es imposible
             int i=1;
             int cant=0,duracion=0;
             while(i<listaNota.size()-1){
