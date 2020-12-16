@@ -106,6 +106,7 @@ bool DialogPreferencias::validarPuertoSerie(QString puerto) {
 bool DialogPreferencias::validarPuertoMidi(QString puerto) {
     QStringList puertos = puertoMidi.getNombresSalidas();
     for(int i=0; i<puertos.size(); i++) {
+        //trimmed: remueve espacios blancos o enters y otros simialares
         if (puertos[i].trimmed() == puerto) return true;
     }
     return false;
@@ -130,7 +131,7 @@ QString DialogPreferencias::getSerialPortPref() {
     return ret;
 }
 
-QString DialogPreferencias::getMidiPortPref() {
+QString DialogPreferencias:: getMidiPortPref() {
     QString ret = "";
     //cargarPrefs();
     if(validarPuertoMidi(prefNombrePuertoMidi)) {
