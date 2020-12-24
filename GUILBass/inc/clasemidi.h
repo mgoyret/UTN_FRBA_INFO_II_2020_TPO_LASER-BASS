@@ -21,7 +21,7 @@ class ClaseMIDI {
     private:
 
     SalidaMIDI *out;
-
+    const uint8_t notaMax =28;
 
     public:
 

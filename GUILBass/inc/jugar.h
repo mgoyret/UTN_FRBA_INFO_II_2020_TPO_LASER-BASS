@@ -50,14 +50,12 @@ private slots:
     void slotPuntaje();
 private:
     Ui::Jugar *ui;
-    uint8_t notaTocada;
-    int pesoPunto=0;
-    int posicion = 0;
     int puntos=0;
     QString timerNota;
     ParserPuntaje puntajes;
     QString nombreCancion;
     QSerialPort *puerto;
+    //lista donde se pone los datos del archivo
     QStringList listaNota;
     void iniciarTimer(int);
     QMetaObject::Connection conection; //almacena el valor retornado por connect() para podes desconectar con disconnect()

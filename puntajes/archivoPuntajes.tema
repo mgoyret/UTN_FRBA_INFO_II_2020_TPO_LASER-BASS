@@ -1,10 +1,19 @@
 [
     {
-        "cancion": "PIPO",
+        "cancion": "Ingrese Nombr",
+        "puntajes": [
+        ]
+    },
+    {
+        "cancion": "PIPO2",
         "puntajes": [
             {
+                "jugador": "NAH",
+                "puntaje": 1575
+            },
+            {
                 "jugador": "ALJ",
-                "puntaje": 2010
+                "puntaje": 600
             }
         ]
     },
@@ -29,12 +38,25 @@
         ]
     },
     {
-        "cancion": "Rodolfo",
+        "cancion": "TOTO",
         "puntajes": [
         ]
     },
     {
-        "cancion": "TOTO",
+        "cancion": "Turron",
+        "puntajes": [
+            {
+                "jugador": "ALE",
+                "puntaje": 4020
+            },
+            {
+                "jugador": "DAN",
+                "puntaje": 375
+            }
+        ]
+    },
+    {
+        "cancion": "charly",
         "puntajes": [
         ]
     },
@@ -48,6 +70,18 @@
             {
                 "jugador": "ASD",
                 "puntaje": 625
+            },
+            {
+                "jugador": "DAN",
+                "puntaje": 625
+            },
+            {
+                "jugador": "DAN",
+                "puntaje": 390
+            },
+            {
+                "jugador": "ALE",
+                "puntaje": 1025
             }
         ]
     },

@@ -10,6 +10,8 @@ extern __RW 	uint8_t  TMR_Events[ N_TIMERS ];
 extern void 	   (* TMR_Handlers [N_TIMERS]) (void);
 //base de tiempo
 extern __RW  	uint8_t TMR_Base[ N_TIMERS ];
+//en handler a continuacion no las usamos en el TPO pero lo puse para practicar para el recuperatorio
+extern __RW uint8_t TMR_StandBy[ N_TIMERS ];
 
 
 
@@ -59,11 +61,15 @@ void init_systick(void){
 void analizarTimers ( void ){
 	int i;
 	for(i=0;i<N_TIMERS;i++){
-		if(TMR_Run[i]>1){
-			TMR_Run[i]=TMR_Run[i]-1;
-		}else if(TMR_Run[i]==1){
-			TMR_Run[i]=TMR_Run[i]-1;
-			 TMR_Events[i]=1;
+		//el standBy no lo usamos en proyecto lo agrege cuando practicaba para el recup
+		if(TMR_StandBy[i]==RUN){
+			if(TMR_Run[i]>1){
+				TMR_Run[i]=TMR_Run[i]-1;
+			}else if(TMR_Run[i]==1){
+				TMR_Run[i]=TMR_Run[i]-1;
+				 TMR_Events[i]=1;
+			}
 		}
 	}
 }
+

@@ -127,9 +127,9 @@ void QNoteView::moverNotas() {
                     if (noteArray[i].pos + DELAY_NOTA < msCounter && noteArray[i].estado == 3) {
                         noteArray[i].estado = -1;
                         noteArray[i].noteColor = QColor(Qt::red);
-                        //--------Mandar signal--------------------
+                        //Mandar signal para cambiar color del cartel y sumar puntaje
                         mandarSignal(i);
-                         //---------------------------------------------------------------
+                        //---------------------------------------------------------------
                          noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         scene->update(noteArray[i].circlePtr->boundingRect());
                     }
@@ -137,9 +137,9 @@ void QNoteView::moverNotas() {
                         noteArray[i].noteColor = QColor(Qt::green);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         noteArray[i].estado = 1;
-                        //--------Mandar signal--------------------
+                        //Mandar signal para cambiar color del cartel y sumar puntaje
                         mandarSignal(i);
-                         //---------------------------------------------------------------
+                        //---------------------------------------------------------------
                         scene->update(noteArray[i].circlePtr->boundingRect());
                     } else if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos < msCounter && noteArray[i].estado == 0) {
                         noteArray[i].estado = 3;
@@ -161,9 +161,9 @@ void QNoteView::moverNotas() {
                         noteArray[i].noteColor = QColor(Qt::red);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         noteArray[i].estado = -1;
-                        //--------Mandar signal--------------------
+                        //Mandar signal para cambiar color del cartel y sumar puntaje
                         mandarSignal(i);
-                         //---------------------------------------------------------------
+                        //---------------------------------------------------------------
                         delete noteArray[i].linePtr2;
                         noteArray[i].linePtr2 = nullptr;
                         scene->update(noteArray[i].circlePtr->boundingRect());
@@ -172,9 +172,9 @@ void QNoteView::moverNotas() {
                     if (noteArray[i].pos + DELAY_NOTA > msCounter && noteArray[i].pos <= msCounter && noteArray[i].estado == 4) {
                         noteArray[i].estado = 2;
                         noteArray[i].delayTocado=msCounter-noteArray[i].pos;
-                        //--------Mandar signal--------------------
+                        //Mandar signal para cambiar color del cartel y sumar puntaje
                         mandarSignal(i);
-                         //---------------------------------------------------------------
+                        //---------------------------------------------------------------
                         noteArray[i].linePtr2 = new QGraphicsLineItem();
                         noteArray[i].linePtr2->setZValue(0);
                         noteArray[i].noteColor = QColor(Qt::blue);
@@ -186,9 +186,9 @@ void QNoteView::moverNotas() {
                     if ((noteArray[i].pos + noteArray[i].duracion +noteArray[i].delayTocado) > msCounter && noteArray[i].estado == 2) {
                         QPen pen = noteArray[i].linePtr->pen();
                         pen.setColor(Qt::blue);
-                        //--------Mandar signal--------------------
+                        //Mandar signal para cambiar color del cartel y sumar puntaje
                         mandarSignal(i);
-                         //---------------------------------------------------------------
+                        //---------------------------------------------------------------
                         noteArray[i].linePtr2->setPen(pen);
                         noteArray[i].linePtr2->setLine(noteArray[i].circlePtr->x() + RADIO_NUMEROS, noteArray[i].linePtr->y(), noteArray[i].linePtr->x() + PX_POR_UPD * noteArray[i].duracion, noteArray[i].linePtr->y());
                         scene->update(noteArray[i].linePtr2->boundingRect());
@@ -200,7 +200,7 @@ void QNoteView::moverNotas() {
                         noteArray[i].noteColor = QColor(Qt::green);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
                         noteArray[i].estado = 1;
-                        //--------Mandar signal--------------------
+                        //Mandar signal para cambiar color del cartel y sumar puntaje
                         mandarSignal(i);
                          //---------------------------------------------------------------
                         delete noteArray[i].linePtr2;
@@ -214,7 +214,7 @@ void QNoteView::moverNotas() {
                         noteArray[i].linePtr->setPen(pen);
                         noteArray[i].noteColor = QColor(Qt::yellow);
                         noteArray[i].circlePtr->setBrush(QBrush(noteArray[i].noteColor));
-                        //--------Mandar signal--------------------
+                        //Mandar signal para cambiar color del cartel y sumar puntaje
                         mandarSignal(i);
                          //---------------------------------------------------------------
                         //para mi este note aray de abajo no es necesario
@@ -244,10 +244,16 @@ void QNoteView::moverNotas() {
     msCounter++;
    // qDebug()<<msCounter;
     if(msCounter==(tam+DELAY_NOTA)){
+        //Cuando se termina la cancion emito una signal para que entre a dualog puntajes
         emit puntajeSignal();
     }
 
 }
+/**
+*	\fn 		void procesarNotaATocar ( ByteArray dato )
+*	\brief 	    Mandar signal y modifico el valor de mostrar
+*   \details    q lo uso despues en jugar
+**/
 void QNoteView:: mandarSignal(int i){
     mostrar.nro=noteArray[i].nro;
     mostrar.cuerda=noteArray[i].cuerda;
